@@ -23,9 +23,9 @@
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
         <h2 class="text-2xl font-bold">
-          Programas de {{ $selected->name ?? 'Cursos' }}
+          Programas de {{ $selected?->name ?? 'Cursos' }}
         </h2>
-        <p class="mt-2 text-white/75">{{ $selected->description ?? '' }}</p>
+        <p class="mt-2 text-white/75">{{ $selected?->description ?? '' }}</p>
       </div>
 
       @if(!empty($firstCourse))

@@ -22,6 +22,6 @@ class DashboardController extends Controller
       }])
       ->get();
 
-    return view('admin.dashboard', compact('areasCount','coursesCount','publishedCount','areas'));
+    return view('Admin.dashboard', compact('areasCount','coursesCount','publishedCount','areas'));
   }
 }

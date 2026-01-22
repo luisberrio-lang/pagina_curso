@@ -79,7 +79,7 @@
     content:"";
     position:absolute;
     inset:0;
-    background: url("/images/fondo.png") no-repeat left center / 560px auto;
+    background: url("/images/fondo.png") no-repeat left top / 560px auto;
 
     /* ✅ Clave para PNG con fondo blanco: lo “apaga” y se integra */
     mix-blend-mode: multiply;

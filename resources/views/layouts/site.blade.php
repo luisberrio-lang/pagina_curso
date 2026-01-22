@@ -48,6 +48,8 @@
     </div>
   </div>
 
+  <div class="site-bg" aria-hidden="true"></div>
+
   @include('partials.site-header')
 
   <main class="mx-auto max-w-7xl px-4 py-10 w-full flex-1">

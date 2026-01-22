@@ -13,12 +13,12 @@ class AreaController extends Controller
     public function index()
     {
         $areas = Area::query()->ordered()->get();
-        return view('admin.areas.index', compact('areas'));
+        return view('Admin.areas.index', compact('areas'));
     }
 
     public function create()
     {
-        return view('admin.areas.create');
+        return view('Admin.areas.create');
     }
 
     public function store(Request $r)
@@ -48,7 +48,7 @@ class AreaController extends Controller
 
     public function edit(Area $area)
     {
-        return view('admin.areas.edit', compact('area'));
+        return view('Admin.areas.edit', compact('area'));
     }
 
     public function update(Request $r, Area $area)

@@ -38,6 +38,7 @@ return new class extends Migration {
       $table->decimal('price_trimestral', 10, 2)->nullable();
       $table->decimal('price_semestral', 10, 2)->nullable();
       $table->decimal('price_anual', 10, 2)->nullable();
+      $table->decimal('price_one_time', 10, 2)->nullable();
 
       // WhatsApp (opcional override; si está vacío se genera automático)
       $table->text('whatsapp_message')->nullable();

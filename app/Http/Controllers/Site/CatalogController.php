@@ -11,7 +11,16 @@ class CatalogController extends Controller
   public function index(?Area $area = null)
   {
     $areas = Area::query()->ordered()->get();
-    $selected = $area ?? Area::defaultArea();
+    $selected = $area ?? Area::defaultArea() ?? $areas->first();
+
+    if (!$selected) {
+      return view('site.courses.index', [
+        'areas' => $areas,
+        'selected' => null,
+        'courses' => collect(),
+        'firstCourse' => null,
+      ]);
+    }
 
     $courses = Course::query()
       ->where('is_published', true)

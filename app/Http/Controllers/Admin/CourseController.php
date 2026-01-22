@@ -18,13 +18,13 @@ class CourseController extends Controller
       ->orderByDesc('id')
       ->paginate(20);
 
-    return view('admin.courses.index', compact('courses'));
+    return view('Admin.courses.index', compact('courses'));
   }
 
   public function create()
   {
     $areas = Area::query()->ordered()->get();
-    return view('admin.courses.create', compact('areas'));
+    return view('Admin.courses.create', compact('areas'));
   }
 
   public function store(Request $r)
@@ -66,7 +66,7 @@ class CourseController extends Controller
   {
     $areas = Area::query()->ordered()->get();
     $course->load(['area','images']);
-    return view('admin.courses.edit', compact('course','areas'));
+    return view('Admin.courses.edit', compact('course','areas'));
   }
 
   public function update(Request $r, Course $course)

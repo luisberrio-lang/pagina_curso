@@ -19,9 +19,10 @@
   @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 
-<body class="min-h-screen bg-tech text-white">
+<body class="min-h-screen bg-tech text-white" style="--site-bg-image: url('{{ asset('images/fondo.png') }}'); --site-bg-x: -32px; --site-bg-x-lg: -42px; --site-bg-x-2xl: -52px;">
   {{-- ✅ FONDO FIJO (aquí vive tu fondo.png, siempre visible) --}}
   <div class="site-bg" aria-hidden="true"></div>
+  <div class="site-overlay" aria-hidden="true"></div>
 
   {{-- ✅ CONTENIDO POR ENCIMA --}}
   <div class="relative z-10 min-h-screen flex flex-col">

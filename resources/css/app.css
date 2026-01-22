@@ -51,7 +51,7 @@
   }
 
   /* =======================================================
-     ✅ FONDO PNG REAL (SIEMPRE SE VE)
+     ✅ FONDO PNG + 1 OVERLAY
      public/images/fondo.png  -> /images/fondo.png
      ======================================================= */
   .site-bg{
@@ -59,37 +59,45 @@
     inset: 0;
     z-index: 0;
     pointer-events: none;
-  }
-
-  /* Oscurecido suave a la izquierda */
-  .site-bg::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background: linear-gradient(
-      90deg,
-      rgba(5,8,20,.92) 0%,
-      rgba(5,8,20,.55) 45%,
-      rgba(5,8,20,0) 85%
-    );
-  }
-
-  /* Tu PNG (se mezcla para que el blanco NO “reviente”) */
-  .site-bg::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background: url("/images/fondo.png") no-repeat left top / 560px auto;
-
-    /* ✅ Clave para PNG con fondo blanco: lo “apaga” y se integra */
-    mix-blend-mode: multiply;
-
-    opacity: .80; /* súbelo a 1 si lo quieres más fuerte */
-    filter: saturate(.95) contrast(1.06) brightness(.92);
+    background-image: var(--site-bg-image, url("/images/fondo.png"));
+    background-repeat: no-repeat;
+    background-position: var(--site-bg-x, -32px) 0;
+    background-size: 680px auto;
+    opacity: .9;
+    filter: saturate(.95) contrast(1.05) brightness(.95);
 
     /* Fade hacia la derecha */
     -webkit-mask-image: linear-gradient(to right, #000 0%, #000 62%, transparent 92%);
             mask-image: linear-gradient(to right, #000 0%, #000 62%, transparent 92%);
+  }
+
+  @media (min-width: 1024px){
+    .site-bg{
+      background-size: 820px auto;
+      --site-bg-x: var(--site-bg-x-lg, -42px);
+    }
+  }
+
+  @media (min-width: 1536px){
+    .site-bg{
+      background-size: 980px auto;
+      --site-bg-x: var(--site-bg-x-2xl, -52px);
+    }
+  }
+
+  /* Una sola capa superior (overlay) */
+  .site-overlay{
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      rgba(5,8,20,.92) 0%,
+      rgba(5,8,20,.55) 45%,
+      rgba(5,8,20,.18) 70%,
+      rgba(5,8,20,0) 92%
+    );
   }
 
   /* UI helpers */

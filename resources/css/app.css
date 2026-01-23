@@ -101,10 +101,16 @@
   }
 
   /* UI helpers */
-  .glass { @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl; }
-  .navlink { @apply text-white/80 hover:text-cyan-200 transition; }
+  .glass {
+    @apply bg-black/60 backdrop-blur-xl border border-white/5 shadow-xl;
+    box-shadow:
+      0 10px 30px rgba(0, 0, 1, 0.45),
+      0 0 0 1px rgb(0, 211, 244),
+      0 0 18px rgba(34, 211, 238, 0.75);
+  }
+  .navlink { @apply text-white/95 hover:text-cyan-200 transition; }
 
-  .chip { @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 transition; }
+  .chip { @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/30 bg-white/10 text-white/80 hover:bg-white/10 transition; }
   .chip-accent { @apply bg-cyan-400/20 border-cyan-300/30 text-cyan-100; }
 
   .btn { @apply inline-flex items-center justify-center px-5 py-3 rounded-2xl font-semibold border border-white/10 transition; }

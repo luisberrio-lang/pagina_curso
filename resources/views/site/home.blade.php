@@ -10,7 +10,7 @@
       Cursos por áreas con enfoque <span class="text-cyan-300">tecnológico</span>
     </h1>
     <p class="mt-4 text-white/80 max-w-2xl">
-      Programas organizados, temarios claros y material listo para aplicar.
+      Cursos organizados, temarios claros y material listo para estudiar, repasar y aplicar.
     </p>
 
     <div class="mt-6 flex flex-wrap gap-3">
@@ -24,21 +24,25 @@
     <div class="glass p-6 rounded-2xl border border-white/10">
       <h2 class="text-xl font-semibold">¿Cómo funciona?</h2>
       <ol class="mt-4 space-y-2 text-white/80 list-decimal list-inside">
-        <li>Entras a <b>Programas/Cursos</b></li>
-        <li>Por defecto ves <b>Ingeniería Eléctrica</b> (puedes cambiar)</li>
-        <li>Revisas el curso: detalles + beneficios + incluye + temario + muestras</li>
-        <li>Revisas <b>Precio</b> por área</li>
+       <li>Entras a <b>Programas/Cursos</b></li>
+<li>Seleccionas el <b>área</b> y eliges el curso que necesitas</li>
+<li>En cada curso revisas: <b>qué incluye</b> + <b>temario</b> + <b>beneficios</b> + <b>muestras</b></li>
+<li>Accedes a cursos organizados a partir de diferentes <b>instituciones</b>, con su <b>material de estudio</b> y el <b>programa/software</b> correspondiente</li>
+<li>El acceso es <b>ilimitado</b>, para que puedas <b>estudiar y repasar</b> cuando quieras</li>
+<li>El pago es <b>único</b>, sin <b>costos adicionales</b></li>
+
       </ol>
     </div>
 
     <div class="glass p-6 rounded-2xl border border-white/10">
       <h2 class="text-xl font-semibold">¿Cómo damos acceso a los cursos?</h2>
-      <ul class="mt-4 space-y-2 text-white/80 list-disc list-inside">
-        <li>Método de acceso: Drive / enlaces / plataforma</li>
-        <li>Tiempo de entrega</li>
-        <li>Dispositivos compatibles</li>
-        <li>Soporte por WhatsApp (horario)</li>
-      </ul>
+<ol class="mt-4 space-y-2 text-white/80 list-decimal list-inside">
+  <li><b>Método de acceso:</b> Acceso directo a <b>Google Drive</b> y/o entrega por <b>correo Gmail</b></li>
+  <li><b>Tiempo de entrega:</b> Acceso <b>inmediato</b> (tiempo estimado: <b>5 minutos</b>)</li>
+  <li><b>Almacenamiento:</b> El material se comparte mediante <b>Drive</b>, por lo que <b>no necesitas espacio</b> en tu correo/Drive. Cada curso puede incluir <b>más de 100 GB</b> de contenido</li>
+  <li><b>Soporte por WhatsApp (24/7):</b> Disponible para consultas y asistencia</li>
+</ol>
+
     </div>
   </section>
 
@@ -85,11 +89,13 @@
   <section class="mt-10 glass p-6 rounded-2xl border border-white/10">
     <h2 class="text-2xl font-bold">Beneficios generales</h2>
     <ul class="mt-4 space-y-2 text-white/80 list-disc list-inside">
-      <li>Temario estructurado</li>
-      <li>Material organizado</li>
-      <li>Muestras incluidas</li>
-      <li>Soporte por WhatsApp</li>
-      <li>Acceso rápido</li>
+<li>Acceso de por vida al material (Google Drive)</li>
+<li>Archivos descargables</li>
+<li>Entrega vía correo Gmail / Google Drive</li>
+<li>Futuras actualizaciones incluidas</li>
+<li>Videos en calidad Full HD</li>
+<li>Pago único, sin costos adicionales</li>
+
     </ul>
   </section>
 

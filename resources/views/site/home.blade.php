@@ -3,8 +3,8 @@
 @section('content')
   {{-- Sección 1: Hero --}}
   <section class="glass p-8 md:p-10 rounded-3xl border border-white/10 relative overflow-hidden">
-    <div class="absolute -top-20 -right-20 h-72 w-72 rounded-full bg-cyan-500/20 blur-3xl"></div>
-    <div class="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-blue-600/20 blur-3xl"></div>
+    <div class="absolute -top-20 -right-20 h-72 w-72 rounded-full bg-cyan-500/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-blue-600/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
 
     <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight">
       Cursos por áreas con enfoque <span class="text-cyan-300">tecnológico</span>

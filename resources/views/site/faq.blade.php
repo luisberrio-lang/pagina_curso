@@ -1,5 +1,7 @@
 @extends('layouts.site')
 
+@section('title', 'FAQ | Cursos de Ingeniería')
+
 @section('content')
   <h1 class="text-3xl font-extrabold">FAQ</h1>
 

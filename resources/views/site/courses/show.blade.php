@@ -1,5 +1,7 @@
 @extends('layouts.site')
 
+@section('title', ($course->title ?? 'Curso') . ' | Cursos de Ingeniería')
+
 @section('content')
   <section class="grid md:grid-cols-2 gap-8">
     <div class="glass rounded-2xl border border-white/10 overflow-hidden">

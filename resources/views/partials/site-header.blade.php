@@ -8,8 +8,14 @@
 
     {{-- Izquierda: Logo --}}
     <a href="{{ route('home') }}" class="flex items-center gap-2">
-      <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 shadow-glow"></div>
-      <span class="font-semibold tracking-wide">{{ config('app.name') }}</span>
+      <img
+        src="{{ asset('images/logo.png') }}"
+        alt="Cursos de Ingeniería"
+        class="h-9 w-9 rounded-xl object-contain shadow-glow"
+      >
+      <span class="font-semibold tracking-wide">
+        Cursos de <span class="text-cyan-300 font-semibold">Ingeniería</span>
+      </span>
     </a>
 
     {{-- Centro: Menú --}}

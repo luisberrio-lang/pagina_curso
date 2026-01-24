@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ config('app.name') }}</title>
+  <title>@yield('title', config('app.name'))</title>
+  <link rel="icon" href="{{ asset('images/logo.png') }}">
 
   {{-- ✅ Solo mostrar preloader 1 vez por pestaña (sessionStorage) --}}
   <script>

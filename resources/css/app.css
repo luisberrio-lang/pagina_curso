@@ -105,8 +105,8 @@
     @apply bg-black/60 backdrop-blur-xl border border-white/5 shadow-xl;
     box-shadow:
       0 10px 30px rgba(0, 0, 1, 0.45),
-      0 0 0 1px rgb(0, 211, 244),
-      0 0 18px rgba(34, 211, 238, 0.75);
+      0 0 0 1px rgb(0, 211, 250),
+      0 0 18px rgba(34, 211, 238, 0.90);
   }
   .navlink { @apply text-white/95 hover:text-cyan-200 transition; }
 
@@ -115,7 +115,103 @@
 
   .btn { @apply inline-flex items-center justify-center px-5 py-3 rounded-2xl font-semibold border border-white/10 transition; }
   .btn-ghost { @apply bg-white/5 hover:bg-white/10; }
-  .btn-accent { @apply bg-cyan-400/20 hover:bg-cyan-400/30 border-cyan-300/30 text-cyan-100; }
+
+  .btn-accent{
+    @apply relative inline-flex items-center justify-center
+           rounded-xl px-5 py-3 font-semibold
+           bg-cyan-400 text-black
+           border border-cyan-200/70
+           transition duration-200 ease-out
+           hover:bg-cyan-300 hover:-translate-y-0.5
+           focus:outline-none focus:ring-2 focus:ring-cyan-200/70;
+
+    /* Glow (neón) */
+    box-shadow:
+      0 0 0 1px rgba(34,211,238,.25),
+      0 10px 22px rgba(34,211,238,.16),
+      0 0 28px rgba(34,211,238,.28);
+
+    isolation: isolate; /* para que el halo quede “detrás” */
+  }
+
+  /* Halo neón detrás (base) */
+  .btn-accent::before{
+    content:"";
+    position:absolute;
+    inset:-12px;
+    z-index:-1;
+
+    /* ✅ CLAVE para que NO se vea rectángulo */
+    border-radius: calc(1rem + 12px); /* 1rem ≈ rounded-xl */
+
+    background:
+      radial-gradient(circle at 25% 30%, rgba(34,211,238,.75), transparent 70%),
+      radial-gradient(circle at 75% 70%, rgba(56,189,248,.55), transparent 65%);
+    filter: blur(10px);
+    opacity: .25;
+    pointer-events: none;
+    transition: opacity .18s ease, filter .18s ease;
+  }
+
+  /* Hover = más brillo */
+  .btn-accent:hover::before{
+    opacity: .45;
+    filter: blur(12px);
+  }
+
+  /* ✅ Seleccionado / click (focus) y presionado (active) = MÁS brillante */
+  .btn-accent:focus::before,
+  .btn-accent:active::before{
+    opacity: .90;
+    filter: blur(16px);
+  }
+
+  /* Glow del botón (difuso, sin borde “marcado”) */
+  .btn-accent{
+    box-shadow:
+      0 10px 24px rgba(34, 219, 248, 0.18),
+      0 0 26px rgba(33, 215, 244, 0.2);
+  }
+
+  .btn-accent:focus,
+  .btn-accent:active{
+    box-shadow:
+      0 14px 34px rgba(34,211,238,.22),
+      0 0 44px rgba(34,211,238,.35);
+  }
+
+  /* Evita contorno del navegador */
+  .btn-accent:focus-visible{
+    outline: none;
+  }
+
+  .btn-accent:hover::before{ opacity: .5; }
+  .btn-accent:hover{
+    background:
+      linear-gradient(0deg, rgba(34,211,238,.92), rgba(34,211,238,.92)) padding-box,
+      linear-gradient(135deg, rgba(34,211,238,.22), rgba(56,189,248,.10), rgba(59,130,246,.22)) border-box;
+    border: 1px solid transparent;
+  }
+
+  /* Variante más elegante (solo para el botón Programas/Cursos) */
+  .btn-accent.btn-accent-soft{
+    box-shadow:
+      0 0 0 1px rgba(34,211,238,.18),
+      0 8px 18px rgba(34,211,238,.12),
+      0 0 18px rgba(34,211,238,.18);
+  }
+  .btn-accent.btn-accent-soft::before{
+    opacity: .04;
+    filter: blur(3px);
+  }
+  .btn-accent.btn-accent-soft:hover::before{ opacity: .25; }
+  .btn-accent.btn-accent-soft:focus-visible,
+  .btn-accent.btn-accent-soft:active{
+    box-shadow:
+      0 0 0 1px rgba(34,211,238,.45),
+      0 12px 26px rgba(34,211,238,.30),
+      0 0 46px rgba(34,211,238,.55);
+  }
 
   .iconbtn { @apply h-10 w-10 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 inline-flex items-center justify-center; }
   .input { @apply bg-white/5 border border-white/10 rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-cyan-400/40; }

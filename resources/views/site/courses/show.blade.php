@@ -5,9 +5,9 @@
 @section('content')
   <section class="grid md:grid-cols-2 gap-8">
     <div class="glass rounded-2xl border border-white/10 overflow-hidden">
-      <div class="h-80 bg-white/5">
+      <div class="aspect-[3/2] bg-white/5 flex items-center justify-center">
         @if($course->coverUrl())
-          <img class="h-80 w-full object-cover" src="{{ $course->coverUrl() }}" alt="">
+          <img class="w-full h-full object-contain" src="{{ $course->coverUrl() }}" alt="">
         @endif
       </div>
 
@@ -17,7 +17,25 @@
 
         {{-- ✅ PRECIO ÚNICO (Pago único + Acceso de por vida) --}}
         <div class="mt-5 glass p-5 rounded-xl border border-white/10">
-          <h3 class="font-semibold">Precio</h3>
+          @php
+            $priceCurrent = $course->price_anual !== null ? (float)$course->price_anual : null;
+            $pricePrevious = $course->price_previous !== null ? (float)$course->price_previous : null;
+            $discountPct = null;
+            if ($pricePrevious !== null && $priceCurrent !== null && $pricePrevious > 0) {
+              $raw = (($pricePrevious - $priceCurrent) / $pricePrevious) * 100;
+              $discountPct = (int) round(max(0, $raw));
+            }
+          @endphp
+
+          <div class="flex items-start justify-between gap-3">
+            <h3 class="font-semibold">Precio</h3>
+            @if($pricePrevious !== null && $priceCurrent !== null)
+              <div class="flex items-center gap-2">
+                <span class="price-old">S/ {{ number_format($pricePrevious, 2) }}</span>
+                <span class="discount-badge">{{ $discountPct }}% DSCTO</span>
+              </div>
+            @endif
+          </div>
 
           @if(!is_null($course->price_anual))
             <div class="mt-3 flex items-center justify-between gap-3">
@@ -42,8 +60,12 @@
 
     <div class="space-y-6">
       <div class="glass p-6 rounded-2xl border border-white/10">
-        <h2 class="font-semibold text-xl">Descripción</h2>
-        <p class="mt-3 text-white/80 whitespace-pre-line">{{ $course->description }}</p>
+        <h2 class="font-semibold text-xl">Contenido</h2>
+        @php
+          $desc = $course->description ?? '';
+          $descHtml = ($desc && strip_tags($desc) === $desc) ? nl2br(e($desc)) : $desc;
+        @endphp
+        <div class="mt-3 text-white/80 wysiwyg-content">{!! $descHtml !!}</div>
       </div>
 
       <div class="glass p-6 rounded-2xl border border-white/10">
@@ -84,9 +106,18 @@
   <section id="temario" class="mt-10 glass p-6 rounded-2xl border border-white/10">
     <h2 class="text-2xl font-bold">Temario</h2>
 
-    @if(is_array($course->syllabus) && count($course->syllabus))
+    @php
+      $syllabus = $course->syllabus ?? null;
+    @endphp
+
+    @if(is_string($syllabus) && trim($syllabus) !== '')
+      @php
+        $syllabusHtml = (strip_tags($syllabus) === $syllabus) ? nl2br(e($syllabus)) : $syllabus;
+      @endphp
+      <div class="mt-4 wysiwyg-content">{!! $syllabusHtml !!}</div>
+    @elseif(is_array($syllabus) && count($syllabus))
       <div class="mt-4 space-y-4">
-        @foreach($course->syllabus as $m)
+        @foreach($syllabus as $m)
           <div class="p-5 rounded-2xl border border-white/10 bg-white/5">
             <div class="font-semibold">{{ $m['title'] ?? 'Módulo' }}</div>
             @if(!empty($m['topics']) && is_array($m['topics']))
@@ -127,3 +158,4 @@
     </a>
   </section>
 @endsection
+

@@ -43,11 +43,14 @@ class CourseController extends Controller
     // ✅ slug seguro (NO undefined)
     $data['slug'] = isset($data['slug']) && $data['slug'] ? $data['slug'] : Str::slug($data['title']);
 
-    // ✅ Textareas -> arrays
-    $data['learning']     = $this->linesToArray($r->input('learning'));
-    $data['benefits']     = $this->linesToArray($r->input('benefits'));
-    $data['includes']     = $this->linesToArray($r->input('includes'));
-    $data['requirements'] = $this->linesToArray($r->input('requirements'));
+    // ✅ Listas (textarea o inputs dinámicos)
+    $data['learning']     = $this->normalizeList($r->input('learning'));
+    $data['benefits']     = $this->normalizeList($r->input('benefits'));
+    $data['includes']     = $this->normalizeList($r->input('includes'));
+    $data['requirements'] = $this->normalizeList($r->input('requirements'));
+
+    // ✅ Temario (HTML básico)
+    $data['syllabus'] = $r->input('syllabus');
 
     $course = Course::create($data);
 
@@ -87,11 +90,14 @@ class CourseController extends Controller
     // ✅ slug seguro
     $data['slug'] = isset($data['slug']) && $data['slug'] ? $data['slug'] : Str::slug($data['title']);
 
-    // ✅ Textareas -> arrays
-    $data['learning']     = $this->linesToArray($r->input('learning'));
-    $data['benefits']     = $this->linesToArray($r->input('benefits'));
-    $data['includes']     = $this->linesToArray($r->input('includes'));
-    $data['requirements'] = $this->linesToArray($r->input('requirements'));
+    // ✅ Listas (textarea o inputs dinámicos)
+    $data['learning']     = $this->normalizeList($r->input('learning'));
+    $data['benefits']     = $this->normalizeList($r->input('benefits'));
+    $data['includes']     = $this->normalizeList($r->input('includes'));
+    $data['requirements'] = $this->normalizeList($r->input('requirements'));
+
+    // ✅ Temario (HTML básico)
+    $data['syllabus'] = $r->input('syllabus');
 
     $course->update($data);
 
@@ -129,20 +135,27 @@ class CourseController extends Controller
       'description'   => 'nullable|string',
       'audience'      => 'nullable|string',
       'whatsapp_message' => 'nullable|string|max:255',
+      'syllabus'      => 'nullable|string',
 
       'sort_order'    => 'nullable|integer|min:0|max:9999',
 
       // ✅ Precio único (usar price_anual)
       'price_anual'   => 'nullable|numeric|min:0',
+      'price_previous' => 'nullable|numeric|min:0',
 
       'cover'         => 'nullable|image|max:4096',
     ]);
   }
 
-  private function linesToArray(?string $text): array
+  private function normalizeList($value): array
   {
-    $lines = preg_split("/\r\n|\n|\r/", (string)$text) ?: [];
-    $lines = array_map(fn($s) => trim($s), $lines);
+    if (is_array($value)) {
+      $lines = $value;
+    } else {
+      $lines = preg_split("/\r\n|\n|\r/", (string)$value) ?: [];
+    }
+
+    $lines = array_map(fn($s) => trim((string)$s), $lines);
     return array_values(array_filter($lines, fn($s) => $s !== ''));
   }
 }

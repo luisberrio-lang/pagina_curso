@@ -22,19 +22,12 @@
 
   {{-- Cabecera del área --}}
   <section class="mt-6 glass p-6 rounded-2xl border border-white/10">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-      <div>
-        <h2 class="text-2xl font-bold">
-          Programas de {{ $selected?->name ?? 'Cursos' }}
-        </h2>
-        <p class="mt-2 text-white/75">{{ $selected?->description ?? '' }}</p>
-      </div>
-
-      @if(!empty($firstCourse))
-        <a class="btn btn-ghost" href="{{ route('courses.show', $firstCourse) }}#temario">
-          Ver temario del curso
-        </a>
-      @endif
+    <div class="flex flex-col items-center text-center gap-2">
+      <h2 class="text-2xl font-bold">
+        Programas/Cursos de
+        <span class="text-cyan-300">{{ $selected?->name ?? 'Cursos' }}</span>
+      </h2>
+      <p class="text-white/75">{{ $selected?->description ?? '' }}</p>
     </div>
   </section>
 
@@ -42,16 +35,20 @@
   <section class="mt-6 grid md:grid-cols-3 gap-6">
     @forelse($courses as $c)
       <div class="glass rounded-2xl border border-white/10 overflow-hidden">
-        <div class="h-44 bg-white/5">
+        <div class="aspect-[3/2] bg-white/5 flex items-center justify-center">
           @if($c->coverUrl())
-            <img class="h-44 w-full object-cover" src="{{ $c->coverUrl() }}" alt="">
+            <img class="w-full h-full object-contain"
+                 src="{{ $c->coverUrl() }}"
+                 width="1536"
+                 height="1024"
+                 alt="">
           @endif
         </div>
 
         <div class="p-5">
           <div class="flex items-start justify-between gap-3">
             <h3 class="font-semibold">{{ $c->title }}</h3>
-            <span class="chip">{{ $c->area->name ?? '' }}</span>
+            <span class="area-pill">{{ $c->area->name ?? '' }}</span>
           </div>
 
           <p class="mt-2 text-white/75">{{ $c->short_desc }}</p>

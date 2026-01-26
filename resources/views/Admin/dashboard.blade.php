@@ -93,10 +93,34 @@
       </div>
 
       <div>
-        <label class="text-sm text-white/70">Contenido del curso (descripción completa)</label>
-        <textarea name="description" rows="4"
-                  class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2">{{ old('description') }}</textarea>
+        <label class="text-sm text-white/70">Contenido del curso</label>
+        <div class="wysiwyg mt-2" data-wysiwyg>
+          <div class="wysiwyg-toolbar">
+            <button type="button" class="chip" data-cmd="bold"><b>B</b></button>
+            <button type="button" class="chip" data-cmd="italic"><i>I</i></button>
+            <button type="button" class="chip" data-cmd="underline"><u>U</u></button>
+            <button type="button" class="chip" data-cmd="insertUnorderedList">Lista</button>
+            <button type="button" class="chip" data-cmd="insertOrderedList">1.2.3</button>
+          </div>
+          <div class="wysiwyg-editor" contenteditable="true" data-wysiwyg-editor data-placeholder="Escribe el contenido del curso...">{!! old('description') !!}</div>
+          <textarea name="description" class="hidden" data-wysiwyg-input>{!! old('description') !!}</textarea>
+        </div>
         @error('description') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="text-sm text-white/70">Para quién es</label>
+          <textarea name="audience" rows="3"
+                    class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2">{{ old('audience') }}</textarea>
+          @error('audience') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
+        </div>
+        <div>
+          <label class="text-sm text-white/70">Qué aprenderás (1 por línea)</label>
+          <textarea name="learning" rows="3"
+                    class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2"
+                    placeholder="Tema 1&#10;Tema 2&#10;...">{{ old('learning') }}</textarea>
+        </div>
       </div>
 
       <div class="grid md:grid-cols-2 gap-6">
@@ -113,17 +137,52 @@
                     class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2"
                     placeholder="Soporte por WhatsApp&#10;Actualizaciones&#10;...">{{ old('benefits') }}</textarea>
         </div>
+
+      </div>
+      <div>
+        <label class="text-sm text-white/70">Temario</label>
+        <div class="wysiwyg mt-2" data-wysiwyg>
+          <div class="wysiwyg-toolbar">
+            <button type="button" class="chip" data-cmd="bold"><b>B</b></button>
+            <button type="button" class="chip" data-cmd="italic"><i>I</i></button>
+            <button type="button" class="chip" data-cmd="underline"><u>U</u></button>
+            <button type="button" class="chip" data-cmd="insertUnorderedList">Lista</button>
+            <button type="button" class="chip" data-cmd="insertOrderedList">1.2.3</button>
+          </div>
+          <div class="wysiwyg-editor" contenteditable="true" data-wysiwyg-editor data-placeholder="Escribe el temario...">{!! old('syllabus') !!}</div>
+          <textarea name="syllabus" class="hidden" data-wysiwyg-input>{!! old('syllabus') !!}</textarea>
+        </div>
+      </div>
+      <div class="p-5 rounded-2xl border border-white/10 bg-white/5">
+        <h3 class="font-semibold text-lg">Precios y Descuento</h3>
+        <p class="mt-1 text-white/60 text-sm">El % DSCTO se calcula automáticamente.</p>
+
+        <div class="mt-4 grid md:grid-cols-3 gap-6 items-end" data-discount-calc>
+          <div>
+            <label class="text-sm text-white/70">Precio actual (Pago único / Acceso de por vida)</label>
+            <input name="price_anual" value="{{ old('price_anual') }}"
+                   class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2"
+                   placeholder="Ej: 49.90" data-price-current />
+            @error('price_anual') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
+          </div>
+
+          <div>
+            <label class="text-sm text-white/70">Precio anterior</label>
+            <input name="price_previous" value="{{ old('price_previous') }}"
+                   class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2"
+                   placeholder="Ej: 79.90" data-price-previous />
+            @error('price_previous') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
+          </div>
+
+          <div>
+            <label class="text-sm text-white/70">% DSCTO (automático)</label>
+            <div class="mt-2 px-4 py-3 rounded-xl border border-white/10 bg-black/30 text-center font-semibold"
+                 data-discount-output>—</div>
+          </div>
+        </div>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-6 items-end">
-        <div>
-          <label class="text-sm text-white/70">PRECIO (Pago único / Acceso de por vida)</label>
-          <input name="price_anual" value="{{ old('price_anual') }}"
-                 class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2"
-                 placeholder="Ej: 49.90" />
-          @error('price_anual') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
-        </div>
-
+      <div class="grid md:grid-cols-2 gap-6 items-end">
         <label class="inline-flex items-center gap-2 text-sm text-white/75">
           <input type="checkbox" name="is_published" value="1" {{ old('is_published') ? 'checked' : '' }}>
           Publicado (se muestra en la web)
@@ -196,3 +255,7 @@
     </div>
   </section>
 @endsection
+
+
+
+

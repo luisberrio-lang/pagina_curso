@@ -15,6 +15,7 @@ class Course extends Model
     'description','audience','learning','benefits','includes','requirements','syllabus',
     // ✅ Usaremos SOLO este como pago único:
     'price_anual',
+    'price_previous',
     'whatsapp_message'
   ];
 
@@ -30,6 +31,7 @@ class Course extends Model
     'syllabus'     => 'array',
 
     'price_anual'  => 'decimal:2',
+    'price_previous' => 'decimal:2',
   ];
 
   protected static function booted(): void

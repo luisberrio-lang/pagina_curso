@@ -1,8 +1,3 @@
-@php
-  $waBase = 'https://wa.me/'.env('WHATSAPP_NUMBER');
-  $fbUrl  = env('FACEBOOK_URL') ?: '#';
-@endphp
-
 <header class="sticky top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur">
   <div class="w-full px-2 md:px-6 py-3 grid grid-cols-[auto,1fr,auto] items-center gap-4">
 
@@ -73,14 +68,16 @@
       {{-- ✅ Desktop (md+): tu bloque original (WA/FB + auth) --}}
       <div class="hidden md:flex items-center gap-3">
 
-        <a class="iconbtn" target="_blank"
-           href="{{ $waBase }}?text={{ urlencode('Hola, deseo información.') }}"
+        <a class="iconbtn" target="_blank" rel="noopener"
+           href="https://wa.me/51929765265"
            title="WhatsApp">
-          <span class="font-bold">WA</span>
+          <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy">
         </a>
 
-        <a class="iconbtn" target="_blank" href="{{ $fbUrl }}" title="Facebook">
-          <span class="font-bold">FB</span>
+        <a class="iconbtn" target="_blank" rel="noopener"
+           href="https://www.facebook.com/share/1CMUNbgoXX/"
+           title="Facebook">
+          <img src="{{ asset('images/facebook.png') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy">
         </a>
 
         @guest
@@ -99,14 +96,16 @@
 
       {{-- ✅ Móvil: mostrar WA/FB en la barra (además de la hamburguesa) --}}
       <div class="md:hidden flex items-center gap-2">
-        <a class="iconbtn" target="_blank"
-           href="{{ $waBase }}?text={{ urlencode('Hola, deseo información.') }}"
+        <a class="iconbtn" target="_blank" rel="noopener"
+           href="https://wa.me/51929765265"
            title="WhatsApp">
-          <span class="font-bold">WA</span>
+          <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy">
         </a>
 
-        <a class="iconbtn" target="_blank" href="{{ $fbUrl }}" title="Facebook">
-          <span class="font-bold">FB</span>
+        <a class="iconbtn" target="_blank" rel="noopener"
+           href="https://www.facebook.com/share/1CMUNbgoXX/"
+           title="Facebook">
+          <img src="{{ asset('images/facebook.png') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy">
         </a>
       </div>
 
@@ -153,14 +152,16 @@
 
       {{-- WA / FB en móvil (también quedan aquí, además de la barra) --}}
       <div class="flex items-center gap-3">
-        <a class="iconbtn" target="_blank"
-           href="{{ $waBase }}?text={{ urlencode('Hola, deseo información.') }}"
+        <a class="iconbtn" target="_blank" rel="noopener"
+           href="https://wa.me/51929765265"
            title="WhatsApp">
-          <span class="font-bold">WA</span>
+          <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy">
         </a>
 
-        <a class="iconbtn" target="_blank" href="{{ $fbUrl }}" title="Facebook">
-          <span class="font-bold">FB</span>
+        <a class="iconbtn" target="_blank" rel="noopener"
+           href="https://www.facebook.com/share/1CMUNbgoXX/"
+           title="Facebook">
+          <img src="{{ asset('images/facebook.png') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy">
         </a>
       </div>
 

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -112,6 +114,41 @@
 
   .chip { @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/30 bg-white/10 text-white/80 hover:bg-white/10 transition; }
   .chip-accent { @apply bg-cyan-400/20 border-cyan-300/30 text-cyan-100; }
+  .area-pill {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    white-space: nowrap;
+    border-radius: 999px;
+    background-color: #aaff00;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: #0b1200;
+    box-shadow: 0 0 12px rgba(170, 255, 0, 0.35);
+  }
+
+  .price-old { @apply text-sm text-white/60 line-through; }
+  .discount-badge{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.18rem 0.48rem;
+    border-radius: 0.45rem;
+    font-family: 'Cinzel', 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0b1300;
+    background: #AEFF00;
+    border: 1px solid rgba(174, 255, 0, 0.55);
+    box-shadow:
+      0 0 0 1px rgba(174, 255, 0, 0.22),
+      0 6px 16px rgba(174, 255, 0, 0.18),
+      0 0 20px rgba(174, 255, 0, 0.32);
+  }
 
   .btn { @apply inline-flex items-center justify-center px-5 py-3 rounded-2xl font-semibold border border-white/10 transition; }
   .btn-ghost { @apply bg-white/5 hover:bg-white/10; }
@@ -213,12 +250,27 @@
       0 0 46px rgba(34,211,238,.55);
   }
 
-  .iconbtn { @apply h-10 w-10 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 inline-flex items-center justify-center; }
+  .iconbtn { @apply h-8 w-8 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 inline-flex items-center justify-center; }
   .input { @apply bg-white/5 border border-white/10 rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-cyan-400/40; }
 
   .shadow-glow{
     box-shadow: 0 0 0 1px rgba(34,211,238,.25), 0 10px 30px rgba(34,211,238,.12);
   }
+
+  /* Mini editor */
+  .wysiwyg { @apply rounded-2xl border border-white/10 bg-white/5; }
+  .wysiwyg-toolbar { @apply flex flex-wrap gap-2 p-2 border-b border-white/10 bg-black/20; }
+  .wysiwyg-editor { @apply min-h-[140px] px-4 py-3 outline-none; }
+  .wysiwyg-editor:empty:before { content: attr(data-placeholder); color: rgba(255,255,255,.35); }
+  .wysiwyg-content ul { list-style: disc; margin-left: 1.25rem; }
+  .wysiwyg-content ol { list-style: decimal; margin-left: 1.25rem; }
+  .wysiwyg-content li { margin: .2rem 0; }
+  .wysiwyg-content p { margin: .5rem 0; }
+  .wysiwyg-content b,
+  .wysiwyg-content strong { font-weight: 700; }
+  .wysiwyg-content i,
+  .wysiwyg-content em { font-style: italic; }
+  .wysiwyg-content u { text-decoration: underline; }
 }
 
 /* =========================================================

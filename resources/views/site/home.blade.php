@@ -229,7 +229,9 @@
     <div class="mt-4 grid md:grid-cols-3 gap-6">
       @forelse($areas as $a)
         <div class="glass p-6 rounded-2xl border border-white/10">
-          <h3 class="font-semibold text-lg">{{ $a->name }}</h3>
+          <h3 class="area-pill">
+            {{ $a->name }}
+          </h3>
           <p class="mt-2 text-white/75">{{ $a->description ?? 'Programas y cursos por especialidad.' }}</p>
           <a class="btn btn-accent btn-accent-soft mt-4" href="{{ route('courses.byArea', $a) }}">Ver cursos</a>
         </div>
@@ -245,9 +247,9 @@
     <div class="mt-4 grid md:grid-cols-3 gap-6">
       @forelse($featured as $c)
         <div class="glass rounded-2xl border border-white/10 overflow-hidden">
-          <div class="h-44 bg-white/5">
+          <div class="bg-white/5 aspect-[3/2]">
             @if(method_exists($c, 'coverUrl') && $c->coverUrl())
-              <img class="h-44 w-full object-cover" src="{{ $c->coverUrl() }}" alt="">
+              <img class="w-full h-full object-cover" src="{{ $c->coverUrl() }}" alt="">
             @endif
           </div>
           <div class="p-5">
@@ -299,9 +301,18 @@
   <section class="mt-10">
     <h2 class="text-2xl font-bold">Muestras generales</h2>
     <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-      @for($i = 1; $i <= 4; $i++)
-        <div class="glass rounded-2xl border border-white/10 h-28 md:h-36"></div>
-      @endfor
+      <div class="glass rounded-2xl border border-white/10 overflow-hidden aspect-[3/2]">
+        <img src="{{ asset('images/muestra1.png') }}" alt="Muestra general 1" class="w-full h-full object-cover" loading="lazy">
+      </div>
+      <div class="glass rounded-2xl border border-white/10 overflow-hidden aspect-[3/2]">
+        <img src="{{ asset('images/muestra2.png') }}" alt="Muestra general 2" class="w-full h-full object-cover" loading="lazy">
+      </div>
+      <div class="glass rounded-2xl border border-white/10 overflow-hidden aspect-[3/2]">
+        <img src="{{ asset('images/muestra3.png') }}" alt="Muestra general 3" class="w-full h-full object-cover" loading="lazy">
+      </div>
+      <div class="glass rounded-2xl border border-white/10 overflow-hidden aspect-[3/2]">
+        <img src="{{ asset('images/muestra4.png') }}" alt="Muestra general 4" class="w-full h-full object-cover" loading="lazy">
+      </div>
     </div>
   </section>
 @endsection

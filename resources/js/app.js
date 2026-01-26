@@ -46,6 +46,42 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   });
 
+  // Mini editor (wysiwyg básico)
+  document.querySelectorAll('[data-wysiwyg]').forEach((wrap) => {
+    const editor = wrap.querySelector('[data-wysiwyg-editor]');
+    const input  = wrap.querySelector('[data-wysiwyg-input]');
+    const buttons = wrap.querySelectorAll('[data-cmd]');
+    if (!editor || !input) return;
+
+    if (!editor.innerHTML.trim()) {
+      editor.innerHTML = input.value || '';
+    }
+
+    const sync = () => {
+      input.value = editor.innerHTML;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+
+    editor.addEventListener('input', sync);
+    editor.addEventListener('blur', sync);
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        editor.focus();
+        const cmd = btn.dataset.cmd;
+        const arg = btn.dataset.arg || null;
+        try { document.execCommand(cmd, false, arg); } catch (_) {}
+        sync();
+      });
+    });
+
+    const form = wrap.closest('form');
+    if (form) {
+      form.addEventListener('submit', sync);
+    }
+  });
+
   // Preview portada
   const coverInput  = document.querySelector('[data-cover-input]');
   const coverImg    = document.querySelector('[data-cover-preview]');
@@ -81,6 +117,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ✅ Preloader
   initPreloader();
+
+  // % Descuento automático
+  document.querySelectorAll('[data-discount-calc]').forEach((wrap) => {
+    const current = wrap.querySelector('[data-price-current]');
+    const previous = wrap.querySelector('[data-price-previous]');
+    const output = wrap.querySelector('[data-discount-output]');
+    if (!current || !previous || !output) return;
+
+    const toNumber = (value) => {
+      const num = parseFloat(String(value).replace(',', '.'));
+      return Number.isFinite(num) ? num : null;
+    };
+
+    const update = () => {
+      const cur = toNumber(current.value);
+      const prev = toNumber(previous.value);
+      if (cur === null || prev === null || prev <= 0) {
+        output.textContent = '—';
+        return;
+      }
+      const pct = Math.max(0, Math.round(((prev - cur) / prev) * 100));
+      output.textContent = `${pct}% DSCTO`;
+    };
+
+    current.addEventListener('input', update, { passive: true });
+    previous.addEventListener('input', update, { passive: true });
+    update();
+  });
 });
 
 /* =========================================================

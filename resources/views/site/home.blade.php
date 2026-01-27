@@ -105,14 +105,17 @@
       </h1>
     </div>
 
-    {{-- ✅ Imagen debajo del título (usa public/img/portad.png) --}}
+    {{-- ? Imagen debajo del t?tulo (usa public/img/portad.png) --}}
     <div class="mt-6 md:mt-8 overflow-hidden rounded-2xl border border-white/10 bg-white/5 -mx-4 md:-mx-6">
-      <img
-        src="{{ asset('images/portadaofi.png') }}"
-        alt="Cursos de ingeniería por áreas"
-        class="block w-full h-auto max-h-64 md:max-h-[26rem] object-contain"
-        loading="lazy"
-      >
+      <picture>
+        <source type="image/webp" srcset="{{ asset('images/portadaofi.webp') }}">
+        <img
+          src="{{ asset('images/portadaofi.png') }}"
+          alt="Cursos de ingenier?a por ?reas"
+          class="block w-full h-auto max-h-64 md:max-h-[26rem] object-contain"
+          loading="lazy"
+        >
+      </picture>
     </div>
 
     <div class="mt-auto">
@@ -302,16 +305,28 @@
     <h2 class="text-2xl font-bold">Muestras generales</h2>
     <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
       <div class="glass rounded-2xl border border-white/10 overflow-hidden aspect-[3/2]">
-        <img src="{{ asset('images/muestra1.png') }}" alt="Muestra general 1" class="w-full h-full object-cover" loading="lazy">
+        <picture>
+          <source type="image/webp" srcset="{{ asset('images/muestra1.webp') }}">
+          <img src="{{ asset('images/muestra1.png') }}" alt="Muestra general 1" class="w-full h-full object-cover" loading="lazy">
+        </picture>
       </div>
       <div class="glass rounded-2xl border border-white/10 overflow-hidden aspect-[3/2]">
-        <img src="{{ asset('images/muestra2.png') }}" alt="Muestra general 2" class="w-full h-full object-cover" loading="lazy">
+        <picture>
+          <source type="image/webp" srcset="{{ asset('images/muestra2.webp') }}">
+          <img src="{{ asset('images/muestra2.png') }}" alt="Muestra general 2" class="w-full h-full object-cover" loading="lazy">
+        </picture>
       </div>
       <div class="glass rounded-2xl border border-white/10 overflow-hidden aspect-[3/2]">
-        <img src="{{ asset('images/muestra3.png') }}" alt="Muestra general 3" class="w-full h-full object-cover" loading="lazy">
+        <picture>
+          <source type="image/webp" srcset="{{ asset('images/muestra3.webp') }}">
+          <img src="{{ asset('images/muestra3.png') }}" alt="Muestra general 3" class="w-full h-full object-cover" loading="lazy">
+        </picture>
       </div>
       <div class="glass rounded-2xl border border-white/10 overflow-hidden aspect-[3/2]">
-        <img src="{{ asset('images/muestra4.png') }}" alt="Muestra general 4" class="w-full h-full object-cover" loading="lazy">
+        <picture>
+          <source type="image/webp" srcset="{{ asset('images/muestra4.webp') }}">
+          <img src="{{ asset('images/muestra4.png') }}" alt="Muestra general 4" class="w-full h-full object-cover" loading="lazy">
+        </picture>
       </div>
     </div>
   </section>

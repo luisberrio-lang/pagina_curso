@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Area;
+use App\Models\Course;
 
 class PriceController extends Controller
 {
   public function index()
   {
     $areas = Area::query()->ordered()->get();
-    $selected = Area::defaultArea();
+    $selected = Area::defaultArea() ?? $areas->first();
 
     // selector por query ?area=slug
     if (request('area')) {
@@ -18,9 +19,22 @@ class PriceController extends Controller
       if ($picked) $selected = $picked;
     }
 
-    $plansAll = config('plans', []);
-    $plans = $plansAll[$selected->slug] ?? [];
+    if (!$selected) {
+      return view('site.price', [
+        'areas' => $areas,
+        'selected' => null,
+        'courses' => collect(),
+      ]);
+    }
 
-    return view('site.price', compact('areas','selected','plans'));
+    $courses = Course::query()
+      ->where('is_published', true)
+      ->where('area_id', $selected->id)
+      ->with('area')
+      ->orderBy('sort_order')
+      ->latest('id')
+      ->get();
+
+    return view('site.price', compact('areas','selected','courses'));
   }
 }

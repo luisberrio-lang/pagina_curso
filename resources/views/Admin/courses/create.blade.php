@@ -1,5 +1,7 @@
 @extends('layouts.site')
 
+@section('title', 'Crear Curso | Cursos de Ingeniería')
+
 @section('content')
   <h1 class="text-3xl font-extrabold">Crear curso</h1>
 
@@ -119,10 +121,10 @@
 
     <div class="flex gap-3">
       <label class="inline-flex items-center gap-2 text-sm text-white/75">
-        <input type="checkbox" name="is_published" value="1"> Publicado
+        <input type="checkbox" name="is_published" value="1" class="chk-green"> Publicado
       </label>
       <label class="inline-flex items-center gap-2 text-sm text-white/75">
-        <input type="checkbox" name="is_featured" value="1"> Destacado
+        <input type="checkbox" name="is_featured" value="1" class="chk-green"> Destacado
       </label>
     </div>
 

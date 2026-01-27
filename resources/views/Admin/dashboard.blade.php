@@ -1,6 +1,9 @@
 @extends('layouts.site')
 
+@section('title', 'Dashboard | Cursos de Ingeniería')
+
 @section('content')
+  <div class="glass p-6 md:p-8 rounded-3xl">
   <section class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
     <div>
       <h1 class="text-3xl font-extrabold">Dashboard Administrador</h1>
@@ -52,7 +55,7 @@
         {{-- Combo área --}}
         <div>
           <label class="text-sm text-white/70">Seleccionar Área</label>
-          <select name="area_id" class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2">
+          <select name="area_id" class="input-dark w-full rounded-xl border border-white/10 px-4 py-3 mt-2">
             @foreach($areas as $a)
               <option value="{{ $a->id }}" @selected(old('area_id') == $a->id)>
                 {{ $a->name }} @if($a->is_default) (Default) @endif
@@ -62,7 +65,7 @@
           @error('area_id') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
 
           <label class="mt-4 inline-flex items-center gap-2 text-sm text-white/75">
-            <input type="checkbox" name="make_default_area" value="1">
+          <input type="checkbox" name="make_default_area" value="1" class="chk-green">
             Marcar área como default
           </label>
         </div>
@@ -71,7 +74,7 @@
         <div>
           <label class="text-sm text-white/70">IMG 1080x1080 (Portada)</label>
           <input type="file" name="cover" accept="image/*"
-                 class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2">
+                 class="input-dark w-full rounded-xl border border-white/10 px-4 py-3 mt-2">
           @error('cover') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
         </div>
       </div>
@@ -80,19 +83,19 @@
         <div>
           <label class="text-sm text-white/70">Título</label>
           <input name="title" value="{{ old('title') }}"
-                 class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2" />
+                 class="input-dark w-full rounded-xl border border-white/10 px-4 py-3 mt-2" />
           @error('title') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
         </div>
 
         <div>
           <label class="text-sm text-white/70">Descripción corta (tarjeta)</label>
           <input name="short_desc" value="{{ old('short_desc') }}"
-                 class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2" />
+                 class="input-dark w-full rounded-xl border border-white/10 px-4 py-3 mt-2" />
           @error('short_desc') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
         </div>
       </div>
 
-      <div>
+      <div class="panel-dark">
         <label class="text-sm text-white/70">Contenido del curso</label>
         <div class="wysiwyg mt-2" data-wysiwyg>
           <div class="wysiwyg-toolbar">
@@ -112,13 +115,13 @@
         <div>
           <label class="text-sm text-white/70">Para quién es</label>
           <textarea name="audience" rows="3"
-                    class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2">{{ old('audience') }}</textarea>
+                    class="input-dark w-full rounded-xl border border-white/10 px-4 py-3 mt-2">{{ old('audience') }}</textarea>
           @error('audience') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
         </div>
         <div>
           <label class="text-sm text-white/70">Qué aprenderás (1 por línea)</label>
           <textarea name="learning" rows="3"
-                    class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2"
+                    class="input-dark w-full rounded-xl border border-white/10 px-4 py-3 mt-2"
                     placeholder="Tema 1&#10;Tema 2&#10;...">{{ old('learning') }}</textarea>
         </div>
       </div>
@@ -127,19 +130,19 @@
         <div>
           <label class="text-sm text-white/70">EXTRAS (1 por línea)</label>
           <textarea name="includes" rows="5"
-                    class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2"
+                    class="input-dark w-full rounded-xl border border-white/10 px-4 py-3 mt-2"
                     placeholder="Acceso inmediato&#10;Archivos descargables&#10;...">{{ old('includes') }}</textarea>
         </div>
 
         <div>
           <label class="text-sm text-white/70">BENEFICIOS (1 por línea)</label>
           <textarea name="benefits" rows="5"
-                    class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2"
+                    class="input-dark w-full rounded-xl border border-white/10 px-4 py-3 mt-2"
                     placeholder="Soporte por WhatsApp&#10;Actualizaciones&#10;...">{{ old('benefits') }}</textarea>
         </div>
 
       </div>
-      <div>
+      <div class="panel-dark">
         <label class="text-sm text-white/70">Temario</label>
         <div class="wysiwyg mt-2" data-wysiwyg>
           <div class="wysiwyg-toolbar">
@@ -153,7 +156,7 @@
           <textarea name="syllabus" class="hidden" data-wysiwyg-input>{!! old('syllabus') !!}</textarea>
         </div>
       </div>
-      <div class="p-5 rounded-2xl border border-white/10 bg-white/5">
+      <div class="panel-dark p-5 rounded-2xl border border-white/10 bg-white/5">
         <h3 class="font-semibold text-lg">Precios y Descuento</h3>
         <p class="mt-1 text-white/60 text-sm">El % DSCTO se calcula automáticamente.</p>
 
@@ -161,7 +164,7 @@
           <div>
             <label class="text-sm text-white/70">Precio actual (Pago único / Acceso de por vida)</label>
             <input name="price_anual" value="{{ old('price_anual') }}"
-                   class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2"
+                   class="input-dark w-full rounded-xl border border-white/10 px-4 py-3 mt-2"
                    placeholder="Ej: 49.90" data-price-current />
             @error('price_anual') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
           </div>
@@ -169,7 +172,7 @@
           <div>
             <label class="text-sm text-white/70">Precio anterior</label>
             <input name="price_previous" value="{{ old('price_previous') }}"
-                   class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2"
+                   class="input-dark w-full rounded-xl border border-white/10 px-4 py-3 mt-2"
                    placeholder="Ej: 79.90" data-price-previous />
             @error('price_previous') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
           </div>
@@ -184,12 +187,12 @@
 
       <div class="grid md:grid-cols-2 gap-6 items-end">
         <label class="inline-flex items-center gap-2 text-sm text-white/75">
-          <input type="checkbox" name="is_published" value="1" {{ old('is_published') ? 'checked' : '' }}>
+          <input type="checkbox" name="is_published" value="1" class="chk-green" {{ old('is_published') ? 'checked' : '' }}>
           Publicado (se muestra en la web)
         </label>
 
         <label class="inline-flex items-center gap-2 text-sm text-white/75">
-          <input type="checkbox" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }}>
+          <input type="checkbox" name="is_featured" value="1" class="chk-green" {{ old('is_featured') ? 'checked' : '' }}>
           Destacado (aparece en Inicio)
         </label>
       </div>
@@ -254,6 +257,7 @@
       @endforeach
     </div>
   </section>
+  </div>
 @endsection
 
 

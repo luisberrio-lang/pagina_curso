@@ -1,5 +1,7 @@
 @extends('layouts.site')
 
+@section('title', 'Cursos | Cursos de Ingeniería')
+
 @section('content')
   <section class="flex items-end justify-between gap-4">
     <div>

@@ -3,11 +3,14 @@
 
     {{-- Izquierda: Logo --}}
     <a href="{{ route('home') }}" class="flex items-center gap-2">
-      <img
-        src="{{ asset('images/logo.png') }}"
-        alt="Cursos de Ingeniería"
-        class="h-9 w-9 rounded-xl object-contain shadow-glow"
-      >
+      <picture>
+        <source type="image/webp" srcset="{{ asset('images/logo.webp') }}">
+        <img
+          src="{{ asset('images/logo.png') }}"
+          alt="Cursos de Ingenier?a"
+          class="h-9 w-9 rounded-xl object-contain shadow-glow"
+        >
+      </picture>
       <span class="font-semibold tracking-wide">
         Cursos de <span class="text-cyan-300 font-semibold">Ingeniería</span>
       </span>
@@ -45,7 +48,7 @@
         <span aria-hidden="true" class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-cyan-200 text-[10px] font-semibold text-cyan-200">
           S/
         </span>
-        Precio
+        Precios
       </a>
 
       <a class="navlink inline-flex items-center gap-2" href="{{ route('faq') }}">
@@ -71,13 +74,19 @@
         <a class="iconbtn" target="_blank" rel="noopener"
            href="https://wa.me/51929765265"
            title="WhatsApp">
-          <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy">
+          <picture>
+            <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">
+            <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy">
+          </picture>
         </a>
 
         <a class="iconbtn" target="_blank" rel="noopener"
            href="https://www.facebook.com/share/1CMUNbgoXX/"
            title="Facebook">
-          <img src="{{ asset('images/facebook.png') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy">
+          <picture>
+            <source type="image/webp" srcset="{{ asset('images/facebook.webp') }}">
+            <img src="{{ asset('images/facebook.png') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy">
+          </picture>
         </a>
 
         @guest
@@ -99,13 +108,19 @@
         <a class="iconbtn" target="_blank" rel="noopener"
            href="https://wa.me/51929765265"
            title="WhatsApp">
-          <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy">
+          <picture>
+            <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">
+            <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy">
+          </picture>
         </a>
 
         <a class="iconbtn" target="_blank" rel="noopener"
            href="https://www.facebook.com/share/1CMUNbgoXX/"
            title="Facebook">
-          <img src="{{ asset('images/facebook.png') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy">
+          <picture>
+            <source type="image/webp" srcset="{{ asset('images/facebook.webp') }}">
+            <img src="{{ asset('images/facebook.png') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy">
+          </picture>
         </a>
       </div>
 
@@ -136,7 +151,7 @@
            href="{{ route('courses.index') }}">Programas/Cursos</a>
 
         <a class="block rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
-           href="{{ route('price') }}">Precio</a>
+           href="{{ route('price') }}">Precios</a>
 
         <a class="block rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
            href="{{ route('faq') }}">FAQ</a>
@@ -155,13 +170,19 @@
         <a class="iconbtn" target="_blank" rel="noopener"
            href="https://wa.me/51929765265"
            title="WhatsApp">
-          <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy">
+          <picture>
+            <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">
+            <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy">
+          </picture>
         </a>
 
         <a class="iconbtn" target="_blank" rel="noopener"
            href="https://www.facebook.com/share/1CMUNbgoXX/"
            title="Facebook">
-          <img src="{{ asset('images/facebook.png') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy">
+          <picture>
+            <source type="image/webp" srcset="{{ asset('images/facebook.webp') }}">
+            <img src="{{ asset('images/facebook.png') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy">
+          </picture>
         </a>
       </div>
 

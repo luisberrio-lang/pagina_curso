@@ -1,5 +1,7 @@
 @extends('layouts.site')
 
+@section('title', 'Editar Área | Cursos de Ingeniería')
+
 @section('content')
   <section class="glass p-8 rounded-3xl border border-white/10">
     <div class="flex items-end justify-between gap-4">
@@ -49,7 +51,7 @@
 
       <div class="md:col-span-2 flex items-center gap-3">
         <input id="is_default" name="is_default" type="checkbox" value="1"
-               class="rounded border-white/20 bg-white/5"
+               class="chk-green"
                {{ old('is_default', $area->is_default) ? 'checked' : '' }}>
         <label for="is_default" class="text-white/80">Marcar como área por defecto</label>
       </div>

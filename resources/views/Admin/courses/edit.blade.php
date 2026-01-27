@@ -1,6 +1,9 @@
 @extends('layouts.site')
 
+@section('title', 'Editar Curso | Cursos de Ingeniería')
+
 @section('content')
+  <div class="glass p-6 md:p-8 rounded-3xl">
   <section class="flex items-end justify-between gap-4">
     <div>
       <h1 class="text-3xl font-extrabold">Editar curso</h1>
@@ -30,7 +33,7 @@
         </select>
 
         <label class="mt-4 inline-flex items-center gap-2 text-sm text-white/75">
-          <input type="checkbox" name="make_default_area" value="1">
+          <input type="checkbox" name="make_default_area" value="1" class="chk-green">
           Marcar área como default
         </label>
       </div>
@@ -165,12 +168,12 @@
 
     <div class="grid md:grid-cols-2 gap-6 items-end">
       <label class="inline-flex items-center gap-2 text-sm text-white/75">
-        <input type="checkbox" name="is_published" value="1" @checked($course->is_published)>
+        <input type="checkbox" name="is_published" value="1" class="chk-green" @checked($course->is_published)>
         Publicado
       </label>
 
       <label class="inline-flex items-center gap-2 text-sm text-white/75">
-        <input type="checkbox" name="is_featured" value="1" @checked($course->is_featured)>
+        <input type="checkbox" name="is_featured" value="1" class="chk-green" @checked($course->is_featured)>
         Destacado
       </label>
     </div>
@@ -212,6 +215,7 @@
       @endforeach
     </div>
   </section>
+  </div>
 @endsection
 
 

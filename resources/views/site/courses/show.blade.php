@@ -153,8 +153,12 @@
   @endphp
 
   <section class="mt-12 text-center">
-    <a class="btn btn-accent text-lg px-8 py-4" target="_blank" href="{{ $wa }}">
-      Me interesa este curso (WhatsApp)
+    <a class="btn-whatsapp text-lg px-8 py-4 inline-flex items-center gap-3" target="_blank" href="{{ $wa }}">
+      <picture>
+        <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">
+        <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-[2.3rem] w-[2.3rem] object-contain" loading="lazy">
+      </picture>
+      <span>Me interesa este curso (WhatsApp)</span>
     </a>
   </section>
 @endsection

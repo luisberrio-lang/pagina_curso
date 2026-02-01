@@ -3,7 +3,7 @@
 @section('content')
   <div class="max-w-md mx-auto glass p-6 rounded-2xl border border-white/10">
     <h1 class="text-2xl font-bold">Iniciar sesión</h1>
-    <p class="mt-2 text-white/70">Accede para administrar Programas/Cursos.</p>
+    <p class="mt-2 text-white/70">Puedes revisar toda la información de los cursos y realizar tu pedido sin necesidad de crear una cuenta ni iniciar sesión.</p>
 
     @if ($errors->any())
       <div class="mt-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-200 text-sm">

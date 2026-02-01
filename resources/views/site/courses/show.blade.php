@@ -3,8 +3,8 @@
 @section('title', ($course->title ?? 'Curso') . ' | Cursos de Ingeniería')
 
 @section('content')
-  <section class="grid md:grid-cols-2 gap-8">
-    <div class="glass rounded-2xl border border-white/10 overflow-hidden">
+  <section class="grid md:grid-cols-2 gap-8 items-start">
+    <div class="glass rounded-2xl border border-white/10 overflow-hidden md:sticky md:top-10">
       <div class="aspect-[3/2] bg-white/5 flex items-center justify-center">
         @if($course->coverUrl())
           <img class="w-full h-full object-contain" src="{{ $course->coverUrl() }}" alt="">

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\Course;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class CourseController extends Controller
@@ -31,30 +31,25 @@ class CourseController extends Controller
   {
     $data = $this->validated($r);
 
-    // ✅ checkboxes boolean reales
     $data['is_published'] = $r->boolean('is_published');
     $data['is_featured']  = $r->boolean('is_featured');
 
-    // ✅ Portada
+    // Portada: guarda directo en public_html/storage/courses/covers
     if ($r->hasFile('cover')) {
-      $data['cover_path'] = $r->file('cover')->store('courses/covers', 'public');
+      $data['cover_path'] = $this->saveCover($r->file('cover'));
     }
 
-    // ✅ slug seguro (NO undefined)
     $data['slug'] = isset($data['slug']) && $data['slug'] ? $data['slug'] : Str::slug($data['title']);
 
-    // ✅ Listas (textarea o inputs dinámicos)
     $data['learning']     = $this->normalizeList($r->input('learning'));
     $data['benefits']     = $this->normalizeList($r->input('benefits'));
     $data['includes']     = $this->normalizeList($r->input('includes'));
     $data['requirements'] = $this->normalizeList($r->input('requirements'));
 
-    // ✅ Temario (HTML básico)
     $data['syllabus'] = $r->input('syllabus');
 
     $course = Course::create($data);
 
-    // ✅ Marcar área default
     if ($r->boolean('make_default_area') && $course->area_id) {
       Area::query()->update(['is_default' => false]);
       Area::where('id', $course->area_id)->update(['is_default' => true]);
@@ -79,29 +74,23 @@ class CourseController extends Controller
     $data['is_published'] = $r->boolean('is_published');
     $data['is_featured']  = $r->boolean('is_featured');
 
-    // ✅ Portada (reemplazo)
+    // Portada: reemplaza y guarda directo en public_html/storage/courses/covers
     if ($r->hasFile('cover')) {
-      if ($course->cover_path && Storage::disk('public')->exists($course->cover_path)) {
-        Storage::disk('public')->delete($course->cover_path);
-      }
-      $data['cover_path'] = $r->file('cover')->store('courses/covers', 'public');
+      $this->deleteCover($course->cover_path);
+      $data['cover_path'] = $this->saveCover($r->file('cover'));
     }
 
-    // ✅ slug seguro
     $data['slug'] = isset($data['slug']) && $data['slug'] ? $data['slug'] : Str::slug($data['title']);
 
-    // ✅ Listas (textarea o inputs dinámicos)
     $data['learning']     = $this->normalizeList($r->input('learning'));
     $data['benefits']     = $this->normalizeList($r->input('benefits'));
     $data['includes']     = $this->normalizeList($r->input('includes'));
     $data['requirements'] = $this->normalizeList($r->input('requirements'));
 
-    // ✅ Temario (HTML básico)
     $data['syllabus'] = $r->input('syllabus');
 
     $course->update($data);
 
-    // ✅ Marcar área default
     if ($r->boolean('make_default_area') && $course->area_id) {
       Area::query()->update(['is_default' => false]);
       Area::where('id', $course->area_id)->update(['is_default' => true]);
@@ -114,11 +103,39 @@ class CourseController extends Controller
 
   public function destroy(Course $course)
   {
-    if ($course->cover_path && Storage::disk('public')->exists($course->cover_path)) {
-      Storage::disk('public')->delete($course->cover_path);
-    }
+    $this->deleteCover($course->cover_path);
+
     $course->delete();
+
     return back()->with('ok', 'Curso eliminado.');
+  }
+
+  private function saveCover($file): string
+  {
+    $filename = Str::random(40) . '.' . $file->getClientOriginalExtension();
+
+    $destination = dirname(public_path()) . '/storage/courses/covers';
+
+    if (!File::exists($destination)) {
+      File::makeDirectory($destination, 0755, true);
+    }
+
+    $file->move($destination, $filename);
+
+    return 'courses/covers/' . $filename;
+  }
+
+  private function deleteCover(?string $path): void
+  {
+    if (!$path) {
+      return;
+    }
+
+    $fullPath = dirname(public_path()) . '/storage/' . $path;
+
+    if (File::exists($fullPath)) {
+      File::delete($fullPath);
+    }
   }
 
   private function validated(Request $r, ?int $ignoreId = null): array
@@ -139,7 +156,6 @@ class CourseController extends Controller
 
       'sort_order'    => 'nullable|integer|min:0|max:9999',
 
-      // ✅ Precio único (usar price_anual)
       'price_anual'   => 'nullable|numeric|min:0',
       'price_previous' => 'nullable|numeric|min:0',
 
@@ -156,6 +172,7 @@ class CourseController extends Controller
     }
 
     $lines = array_map(fn($s) => trim((string)$s), $lines);
+
     return array_values(array_filter($lines, fn($s) => $s !== ''));
   }
 }

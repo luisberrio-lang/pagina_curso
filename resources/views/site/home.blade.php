@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Inicio | Cursos de Ingeniería')
+@section('title', 'Inicio | Cursos de Ingeniería Online')
 
 @section('content')
 
@@ -110,10 +110,11 @@
       <picture>
         <source type="image/webp" srcset="{{ asset('images/portadaofi.webp') }}">
         <img
-          src="{{ asset('images/portadaofi.png') }}"
+          src="{{ asset('images/portadaofi.webp') }}"
           alt="Cursos de ingenier?a por ?reas"
           class="block w-full h-auto max-h-64 md:max-h-[26rem] object-contain"
           loading="lazy"
+          decoding="async"
         >
       </picture>
     </div>
@@ -252,7 +253,7 @@
         <div class="glass rounded-2xl border border-white/10 overflow-hidden">
           <div class="bg-white/5 aspect-[3/2]">
             @if(method_exists($c, 'coverUrl') && $c->coverUrl())
-              <img class="w-full h-full object-cover" src="{{ $c->coverUrl() }}" alt="">
+              <img class="w-full h-full object-fill" src="{{ $c->coverUrl() }}" alt="">
             @endif
           </div>
           <div class="p-5">
@@ -307,25 +308,25 @@
       <div class="glass rounded-2xl border border-white/10 overflow-hidden aspect-[3/2]">
         <picture>
           <source type="image/webp" srcset="{{ asset('images/muestra1.webp') }}">
-          <img src="{{ asset('images/muestra1.png') }}" alt="Muestra general 1" class="w-full h-full object-cover" loading="lazy">
+          <img src="{{ asset('images/muestra1.webp') }}" alt="Muestra general 1" class="w-full h-full object-cover" loading="lazy" decoding="async">
         </picture>
       </div>
       <div class="glass rounded-2xl border border-white/10 overflow-hidden aspect-[3/2]">
         <picture>
           <source type="image/webp" srcset="{{ asset('images/muestra2.webp') }}">
-          <img src="{{ asset('images/muestra2.png') }}" alt="Muestra general 2" class="w-full h-full object-cover" loading="lazy">
+          <img src="{{ asset('images/muestra2.webp') }}" alt="Muestra general 2" class="w-full h-full object-cover" loading="lazy" decoding="async">
         </picture>
       </div>
       <div class="glass rounded-2xl border border-white/10 overflow-hidden aspect-[3/2]">
         <picture>
           <source type="image/webp" srcset="{{ asset('images/muestra3.webp') }}">
-          <img src="{{ asset('images/muestra3.png') }}" alt="Muestra general 3" class="w-full h-full object-cover" loading="lazy">
+          <img src="{{ asset('images/muestra3.webp') }}" alt="Muestra general 3" class="w-full h-full object-cover" loading="lazy" decoding="async">
         </picture>
       </div>
       <div class="glass rounded-2xl border border-white/10 overflow-hidden aspect-[3/2]">
         <picture>
           <source type="image/webp" srcset="{{ asset('images/muestra4.webp') }}">
-          <img src="{{ asset('images/muestra4.png') }}" alt="Muestra general 4" class="w-full h-full object-cover" loading="lazy">
+          <img src="{{ asset('images/muestra4.webp') }}" alt="Muestra general 4" class="w-full h-full object-cover" loading="lazy" decoding="async">
         </picture>
       </div>
     </div>

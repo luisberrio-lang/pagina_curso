@@ -1,13 +1,13 @@
 @extends('layouts.site')
 
-@section('title', ($course->title ?? 'Curso') . ' | Cursos de Ingeniería')
+@section('title', ($course->title ?? 'Curso') . ' | Cursos de Ingeniería Online')
 
 @section('content')
   <section class="grid md:grid-cols-2 gap-8 items-start">
     <div class="glass rounded-2xl border border-white/10 overflow-hidden md:sticky md:top-10">
-      <div class="aspect-[3/2] bg-white/5 flex items-center justify-center">
+      <div class="h-[360px] bg-white/5 flex items-center justify-center">
         @if($course->coverUrl())
-          <img class="w-full h-full object-contain" src="{{ $course->coverUrl() }}" alt="">
+          <img class="w-full h-full object-fill" src="{{ $course->coverUrl() }}" alt="">
         @endif
       </div>
 
@@ -156,7 +156,7 @@
     <a class="btn-whatsapp text-lg px-8 py-4 inline-flex items-center gap-3" target="_blank" href="{{ $wa }}">
       <picture>
         <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">
-        <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-[2.3rem] w-[2.3rem] object-contain" loading="lazy">
+        <img src="{{ asset('images/watsapp.webp') }}" alt="WhatsApp" class="h-[2.3rem] w-[2.3rem] object-contain" loading="lazy" decoding="async">
       </picture>
       <span>Me interesa este curso (WhatsApp)</span>
     </a>

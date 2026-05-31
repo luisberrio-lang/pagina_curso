@@ -6,9 +6,10 @@
       <picture>
         <source type="image/webp" srcset="{{ asset('images/logo.webp') }}">
         <img
-          src="{{ asset('images/logo.png') }}"
+          src="{{ asset('images/logo.webp') }}"
           alt="Cursos de Ingenier?a"
           class="h-9 w-9 rounded-xl object-contain shadow-glow"
+          decoding="async"
         >
       </picture>
       <span class="font-semibold tracking-wide">
@@ -76,7 +77,7 @@
            title="WhatsApp">
           <picture>
             <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">
-            <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy">
+            <img src="{{ asset('images/watsapp.webp') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy" decoding="async">
           </picture>
         </a>
 
@@ -85,7 +86,7 @@
            title="Facebook">
           <picture>
             <source type="image/webp" srcset="{{ asset('images/facebook.webp') }}">
-            <img src="{{ asset('images/facebook.png') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy">
+            <img src="{{ asset('images/facebook.webp') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy" decoding="async">
           </picture>
         </a>
 
@@ -110,7 +111,7 @@
            title="WhatsApp">
           <picture>
             <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">
-            <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy">
+            <img src="{{ asset('images/watsapp.webp') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy" decoding="async">
           </picture>
         </a>
 
@@ -119,7 +120,7 @@
            title="Facebook">
           <picture>
             <source type="image/webp" srcset="{{ asset('images/facebook.webp') }}">
-            <img src="{{ asset('images/facebook.png') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy">
+            <img src="{{ asset('images/facebook.webp') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy" decoding="async">
           </picture>
         </a>
       </div>
@@ -172,7 +173,7 @@
            title="WhatsApp">
           <picture>
             <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">
-            <img src="{{ asset('images/watsapp.png') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy">
+            <img src="{{ asset('images/watsapp.webp') }}" alt="WhatsApp" class="h-full w-full object-contain scale-125" loading="lazy" decoding="async">
           </picture>
         </a>
 
@@ -181,7 +182,7 @@
            title="Facebook">
           <picture>
             <source type="image/webp" srcset="{{ asset('images/facebook.webp') }}">
-            <img src="{{ asset('images/facebook.png') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy">
+            <img src="{{ asset('images/facebook.webp') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy" decoding="async">
           </picture>
         </a>
       </div>

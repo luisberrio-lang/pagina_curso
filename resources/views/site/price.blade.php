@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Precios | Cursos de Ingeniería')
+@section('title', 'Precios | Cursos de Ingeniería Online')
 
 @section('content')
   <section class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
@@ -35,7 +35,7 @@
       <div class="glass rounded-2xl border border-white/10 overflow-hidden">
         <div class="aspect-[3/2] bg-white/5 flex items-center justify-center">
           @if($c->coverUrl())
-            <img class="w-full h-full object-contain"
+            <img class="w-full h-full object-fill"
                  src="{{ $c->coverUrl() }}"
                  width="1536"
                  height="1024"

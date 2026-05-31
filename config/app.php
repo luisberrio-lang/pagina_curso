@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Cursos de Ingeniería'),
+    'name' => env('APP_NAME', 'Cursos de Ingeniería Online'),
 
     /*
     |--------------------------------------------------------------------------

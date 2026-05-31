@@ -8,6 +8,8 @@ use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class CourseController extends Controller
 {
@@ -112,15 +114,22 @@ class CourseController extends Controller
 
   private function saveCover($file): string
   {
-    $filename = Str::random(40) . '.' . $file->getClientOriginalExtension();
+    $filename = Str::random(40) . '.webp';
 
-    $destination = dirname(public_path()) . '/storage/courses/covers';
+    $destination = app()->environment('local')
+      ? public_path('storage/courses/covers')
+      : dirname(public_path()) . '/storage/courses/covers';
 
     if (!File::exists($destination)) {
       File::makeDirectory($destination, 0755, true);
     }
 
-    $file->move($destination, $filename);
+    $manager = new ImageManager(new Driver());
+    $image = $manager->read($file->getRealPath())
+      ->resize(900, 500)
+      ->toWebp(quality: 75);
+
+    File::put($destination . '/' . $filename, (string) $image);
 
     return 'courses/covers/' . $filename;
   }
@@ -131,7 +140,9 @@ class CourseController extends Controller
       return;
     }
 
-    $fullPath = dirname(public_path()) . '/storage/' . $path;
+    $fullPath = app()->environment('local')
+      ? public_path('storage/' . $path)
+      : dirname(public_path()) . '/storage/' . $path;
 
     if (File::exists($fullPath)) {
       File::delete($fullPath);
@@ -159,7 +170,7 @@ class CourseController extends Controller
       'price_anual'   => 'nullable|numeric|min:0',
       'price_previous' => 'nullable|numeric|min:0',
 
-      'cover'         => 'nullable|image|max:4096',
+      'cover'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
     ]);
   }
 

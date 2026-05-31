@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Dashboard | Cursos de Ingeniería')
+@section('title', 'Dashboard | Cursos de Ingeniería Online')
 
 @section('content')
   <div class="glass p-6 md:p-8 rounded-3xl">
@@ -246,6 +246,12 @@
                   <div class="flex gap-2">
                     <a class="chip" href="{{ route('admin.courses.edit', $c) }}">Editar</a>
                     <a class="chip" target="_blank" href="{{ route('courses.show', $c->slug) }}">Ver</a>
+                    <form method="POST" action="{{ route('admin.courses.destroy', $c) }}"
+                          onsubmit="return confirm('¿Eliminar este curso?');">
+                      @csrf
+                      @method('DELETE')
+                      <button class="chip" type="submit">Eliminar</button>
+                    </form>
                   </div>
                 </div>
               </div>

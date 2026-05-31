@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Crear Área | Cursos de Ingeniería')
+@section('title', 'Crear Área | Cursos de Ingeniería Online')
 
 @section('content')
   <section class="glass p-8 rounded-3xl border border-white/10">

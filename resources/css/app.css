@@ -54,14 +54,14 @@
 
   /* =======================================================
      ✅ FONDO PNG + 1 OVERLAY
-     public/images/fondo.png  -> /images/fondo.png
+     public/images/fondo.webp -> /images/fondo.webp
      ======================================================= */
   .site-bg{
     position: fixed;
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background-image: var(--site-bg-image, url("/images/fondo.png"));
+    background-image: var(--site-bg-image, url("/images/fondo.webp"));
     background-repeat: no-repeat;
     background-position: var(--site-bg-x, -32px) 0;
     background-size: 680px auto;

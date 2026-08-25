@@ -95,10 +95,108 @@ class CheckoutOrderTest extends TestCase
         $payload = $this->customer($token);
 
         $this->withSession($this->checkoutSession($course, $token))->post(route('checkout.store'), $payload);
-        $this->post(route('checkout.store'), $payload)->assertRedirect();
+        $this->post(route('checkout.store'), $payload)->assertRedirect(route('checkout.create'));
 
         $this->assertDatabaseCount('orders', 1);
         $this->assertDatabaseCount('order_items', 1);
+    }
+
+    public function test_missing_altered_and_foreign_session_tokens_are_rejected(): void
+    {
+        $course = $this->course();
+        $validToken = (string) Str::uuid();
+
+        $missingPayload = $this->customer($validToken);
+        unset($missingPayload['checkout_token']);
+        $this->withSession(['cart.course_ids' => [$course->id]])
+            ->post(route('checkout.store'), $missingPayload)
+            ->assertSessionHasErrors('checkout_token');
+
+        $this->withSession($this->checkoutSession($course, $validToken))
+            ->post(route('checkout.store'), $this->customer((string) Str::uuid()))
+            ->assertRedirect(route('checkout.create'));
+
+        $this->withSession(['cart.course_ids' => [$course->id], 'checkout.token' => (string) Str::uuid()])
+            ->post(route('checkout.store'), $this->customer($validToken))
+            ->assertRedirect(route('checkout.create'));
+
+        $this->assertDatabaseCount('orders', 0);
+    }
+
+    public function test_unpublished_or_deleted_course_before_post_blocks_order(): void
+    {
+        $course = $this->course();
+        $token = (string) Str::uuid();
+        $course->update(['is_published' => false]);
+
+        $this->withSession($this->checkoutSession($course, $token))
+            ->post(route('checkout.store'), $this->customer($token))
+            ->assertRedirect(route('cart.index'));
+
+        $course->update(['is_published' => true]);
+        $deletedId = $course->id;
+        $course->delete();
+        $token = (string) Str::uuid();
+        $this->withSession(['cart.course_ids' => [$deletedId], 'checkout.token' => $token])
+            ->post(route('checkout.store'), $this->customer($token))
+            ->assertRedirect(route('cart.index'));
+
+        $this->assertDatabaseCount('orders', 0);
+    }
+
+    public function test_price_changed_before_post_is_recalculated(): void
+    {
+        $course = $this->course(['price_anual' => '10.00']);
+        $token = (string) Str::uuid();
+        $course->update(['price_anual' => '20.00']);
+
+        $this->withSession($this->checkoutSession($course, $token))
+            ->post(route('checkout.store'), $this->customer($token));
+
+        $this->assertSame('20.00', Order::firstOrFail()->total);
+    }
+
+    public function test_unicode_is_preserved_email_is_normalized_and_long_fields_are_rejected(): void
+    {
+        $course = $this->course();
+        $token = (string) Str::uuid();
+        $payload = $this->customer($token);
+        $payload['first_name'] = '  Zoë María  ';
+        $payload['last_name'] = "O’Connor-Núñez";
+        $payload['email'] = '  ANA@EXAMPLE.COM ';
+
+        $this->withSession($this->checkoutSession($course, $token))->post(route('checkout.store'), $payload);
+        $order = Order::firstOrFail();
+        $this->assertSame('Zoë María', $order->first_name);
+        $this->assertSame("O’Connor-Núñez", $order->last_name);
+        $this->assertSame('ana@example.com', $order->email);
+
+        $token = (string) Str::uuid();
+        $payload = $this->customer($token);
+        $payload['first_name'] = str_repeat('a', 101);
+        $payload['email'] = str_repeat('a', 250).'@x.com';
+        $this->withSession($this->checkoutSession($course, $token))
+            ->post(route('checkout.store'), $payload)
+            ->assertSessionHasErrors(['first_name', 'email']);
+    }
+
+    public function test_public_order_masks_customer_data_and_escapes_xss(): void
+    {
+        $course = $this->course();
+        $token = (string) Str::uuid();
+        $payload = $this->customer($token);
+        $payload['first_name'] = '<script>alert(1)</script>';
+        $payload['last_name'] = 'Núñez';
+
+        $this->withSession($this->checkoutSession($course, $token))->post(route('checkout.store'), $payload);
+        $order = Order::firstOrFail();
+
+        $this->get(route('orders.show', $order))
+            ->assertOk()
+            ->assertDontSee('<script>alert(1)</script>', false)
+            ->assertDontSee($order->email)
+            ->assertDontSee($order->phone)
+            ->assertDontSee((string) $order->document_number);
     }
 
     public function test_cart_is_not_cleared_when_order_creation_fails(): void

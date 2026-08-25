@@ -7,6 +7,18 @@ use Illuminate\Validation\Rule;
 
 class CheckoutRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'first_name' => trim((string) $this->input('first_name')),
+            'last_name' => trim((string) $this->input('last_name')),
+            'email' => mb_strtolower(trim((string) $this->input('email'))),
+            'phone' => trim((string) $this->input('phone')),
+            'document_type' => $this->filled('document_type') ? trim((string) $this->input('document_type')) : null,
+            'document_number' => $this->filled('document_number') ? trim((string) $this->input('document_number')) : null,
+        ]);
+    }
+
     public function authorize(): bool
     {
         return true;

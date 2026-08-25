@@ -33,15 +33,18 @@ class CheckoutController extends Controller
     public function store(CheckoutRequest $request, CartService $cart, OrderService $orders): RedirectResponse
     {
         $token = $request->string('checkout_token')->toString();
-        $tokenHash = hash('sha256', $token);
-        $existing = Order::query()->where('checkout_token_hash', $tokenHash)->first();
-        if ($existing) {
-            return redirect()->route('orders.show', $existing);
-        }
-
         $sessionToken = session(self::TOKEN_KEY);
         if (! is_string($sessionToken) || ! hash_equals($sessionToken, $token)) {
             return redirect()->route('checkout.create')->with('error', 'La sesión de checkout venció. Revisa los datos e inténtalo nuevamente.');
+        }
+
+        $tokenHash = hash('sha256', $token);
+        $existing = Order::query()->where('checkout_token_hash', $tokenHash)->first();
+        if ($existing) {
+            $cart->clear();
+            session()->forget(self::TOKEN_KEY);
+
+            return redirect()->route('orders.show', $existing);
         }
 
         $snapshot = $cart->snapshot(false);

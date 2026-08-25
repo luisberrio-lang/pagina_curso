@@ -89,6 +89,55 @@ class CartTest extends TestCase
         $response->assertOk()->assertSee('S/ 30.30');
     }
 
+    public function test_corrupt_session_is_sanitized_without_trusting_invalid_types(): void
+    {
+        $course = $this->course();
+
+        $this->withSession(['cart.course_ids' => [$course->id, (string) $course->id, -1, 'abc', ['nested'], null]])
+            ->get(route('cart.index'))
+            ->assertOk()
+            ->assertSee($course->title);
+
+        $this->assertSame([$course->id], session('cart.course_ids'));
+
+        $this->withSession(['cart.course_ids' => 'contenido-corrupto'])
+            ->get(route('cart.index'))
+            ->assertOk()
+            ->assertSee('Tu carrito está vacío');
+    }
+
+    public function test_unpublished_deleted_and_unpriced_courses_are_pruned(): void
+    {
+        $draft = $this->course(['slug' => 'luego-borrador']);
+        $deleted = $this->course(['slug' => 'luego-eliminado']);
+        $unpriced = $this->course(['slug' => 'luego-sin-precio']);
+        $draft->update(['is_published' => false]);
+        $deletedId = $deleted->id;
+        $deleted->delete();
+        $unpriced->update(['price_anual' => null]);
+
+        $this->withSession(['cart.course_ids' => [$draft->id, $deletedId, $unpriced->id]])
+            ->get(route('cart.index'))
+            ->assertOk()
+            ->assertSee('Tu carrito está vacío');
+
+        $this->assertSame([], session('cart.course_ids'));
+    }
+
+    public function test_money_precision_uses_decimal_minor_units(): void
+    {
+        $prices = ['0.01', '10.99', '9999.99'];
+        $ids = [];
+        foreach ($prices as $index => $price) {
+            $ids[] = $this->course(['slug' => 'precision-'.$index, 'price_anual' => $price])->id;
+        }
+
+        $this->withSession(['cart.course_ids' => $ids])
+            ->get(route('cart.index'))
+            ->assertOk()
+            ->assertSee('S/ 10,010.99');
+    }
+
     private function course(array $attributes = []): Course
     {
         $area = Area::firstOrCreate(

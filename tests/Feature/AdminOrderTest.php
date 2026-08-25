@@ -18,6 +18,7 @@ class AdminOrderTest extends TestCase
 
         $user = User::factory()->create(['is_admin' => false]);
         $this->actingAs($user)->get(route('admin.orders.index'))->assertForbidden();
+        $this->actingAs($user)->get(route('admin.orders.show', $this->order()))->assertForbidden();
     }
 
     public function test_admin_can_list_and_view_order_details(): void
@@ -35,7 +36,7 @@ class AdminOrderTest extends TestCase
 
     private function order(): Order
     {
-        return Order::create([
+        return Order::forceCreate([
             'order_number' => 'ORD-2026-TESTADMIN',
             'public_token' => Str::random(64),
             'checkout_token_hash' => hash('sha256', (string) Str::uuid()),

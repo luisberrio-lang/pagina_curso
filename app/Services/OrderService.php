@@ -12,12 +12,13 @@ class OrderService
     public function create(array $customer, CartService $cartService, string $checkoutToken, ?int $userId): Order
     {
         return DB::transaction(function () use ($customer, $cartService, $checkoutToken, $userId) {
-            $cart = $cartService->snapshot(false);
+            $cart = $cartService->snapshot(false, true);
             if ($cart['items'] === [] || $cart['invalid_ids'] !== []) {
                 throw new RuntimeException('El carrito contiene productos no disponibles.');
             }
 
-            $order = Order::create([
+            $order = new Order;
+            $order->forceFill([
                 'order_number' => $this->newOrderNumber(),
                 'public_token' => Str::random(64),
                 'checkout_token_hash' => hash('sha256', $checkoutToken),
@@ -33,11 +34,12 @@ class OrderService
                 'currency' => $cart['currency'],
                 'status' => Order::STATUS_PENDING,
                 'payment_status' => Order::PAYMENT_PENDING,
-            ]);
+            ])->save();
 
             foreach ($cart['items'] as $item) {
                 $course = $item['course'];
-                $order->items()->create([
+                $itemModel = $order->items()->make();
+                $itemModel->forceFill([
                     'course_id' => $course->getKey(),
                     'course_title' => $course->title,
                     'course_slug' => $course->slug,
@@ -45,7 +47,7 @@ class OrderService
                     'currency' => $item['currency'],
                     'quantity' => 1,
                     'line_total' => $item['line_total'],
-                ]);
+                ])->save();
             }
 
             return $order->load('items');

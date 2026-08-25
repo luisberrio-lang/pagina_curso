@@ -11,6 +11,7 @@ class OrderController extends Controller
 {
     public function index(Request $request): View
     {
+        $request->validate(['search' => ['nullable', 'string', 'max:100']]);
         $search = trim((string) $request->query('search'));
         $orders = Order::query()
             ->when($search !== '', fn ($query) => $query->where(function ($query) use ($search) {

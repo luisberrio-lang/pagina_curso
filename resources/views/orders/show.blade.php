@@ -18,7 +18,7 @@
     </div>
 
     <div class="mt-6 flex justify-between text-xl"><span>Total</span><strong>{{ \App\Support\Money::format($order->total, $order->currency) }}</strong></div>
-    <div class="mt-6 text-sm text-white/65"><p>Comprador: {{ $order->first_name }} {{ $order->last_name }}</p><p>Correo: {{ $order->email }}</p></div>
+    <div class="mt-6 text-sm text-white/65"><p>Comprador: {{ $order->publicCustomerName() }}</p><p>Correo: {{ $order->maskedEmail() }}</p></div>
     <a class="btn btn-ghost mt-8" href="{{ route('courses.index') }}">Volver al catálogo</a>
   </section>
 @endsection

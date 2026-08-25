@@ -41,7 +41,7 @@ Route::delete('/carrito/{course}', [CartController::class, 'destroy'])->name('ca
 Route::delete('/carrito', [CartController::class, 'clear'])->name('cart.clear');
 
 Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout.create');
-Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::post('/checkout', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
 Route::get('/orden/{order}', [CheckoutController::class, 'show'])->name('orders.show');
 
 /**

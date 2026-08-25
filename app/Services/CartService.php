@@ -13,7 +13,30 @@ class CartService
     {
         $ids = session(self::SESSION_KEY, []);
 
-        return array_values(array_unique(array_filter(array_map('intval', (array) $ids), fn ($id) => $id > 0)));
+        if (! is_array($ids)) {
+            session()->put(self::SESSION_KEY, []);
+
+            return [];
+        }
+
+        $normalized = [];
+        foreach ($ids as $id) {
+            if (! is_int($id) && (! is_string($id) || ! ctype_digit($id))) {
+                continue;
+            }
+
+            $id = (int) $id;
+            if ($id > 0) {
+                $normalized[] = $id;
+            }
+        }
+
+        $normalized = array_values(array_unique($normalized));
+        if ($ids !== $normalized) {
+            session()->put(self::SESSION_KEY, $normalized);
+        }
+
+        return $normalized;
     }
 
     public function add(Course $course): bool
@@ -49,10 +72,15 @@ class CartService
         return count($this->snapshot()['items']);
     }
 
-    public function snapshot(bool $pruneInvalid = true): array
+    public function snapshot(bool $pruneInvalid = true, bool $lockForUpdate = false): array
     {
         $ids = $this->ids();
-        $courses = Course::query()->whereIn('id', $ids)->get()->keyBy('id');
+        $query = Course::query()->whereIn('id', $ids);
+        if ($lockForUpdate) {
+            $query->lockForUpdate();
+        }
+
+        $courses = $query->get()->keyBy('id');
         $items = [];
         $validIds = [];
         $totalMinor = 0;

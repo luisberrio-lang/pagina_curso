@@ -11,12 +11,7 @@ class Order extends Model
     public const STATUS_PENDING = 'pending';
     public const PAYMENT_PENDING = 'pending';
 
-    protected $fillable = [
-        'order_number', 'public_token', 'checkout_token_hash', 'user_id',
-        'first_name', 'last_name', 'email', 'phone',
-        'document_type', 'document_number', 'subtotal', 'total', 'currency',
-        'status', 'payment_status',
-    ];
+    protected $guarded = ['*'];
 
     protected $casts = [
         'subtotal' => 'decimal:2',
@@ -36,5 +31,22 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function publicCustomerName(): string
+    {
+        $initial = mb_substr($this->last_name, 0, 1);
+
+        return trim($this->first_name.' '.($initial !== '' ? $initial.'.' : ''));
+    }
+
+    public function maskedEmail(): string
+    {
+        [$local, $domain] = array_pad(explode('@', $this->email, 2), 2, '');
+        if ($local === '' || $domain === '') {
+            return 'correo protegido';
+        }
+
+        return mb_substr($local, 0, 1).str_repeat('*', max(3, mb_strlen($local) - 1)).'@'.$domain;
     }
 }

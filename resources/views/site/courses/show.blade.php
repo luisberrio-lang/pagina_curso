@@ -63,7 +63,9 @@
         <h2 class="font-semibold text-xl">Contenido</h2>
         @php
           $desc = $course->description ?? '';
-          $descHtml = ($desc && strip_tags($desc) === $desc) ? nl2br(e($desc)) : $desc;
+          $descHtml = ($desc && strip_tags($desc) === $desc)
+            ? nl2br(e($desc))
+            : \App\Support\SafeHtml::sanitize($desc);
         @endphp
         <div class="mt-3 text-white/80 wysiwyg-content">{!! $descHtml !!}</div>
       </div>
@@ -112,7 +114,9 @@
 
     @if(is_string($syllabus) && trim($syllabus) !== '')
       @php
-        $syllabusHtml = (strip_tags($syllabus) === $syllabus) ? nl2br(e($syllabus)) : $syllabus;
+        $syllabusHtml = (strip_tags($syllabus) === $syllabus)
+          ? nl2br(e($syllabus))
+          : \App\Support\SafeHtml::sanitize($syllabus);
       @endphp
       <div class="mt-4 wysiwyg-content">{!! $syllabusHtml !!}</div>
     @elseif(is_array($syllabus) && count($syllabus))
@@ -149,7 +153,7 @@
 
   {{-- WhatsApp final obligatorio --}}
   @php
-    $wa = 'https://wa.me/'.env('WHATSAPP_NUMBER').'?text='.urlencode($course->whatsappText());
+    $wa = 'https://wa.me/'.config('services.whatsapp.number').'?text='.urlencode($course->whatsappText());
   @endphp
 
   <section class="mt-12 text-center">
@@ -162,4 +166,3 @@
     </a>
   </section>
 @endsection
-

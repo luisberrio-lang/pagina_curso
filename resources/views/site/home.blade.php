@@ -105,13 +105,13 @@
       </h1>
     </div>
 
-    {{-- ? Imagen debajo del t?tulo (usa public/img/portad.png) --}}
+    {{-- Imagen debajo del título --}}
     <div class="mt-6 md:mt-8 overflow-hidden rounded-2xl border border-white/10 bg-white/5 -mx-4 md:-mx-6">
       <picture>
         <source type="image/webp" srcset="{{ asset('images/portadaofi.webp') }}">
         <img
           src="{{ asset('images/portadaofi.webp') }}"
-          alt="Cursos de ingenier?a por ?reas"
+          alt="Cursos de ingeniería por áreas"
           class="block w-full h-auto max-h-64 md:max-h-[26rem] object-contain"
           loading="lazy"
           decoding="async"

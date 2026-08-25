@@ -6,6 +6,7 @@ use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\CatalogController;
 use App\Http\Controllers\Site\PriceController;
 use App\Http\Controllers\Site\FaqController;
+use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AreaController;
@@ -34,6 +35,12 @@ Route::middleware('auth')->get('/dashboard', function () {
     ? redirect()->route('admin.dashboard')
     : redirect()->route('home');
 })->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 /**
  * ✅ Admin dashboard real

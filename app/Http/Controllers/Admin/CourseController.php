@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\Course;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
@@ -116,20 +116,12 @@ class CourseController extends Controller
   {
     $filename = Str::random(40) . '.webp';
 
-    $destination = app()->environment('local')
-      ? public_path('storage/courses/covers')
-      : dirname(public_path()) . '/storage/courses/covers';
-
-    if (!File::exists($destination)) {
-      File::makeDirectory($destination, 0755, true);
-    }
-
     $manager = new ImageManager(new Driver());
     $image = $manager->read($file->getRealPath())
       ->resize(900, 500)
       ->toWebp(quality: 75);
 
-    File::put($destination . '/' . $filename, (string) $image);
+    Storage::disk('public')->put('courses/covers/' . $filename, (string) $image);
 
     return 'courses/covers/' . $filename;
   }
@@ -140,13 +132,7 @@ class CourseController extends Controller
       return;
     }
 
-    $fullPath = app()->environment('local')
-      ? public_path('storage/' . $path)
-      : dirname(public_path()) . '/storage/' . $path;
-
-    if (File::exists($fullPath)) {
-      File::delete($fullPath);
-    }
+    Storage::disk('public')->delete($path);
   }
 
   private function validated(Request $r, ?int $ignoreId = null): array

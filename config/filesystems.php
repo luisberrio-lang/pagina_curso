@@ -1,5 +1,7 @@
 <?php
 
+$publicDiskRoot = env('PUBLIC_FILESYSTEM_ROOT', dirname(public_path()) . '/storage');
+
 return [
 
     /*
@@ -30,7 +32,7 @@ return [
         // Guarda directamente en: public_html/storage
         'public' => [
             'driver' => 'local',
-            'root' => dirname(public_path()) . '/storage',
+            'root' => $publicDiskRoot,
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/') . '/storage',
             'visibility' => 'public',
             'throw' => false,
@@ -59,7 +61,7 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        public_path('storage') => $publicDiskRoot,
     ],
 
 ];

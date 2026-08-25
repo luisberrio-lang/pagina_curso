@@ -7,7 +7,7 @@
         <source type="image/webp" srcset="{{ asset('images/logo.webp') }}">
         <img
           src="{{ asset('images/logo.webp') }}"
-          alt="Cursos de Ingenier?a"
+          alt="Cursos de Ingeniería"
           class="h-9 w-9 rounded-xl object-contain shadow-glow"
           decoding="async"
         >
@@ -73,7 +73,7 @@
       <div class="hidden md:flex items-center gap-3">
 
         <a class="iconbtn" target="_blank" rel="noopener"
-           href="https://wa.me/51929765265"
+           href="https://wa.me/{{ config('services.whatsapp.number') }}"
            title="WhatsApp">
           <picture>
             <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">
@@ -107,7 +107,7 @@
       {{-- ✅ Móvil: mostrar WA/FB en la barra (además de la hamburguesa) --}}
       <div class="md:hidden flex items-center gap-2">
         <a class="iconbtn" target="_blank" rel="noopener"
-           href="https://wa.me/51929765265"
+           href="https://wa.me/{{ config('services.whatsapp.number') }}"
            title="WhatsApp">
           <picture>
             <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">
@@ -169,7 +169,7 @@
       {{-- WA / FB en móvil (también quedan aquí, además de la barra) --}}
       <div class="flex items-center gap-3">
         <a class="iconbtn" target="_blank" rel="noopener"
-           href="https://wa.me/51929765265"
+           href="https://wa.me/{{ config('services.whatsapp.number') }}"
            title="WhatsApp">
           <picture>
             <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">

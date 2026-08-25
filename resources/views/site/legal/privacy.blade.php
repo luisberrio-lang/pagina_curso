@@ -9,11 +9,11 @@
     <div class="mt-6 space-y-6 text-white/80 leading-relaxed">
       <section>
         <h2 class="text-xl font-semibold text-white">Datos utilizados por el sitio</h2>
-        <p class="mt-2">Si creas una cuenta, el sitio trata el nombre y correo que proporcionas. La contraseña se almacena mediante un mecanismo de hash. También pueden tratarse datos técnicos de sesión, como dirección IP, agente de usuario y actividad necesaria para mantener la sesión.</p>
+        <p class="mt-2">Si creas una cuenta, el sitio trata el nombre y correo que proporcionas. La contraseña se almacena mediante un mecanismo de hash. Al crear una orden, se registran nombres, apellidos, correo, teléfono, los datos opcionales del documento informado y el detalle comercial de la orden. También pueden tratarse datos técnicos de sesión, como dirección IP, agente de usuario y actividad necesaria para mantener la sesión.</p>
       </section>
       <section>
         <h2 class="text-xl font-semibold text-white">Finalidad</h2>
-        <p class="mt-2">Estos datos se utilizan para autenticar usuarios, proteger el acceso, atender solicitudes y mantener el funcionamiento del sitio. Actualmente el sitio no dispone de checkout ni almacena datos de tarjetas.</p>
+        <p class="mt-2">Estos datos se utilizan para autenticar usuarios, proteger el acceso, crear y gestionar órdenes, atender solicitudes y mantener el funcionamiento del sitio. El checkout actual no solicita ni almacena números de tarjeta, CVV, credenciales bancarias ni tokens de pago.</p>
       </section>
       <section>
         <h2 class="text-xl font-semibold text-white">Canales externos</h2>

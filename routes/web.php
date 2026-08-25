@@ -8,11 +8,14 @@ use App\Http\Controllers\Site\PriceController;
 use App\Http\Controllers\Site\FaqController;
 use App\Http\Controllers\Site\LegalController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AreaController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\CourseImageController;
+use App\Http\Controllers\Admin\OrderController;
 
 // Sitio público
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -30,6 +33,16 @@ Route::get('/politica-de-privacidad', [LegalController::class, 'privacy'])->name
 Route::get('/cambios-devoluciones-reembolsos', [LegalController::class, 'refunds'])->name('legal.refunds');
 Route::get('/entrega-y-acceso', [LegalController::class, 'delivery'])->name('legal.delivery');
 Route::get('/contacto', [LegalController::class, 'contact'])->name('contact');
+
+Route::get('/carrito', [CartController::class, 'index'])->name('cart.index');
+Route::post('/carrito/{course}', [CartController::class, 'store'])->name('cart.store');
+Route::patch('/carrito/{course}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/carrito/{course}', [CartController::class, 'destroy'])->name('cart.destroy');
+Route::delete('/carrito', [CartController::class, 'clear'])->name('cart.clear');
+
+Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout.create');
+Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::get('/orden/{order}', [CheckoutController::class, 'show'])->name('orders.show');
 
 /**
  * ✅ Ruta que Breeze espera: /dashboard
@@ -62,6 +75,9 @@ Route::middleware(['auth','admin'])
     Route::resource('areas', AreaController::class)->except(['show']);
 
     Route::resource('courses', CourseController::class)->except(['show']);
+
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 
     Route::post('courses/{course}/images', [CourseImageController::class, 'store'])->name('courses.images.store');
     Route::delete('courses/{course}/images/{image}', [CourseImageController::class, 'destroy'])->name('courses.images.destroy');

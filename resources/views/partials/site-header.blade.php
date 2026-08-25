@@ -60,6 +60,10 @@
         FAQ
       </a>
 
+      <a class="navlink inline-flex items-center gap-2" href="{{ route('cart.index') }}">
+        Carrito <span class="chip chip-accent px-2 py-1">{{ $cartCount ?? 0 }}</span>
+      </a>
+
       {{-- Solo admin ve Dashboard --}}
       @if(auth()->check() && auth()->user()->is_admin)
         <a class="navlink" href="{{ route('admin.dashboard') }}">Dashboard</a>
@@ -156,6 +160,11 @@
 
         <a class="block rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
            href="{{ route('faq') }}">FAQ</a>
+
+        <a class="flex items-center justify-between rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
+           href="{{ route('cart.index') }}">
+          <span>Carrito</span><span class="chip chip-accent px-2 py-1">{{ $cartCount ?? 0 }}</span>
+        </a>
 
         {{-- Solo admin ve Dashboard (mobile) --}}
         @if(auth()->check() && auth()->user()->is_admin)

@@ -47,6 +47,11 @@
             <div class="mt-2 text-white/70 text-sm">
               Incluye acceso permanente al material y actualizaciones.
             </div>
+
+            <form class="mt-4" method="POST" action="{{ route('cart.store', $course) }}">
+              @csrf
+              <button class="btn btn-accent w-full" type="submit">Agregar al carrito</button>
+            </form>
           @else
             <p class="mt-2 text-white/70">Precio disponible por WhatsApp.</p>
           @endif

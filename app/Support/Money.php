@@ -34,8 +34,8 @@ final class Money
             return null;
         }
 
-        $currentMinor = self::minorUnits((string) $current);
-        $previousMinor = self::minorUnits((string) $previous);
+        $currentMinor = self::toMinorUnits((string) $current);
+        $previousMinor = self::toMinorUnits((string) $previous);
 
         if ($currentMinor <= 0 || $previousMinor <= $currentMinor) {
             return null;
@@ -54,7 +54,23 @@ final class Money
 
     public static function isPositive(string|int|null $amount): bool
     {
-        return $amount !== null && $amount !== '' && self::minorUnits((string) $amount) > 0;
+        return $amount !== null && $amount !== '' && self::toMinorUnits((string) $amount) > 0;
+    }
+
+    public static function toMinorUnits(string|int $amount): int
+    {
+        [$integer, $decimal] = self::parts((string) $amount);
+
+        return ((int) $integer * 100) + (int) $decimal;
+    }
+
+    public static function fromMinorUnits(int $amount): string
+    {
+        if ($amount < 0) {
+            throw new InvalidArgumentException('El monto no puede ser negativo.');
+        }
+
+        return intdiv($amount, 100).'.'.str_pad((string) ($amount % 100), 2, '0', STR_PAD_LEFT);
     }
 
     private static function parts(string $amount): array
@@ -69,10 +85,4 @@ final class Money
         return [ltrim($integer, '0') ?: '0', str_pad(substr($decimal, 0, 2), 2, '0')];
     }
 
-    private static function minorUnits(string $amount): int
-    {
-        [$integer, $decimal] = self::parts($amount);
-
-        return ((int) $integer * 100) + (int) $decimal;
-    }
 }

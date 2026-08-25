@@ -52,6 +52,11 @@ class Course extends Model
     return $this->hasMany(CourseImage::class)->orderBy('sort_order')->orderBy('id');
   }
 
+  public function orderItems(): HasMany
+  {
+    return $this->hasMany(OrderItem::class);
+  }
+
   public function coverUrl(): ?string
   {
     return $this->cover_path ? asset('storage/'.$this->cover_path) : null;

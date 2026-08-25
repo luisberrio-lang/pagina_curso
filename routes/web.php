@@ -6,6 +6,7 @@ use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\CatalogController;
 use App\Http\Controllers\Site\PriceController;
 use App\Http\Controllers\Site\FaqController;
+use App\Http\Controllers\Site\LegalController;
 use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\Admin\DashboardController;
@@ -24,6 +25,11 @@ Route::prefix('programas')->group(function () {
 
 Route::get('/precio', [PriceController::class, 'index'])->name('price');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
+Route::get('/terminos-y-condiciones', [LegalController::class, 'terms'])->name('legal.terms');
+Route::get('/politica-de-privacidad', [LegalController::class, 'privacy'])->name('legal.privacy');
+Route::get('/cambios-devoluciones-reembolsos', [LegalController::class, 'refunds'])->name('legal.refunds');
+Route::get('/entrega-y-acceso', [LegalController::class, 'delivery'])->name('legal.delivery');
+Route::get('/contacto', [LegalController::class, 'contact'])->name('contact');
 
 /**
  * ✅ Ruta que Breeze espera: /dashboard

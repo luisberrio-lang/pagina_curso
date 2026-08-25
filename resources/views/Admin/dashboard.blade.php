@@ -163,7 +163,7 @@
         <div class="mt-4 grid md:grid-cols-3 gap-6 items-end" data-discount-calc>
           <div>
             <label class="text-sm text-white/70">Precio actual (Pago único / Acceso de por vida)</label>
-            <input name="price_anual" value="{{ old('price_anual') }}"
+            <input name="price_anual" type="number" step="0.01" min="0.01" value="{{ old('price_anual') }}"
                    class="input-dark w-full rounded-xl border border-white/10 px-4 py-3 mt-2"
                    placeholder="Ej: 49.90" data-price-current />
             @error('price_anual') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
@@ -171,7 +171,7 @@
 
           <div>
             <label class="text-sm text-white/70">Precio anterior</label>
-            <input name="price_previous" value="{{ old('price_previous') }}"
+            <input name="price_previous" type="number" step="0.01" min="0.01" value="{{ old('price_previous') }}"
                    class="input-dark w-full rounded-xl border border-white/10 px-4 py-3 mt-2"
                    placeholder="Ej: 79.90" data-price-previous />
             @error('price_previous') <p class="text-red-300 text-sm mt-2">{{ $message }}</p> @enderror
@@ -235,7 +235,7 @@
                   <div>
                     <div class="font-semibold">{{ $c->title }}</div>
                     <div class="text-sm text-white/65 mt-1">
-                      Precio: <b>{{ $c->price_anual !== null ? number_format((float)$c->price_anual, 2) : '—' }}</b>
+                      Precio: <b>{{ $c->formattedCurrentPrice() ?? '—' }}</b>
                       <span class="text-white/50"> (Pago único)</span>
                     </div>
                     <div class="text-xs text-white/55 mt-1">
@@ -265,7 +265,5 @@
   </section>
   </div>
 @endsection
-
-
 
 

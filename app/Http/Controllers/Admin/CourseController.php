@@ -153,8 +153,8 @@ class CourseController extends Controller
 
       'sort_order'    => 'nullable|integer|min:0|max:9999',
 
-      'price_anual'   => 'nullable|numeric|min:0',
-      'price_previous' => 'nullable|numeric|min:0',
+      'price_anual'   => 'nullable|numeric|min:0.01|decimal:0,2',
+      'price_previous' => 'nullable|numeric|min:0.01|decimal:0,2',
 
       'cover'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
     ]);

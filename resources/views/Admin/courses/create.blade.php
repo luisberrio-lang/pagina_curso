@@ -99,14 +99,14 @@
       <div class="mt-4 grid md:grid-cols-3 gap-6 items-end" data-discount-calc>
         <div>
           <label class="text-sm text-white/70">Precio actual (Pago único / Acceso de por vida)</label>
-          <input name="price_anual"
+          <input name="price_anual" type="number" step="0.01" min="0.01"
                  class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2"
                  placeholder="Ej: 49.90" data-price-current />
         </div>
 
         <div>
           <label class="text-sm text-white/70">Precio anterior</label>
-          <input name="price_previous"
+          <input name="price_previous" type="number" step="0.01" min="0.01"
                  class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2"
                  placeholder="Ej: 79.90" data-price-previous />
         </div>
@@ -134,5 +134,4 @@
     </div>
   </form>
 @endsection
-
 

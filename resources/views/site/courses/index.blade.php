@@ -64,12 +64,12 @@
 
           {{-- ✅ PRECIO ÚNICO --}}
           <div class="mt-4 glass p-4 rounded-xl border border-white/10">
-            @if(!is_null($c->price_anual))
+            @if($c->hasCommercialPrice())
               <div class="flex items-center justify-between gap-3">
                 <div>
                   <div class="text-white/70 text-sm">Pago único</div>
                   <div class="text-2xl font-extrabold">
-                    S/ {{ number_format((float)$c->price_anual, 2) }}
+                    {{ $c->formattedCurrentPrice() }}
                   </div>
                 </div>
                 <span class="chip chip-accent">Acceso de por vida</span>

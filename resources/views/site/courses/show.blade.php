@@ -18,31 +18,27 @@
         {{-- ✅ PRECIO ÚNICO (Pago único + Acceso de por vida) --}}
         <div class="mt-5 glass p-5 rounded-xl border border-white/10">
           @php
-            $priceCurrent = $course->price_anual !== null ? (float)$course->price_anual : null;
-            $pricePrevious = $course->price_previous !== null ? (float)$course->price_previous : null;
-            $discountPct = null;
-            if ($pricePrevious !== null && $priceCurrent !== null && $pricePrevious > 0) {
-              $raw = (($pricePrevious - $priceCurrent) / $pricePrevious) * 100;
-              $discountPct = (int) round(max(0, $raw));
-            }
+            $priceCurrent = $course->currentPrice();
+            $pricePrevious = $course->previousPrice();
+            $discountPct = $course->discountPercentage();
           @endphp
 
           <div class="flex items-start justify-between gap-3">
             <h3 class="font-semibold">Precio</h3>
-            @if($pricePrevious !== null && $priceCurrent !== null)
+            @if($discountPct !== null)
               <div class="flex items-center gap-2">
-                <span class="price-old">S/ {{ number_format($pricePrevious, 2) }}</span>
+                <span class="price-old">{{ $course->formattedPreviousPrice() }}</span>
                 <span class="discount-badge">{{ $discountPct }}% DSCTO</span>
               </div>
             @endif
           </div>
 
-          @if(!is_null($course->price_anual))
+          @if($course->hasCommercialPrice())
             <div class="mt-3 flex items-center justify-between gap-3">
               <div>
                 <div class="text-white/70 text-sm">Pago único</div>
                 <div class="text-2xl font-extrabold">
-                  S/ {{ number_format((float)$course->price_anual, 2) }}
+                  {{ $course->formattedCurrentPrice() }}
                 </div>
               </div>
               <span class="chip chip-accent">Acceso de por vida</span>
@@ -153,7 +149,7 @@
 
   {{-- WhatsApp final obligatorio --}}
   @php
-    $wa = 'https://wa.me/'.config('services.whatsapp.number').'?text='.urlencode($course->whatsappText());
+    $wa = 'https://wa.me/'.config('shop.business.whatsapp').'?text='.urlencode($course->whatsappText());
   @endphp
 
   <section class="mt-12 text-center">

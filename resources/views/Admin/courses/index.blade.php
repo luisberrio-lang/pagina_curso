@@ -42,7 +42,7 @@
                 @endif
               </td>
               <td class="px-5 py-4 text-white/70">
-                {{ $c->price_anual !== null ? number_format((float)$c->price_anual,2) : '—' }}
+                {{ $c->formattedCurrentPrice() ?? '—' }}
                 <span class="text-white/50">(Pago único)</span>
               </td>
               <td class="px-5 py-4">

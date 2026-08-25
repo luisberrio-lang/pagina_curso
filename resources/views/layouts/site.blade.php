@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>@yield('title', config('app.name'))</title>
+  <meta name="description" content="@yield('meta_description', 'Cursos y contenido digital organizado por áreas de especialidad.')">
   <link rel="icon" href="{{ asset('images/logo.webp') }}">
 
   @vite(['resources/css/app.css','resources/js/app.js'])

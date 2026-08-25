@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Money;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -57,16 +58,54 @@ class Course extends Model
   }
 
   // ✅ Precio único
-  public function pricesArray(): array
+  public function currentPrice(): ?string
   {
-    return $this->price_anual !== null
-      ? ['Pago único (Acceso de por vida)' => (float)$this->price_anual]
-      : [];
+    return $this->hasCommercialPrice() ? (string) $this->price_anual : null;
   }
 
-  public function startingPrice(): ?float
+  public function previousPrice(): ?string
   {
-    return $this->price_anual !== null ? (float)$this->price_anual : null;
+    return $this->price_previous !== null && (string) $this->price_previous !== ''
+      ? (string) $this->price_previous
+      : null;
+  }
+
+  public function currency(): string
+  {
+    return Money::currencyCode();
+  }
+
+  public function formattedCurrentPrice(): ?string
+  {
+    return Money::format($this->currentPrice(), $this->currency());
+  }
+
+  public function formattedPreviousPrice(): ?string
+  {
+    return Money::format($this->previousPrice(), $this->currency());
+  }
+
+  public function discountPercentage(): ?int
+  {
+    return Money::discountPercentage($this->currentPrice(), $this->previousPrice());
+  }
+
+  public function hasCommercialPrice(): bool
+  {
+    return Money::isPositive($this->price_anual);
+  }
+
+  public function commercialData(): array
+  {
+    return [
+      'id' => $this->getKey(),
+      'name' => $this->title,
+      'price' => $this->currentPrice(),
+      'currency' => $this->currency(),
+      'is_published' => $this->is_published,
+      'reference' => $this->slug,
+      'image' => $this->coverUrl(),
+    ];
   }
 
   public function whatsappText(): string

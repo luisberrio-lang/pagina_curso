@@ -47,7 +47,7 @@
 
       <a class="navlink inline-flex items-center gap-2" href="{{ route('price') }}">
         <span aria-hidden="true" class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-cyan-200 text-[10px] font-semibold text-cyan-200">
-          S/
+          {{ \App\Support\Money::symbol() }}
         </span>
         Precios
       </a>
@@ -73,7 +73,7 @@
       <div class="hidden md:flex items-center gap-3">
 
         <a class="iconbtn" target="_blank" rel="noopener"
-           href="https://wa.me/{{ config('services.whatsapp.number') }}"
+           href="https://wa.me/{{ config('shop.business.whatsapp') }}"
            title="WhatsApp">
           <picture>
             <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">
@@ -107,7 +107,7 @@
       {{-- ✅ Móvil: mostrar WA/FB en la barra (además de la hamburguesa) --}}
       <div class="md:hidden flex items-center gap-2">
         <a class="iconbtn" target="_blank" rel="noopener"
-           href="https://wa.me/{{ config('services.whatsapp.number') }}"
+           href="https://wa.me/{{ config('shop.business.whatsapp') }}"
            title="WhatsApp">
           <picture>
             <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">
@@ -169,7 +169,7 @@
       {{-- WA / FB en móvil (también quedan aquí, además de la barra) --}}
       <div class="flex items-center gap-3">
         <a class="iconbtn" target="_blank" rel="noopener"
-           href="https://wa.me/{{ config('services.whatsapp.number') }}"
+           href="https://wa.me/{{ config('shop.business.whatsapp') }}"
            title="WhatsApp">
           <picture>
             <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">

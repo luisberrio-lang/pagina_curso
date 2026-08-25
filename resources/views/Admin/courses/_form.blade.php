@@ -69,8 +69,8 @@
   <section class="mt-6 hidden" data-panel="price">
     <div class="grid md:grid-cols-3 gap-5 items-end" data-discount-calc>
       <div>
-        <label class="block text-sm text-white/80 mb-2">Precio actual (visible solo en Programas/Cursos)</label>
-        <input name="price_anual" type="number" step="0.01" class="input w-full"
+        <label class="block text-sm text-white/80 mb-2">Precio actual ({{ config('shop.currency') }})</label>
+        <input name="price_anual" type="number" step="0.01" min="0.01" class="input w-full"
                value="{{ old('price_anual', $course->price_anual ?? '') }}" placeholder="Ej: 99.90"
                data-price-current />
         @error('price_anual') <p class="mt-2 text-red-300 text-sm">{{ $message }}</p> @enderror
@@ -78,7 +78,7 @@
 
       <div>
         <label class="block text-sm text-white/80 mb-2">Precio anterior (opcional)</label>
-        <input name="price_previous" type="number" step="0.01" class="input w-full"
+        <input name="price_previous" type="number" step="0.01" min="0.01" class="input w-full"
                value="{{ old('price_previous', $course->price_previous ?? '') }}" placeholder="Ej: 149.90"
                data-price-previous />
         @error('price_previous') <p class="mt-2 text-red-300 text-sm">{{ $message }}</p> @enderror
@@ -91,7 +91,7 @@
       </div>
 
       <div class="md:col-span-3 text-white/70 text-sm">
-        Nota: este precio **NO se muestra** en Inicio, Precio ni FAQ; solo en <b>Programas/Cursos</b> (tarjetas y detalle).
+        El precio actual es la fuente comercial oficial. El precio anterior es opcional y solo promocional.
       </div>
     </div>
   </section>

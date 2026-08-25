@@ -55,23 +55,14 @@
               <div class="text-white/70 text-sm">Pago único</div>
               <span class="chip chip-accent">Acceso de por vida</span>
             </div>
-            @if(!is_null($c->price_anual))
+            @if($c->hasCommercialPrice())
               <div class="text-2xl font-extrabold">
-                S/ {{ number_format((float)$c->price_anual, 2) }}
+                {{ $c->formattedCurrentPrice() }}
               </div>
-              @if(!is_null($c->price_previous))
-                @php
-                  $prev = (float) $c->price_previous;
-                  $curr = (float) $c->price_anual;
-                  $discount = $prev > 0 && $curr > 0 && $curr < $prev
-                    ? round((1 - ($curr / $prev)) * 100)
-                    : null;
-                @endphp
+              @if($c->discountPercentage() !== null)
                 <div class="mt-2 flex items-center gap-2">
-                  <span class="price-old">S/ {{ number_format($prev, 2) }}</span>
-                  @if($discount)
-                    <span class="discount-badge">{{ $discount }}% DSCTO</span>
-                  @endif
+                  <span class="price-old">{{ $c->formattedPreviousPrice() }}</span>
+                  <span class="discount-badge">{{ $c->discountPercentage() }}% DSCTO</span>
                 </div>
               @endif
               <div class="mt-2 text-white/70 text-sm">Incluye actualizaciones y acceso permanente.</div>

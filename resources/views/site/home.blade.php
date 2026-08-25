@@ -184,7 +184,7 @@
         <li>
           <span class="li-ico">
             {{-- ✅ Símbolo de soles --}}
-            <span class="soles">S/</span>
+            <span class="soles">{{ \App\Support\Money::symbol() }}</span>
           </span>
           <span class="li-text">El pago es <b>único</b>, sin <b>costos adicionales</b></span>
         </li>
@@ -295,7 +295,7 @@
         <span class="li-text">Videos en calidad Full HD</span>
       </li>
       <li>
-        <span class="li-ico"><span class="soles">S/</span></span>
+        <span class="li-ico"><span class="soles">{{ \App\Support\Money::symbol() }}</span></span>
         <span class="li-text">Pago único, sin costos adicionales</span>
       </li>
     </ul>

@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\CourseImageController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\AdminConfigurationController;
 
 // Sitio público
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -81,6 +82,8 @@ Route::middleware(['auth','admin'])
     Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('payments', [PaymentController::class, 'index'])->name('payments.index');
     Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
+    Route::get('configuration', [AdminConfigurationController::class, 'show'])->name('configuration.show');
+    Route::post('configuration/sync-admin', [AdminConfigurationController::class, 'sync'])->name('configuration.sync');
 
     Route::post('courses/{course}/images', [CourseImageController::class, 'store'])->name('courses.images.store');
     Route::delete('courses/{course}/images/{image}', [CourseImageController::class, 'destroy'])->name('courses.images.destroy');

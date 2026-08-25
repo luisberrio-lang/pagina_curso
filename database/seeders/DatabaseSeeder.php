@@ -3,24 +3,16 @@
 namespace Database\Seeders;
 
 use App\Models\Area;
-use App\Models\User;
+use App\Services\AdminEnvironmentSynchronizer;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
   public function run(): void
   {
     // Admin por ENV (si existe)
-    if (env('ADMIN_EMAIL') && env('ADMIN_PASSWORD')) {
-      User::firstOrCreate(
-        ['email' => env('ADMIN_EMAIL')],
-        [
-          'name' => env('ADMIN_NAME', 'Administrador'),
-          'password' => Hash::make(env('ADMIN_PASSWORD')),
-          'is_admin' => true,
-        ]
-      );
+    if (config('admin.name') && config('admin.email') && config('admin.password')) {
+      app(AdminEnvironmentSynchronizer::class)->sync();
     }
 
     // Áreas base (si no hay)

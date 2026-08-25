@@ -17,6 +17,7 @@
       <a href="{{ route('admin.courses.index') }}" class="btn btn-ghost">Gestionar Cursos</a>
       <a href="{{ route('admin.orders.index') }}" class="btn btn-ghost">Ver Órdenes</a>
       <a href="{{ route('admin.payments.index') }}" class="btn btn-ghost">Ver Pagos</a>
+      <a href="{{ route('admin.configuration.show') }}" class="btn btn-ghost">Configuración</a>
       <a href="{{ route('courses.index') }}" class="btn btn-accent" target="_blank">Ver en la web</a>
     </div>
   </section>

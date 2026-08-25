@@ -3,6 +3,7 @@
 return [
 
     'izipay' => [
+        'payments_enabled' => filter_var(env('IZIPAY_PAYMENTS_ENABLED', false), FILTER_VALIDATE_BOOL),
         'environment' => env('IZIPAY_ENVIRONMENT', 'sandbox'),
         'merchant_code' => env('IZIPAY_MERCHANT_CODE'),
         'api_key' => env('IZIPAY_API_KEY'),

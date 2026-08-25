@@ -17,7 +17,7 @@
       </section>
       <section>
         <h2 class="text-xl font-semibold text-white">Evaluación</h2>
-        <p class="mt-2">La solicitud será evaluada de forma individual. Según el caso, podrá proponerse corregir el acceso, aclarar el contenido, realizar un cambio o revisar la procedencia de un reembolso. Esta página debe revisarse nuevamente cuando se incorpore un flujo automático de pagos.</p>
+        <p class="mt-2">La solicitud será evaluada de forma individual. Según el caso, podrá proponerse corregir el acceso, aclarar el contenido, realizar un cambio o revisar la procedencia de un reembolso.</p>
       </section>
       <p>Envía tu solicitud desde la <a class="text-cyan-300 underline" href="{{ route('contact') }}">página de contacto</a>.</p>
     </div>

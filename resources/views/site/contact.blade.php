@@ -6,6 +6,9 @@
 @section('content')
   <section class="glass p-6 md:p-8 rounded-3xl border border-white/10 max-w-3xl mx-auto">
     <h1 class="text-3xl font-extrabold">Contacto</h1>
+    @if(config('shop.business.description'))
+      <p class="mt-4 text-white/80">{{ config('shop.business.description') }}</p>
+    @endif
     <p class="mt-4 text-white/80">{{ config('shop.business.support_text') }}</p>
 
     <dl class="mt-8 grid gap-5">
@@ -13,6 +16,13 @@
         <dt class="font-semibold text-white">Nombre comercial</dt>
         <dd class="mt-1 text-white/75">{{ config('shop.business.name') }}</dd>
       </div>
+
+      @if(config('shop.business.country'))
+        <div>
+          <dt class="font-semibold text-white">País</dt>
+          <dd class="mt-1 text-white/75">{{ config('shop.business.country') }}</dd>
+        </div>
+      @endif
 
       @if(config('shop.business.email'))
         <div>

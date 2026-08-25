@@ -6,6 +6,7 @@ return [
 
     'business' => [
         'name' => env('BUSINESS_NAME', env('APP_NAME', 'Cursos de Ingeniería Online')),
+        'description' => env('BUSINESS_DESCRIPTION'),
         'email' => env('BUSINESS_EMAIL'),
         'country' => env('BUSINESS_COUNTRY', 'PE'),
         'whatsapp' => env('WHATSAPP_NUMBER', '51929765265'),

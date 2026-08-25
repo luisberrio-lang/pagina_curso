@@ -54,7 +54,7 @@ class CheckoutOrderTest extends TestCase
             'checkout_token' => $token,
             'first_name' => '',
             'email' => 'incorrecto',
-        ])->assertSessionHasErrors(['first_name', 'last_name', 'email', 'phone']);
+        ])->assertSessionHasErrors(['first_name', 'last_name', 'email', 'phone', 'terms_accepted']);
 
         $this->assertDatabaseCount('orders', 0);
         $this->assertSame([$course->id], session('cart.course_ids'));
@@ -237,6 +237,7 @@ class CheckoutOrderTest extends TestCase
             'phone' => '+51 999 888 777',
             'document_type' => 'DNI',
             'document_number' => '12345678',
+            'terms_accepted' => '1',
         ];
     }
 

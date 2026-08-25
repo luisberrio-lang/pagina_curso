@@ -24,6 +24,8 @@ class CatalogController extends Controller
 
     $courses = Course::query()
       ->where('is_published', true)
+      ->whereNotNull('price_anual')
+      ->where('price_anual', '>', 0)
       ->where('area_id', $selected->id)
       ->with('area')
       ->orderBy('sort_order')
@@ -37,7 +39,7 @@ class CatalogController extends Controller
 
   public function show(Course $course)
   {
-    abort_unless($course->is_published, 404);
+    abort_unless($course->is_published && $course->hasCommercialPrice(), 404);
 
     $course->load(['area','images']);
 

@@ -1,6 +1,7 @@
 @extends('layouts.site')
 
-@section('title', 'Programas/Cursos | Cursos de Ingeniería Online')
+@section('title', 'Programas y cursos | '.config('shop.business.name'))
+@section('meta_description', 'Catálogo de cursos digitales con precios en soles y acceso al contenido.')
 
 @section('content')
   <section class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
@@ -37,11 +38,11 @@
       <div class="glass rounded-2xl border border-white/10 overflow-hidden">
         <div class="aspect-[3/2] bg-white/5 flex items-center justify-center">
           @if($c->coverUrl())
-            <img class="w-full h-full object-fill"
+            <img class="w-full h-full object-cover"
                  src="{{ $c->coverUrl() }}"
                  width="1536"
                  height="1024"
-                 alt="">
+                 alt="Portada de {{ $c->title }}">
           @endif
         </div>
 
@@ -62,26 +63,20 @@
             </ul>
           @endif
 
-          {{-- ✅ PRECIO ÚNICO --}}
           <div class="mt-4 glass p-4 rounded-xl border border-white/10">
-            @if($c->hasCommercialPrice())
-              <div class="flex items-center justify-between gap-3">
-                <div>
-                  <div class="text-white/70 text-sm">Pago único</div>
-                  <div class="text-2xl font-extrabold">
-                    {{ $c->formattedCurrentPrice() }}
-                  </div>
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="text-white/70 text-sm">Pago único</div>
+                <div class="text-2xl font-extrabold">
+                  {{ $c->formattedCurrentPrice() }}
                 </div>
-                <span class="chip chip-accent">Acceso de por vida</span>
               </div>
+              <span class="chip chip-accent">Contenido digital</span>
+            </div>
 
-              <div class="mt-2 text-white/70 text-sm">
-                Incluye actualizaciones y acceso permanente al material.
-              </div>
-            @else
-              <div class="text-white/70">Precio disponible por WhatsApp</div>
-              <div class="mt-2 text-white/60 text-sm">Escríbenos y te lo enviamos al instante.</div>
-            @endif
+            <div class="mt-2 text-white/70 text-sm">
+              Curso en modalidad digital. Revisa el detalle para conocer el contenido y la forma de acceso.
+            </div>
           </div>
 
           <a class="btn btn-accent mt-4 w-full" href="{{ route('courses.show', $c) }}">

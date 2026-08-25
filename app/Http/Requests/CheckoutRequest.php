@@ -34,6 +34,7 @@ class CheckoutRequest extends FormRequest
             'document_type' => ['nullable', 'required_with:document_number', Rule::in(['DNI', 'CE', 'RUC', 'PASAPORTE'])],
             'document_number' => ['nullable', 'required_with:document_type', 'string', 'max:30', 'regex:/^[A-Za-z0-9-]+$/'],
             'checkout_token' => ['required', 'uuid'],
+            'terms_accepted' => ['accepted'],
         ];
     }
 }

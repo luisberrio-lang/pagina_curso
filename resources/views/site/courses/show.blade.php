@@ -1,13 +1,14 @@
 @extends('layouts.site')
 
-@section('title', ($course->title ?? 'Curso') . ' | Cursos de Ingeniería Online')
+@section('title', ($course->title ?? 'Curso') . ' | ' . config('shop.business.name'))
+@section('meta_description', $course->short_desc ?: 'Información, precio y contenido del curso digital.')
 
 @section('content')
   <section class="grid md:grid-cols-2 gap-8 items-start">
     <div class="glass rounded-2xl border border-white/10 overflow-hidden md:sticky md:top-10">
       <div class="h-[360px] bg-white/5 flex items-center justify-center">
         @if($course->coverUrl())
-          <img class="w-full h-full object-fill" src="{{ $course->coverUrl() }}" alt="">
+          <img class="w-full h-full object-cover" src="{{ $course->coverUrl() }}" alt="Portada de {{ $course->title }}">
         @endif
       </div>
 
@@ -41,11 +42,11 @@
                   {{ $course->formattedCurrentPrice() }}
                 </div>
               </div>
-              <span class="chip chip-accent">Acceso de por vida</span>
+              <span class="chip chip-accent">Contenido digital</span>
             </div>
 
             <div class="mt-2 text-white/70 text-sm">
-              Incluye acceso permanente al material y actualizaciones.
+              Producto digital. La entrega y el acceso se coordinan según la política publicada del sitio.
             </div>
 
             <form class="mt-4" method="POST" action="{{ route('cart.store', $course) }}">
@@ -60,6 +61,7 @@
     </div>
 
     <div class="space-y-6">
+      @if(filled($course->description))
       <div class="glass p-6 rounded-2xl border border-white/10">
         <h2 class="font-semibold text-xl">Contenido</h2>
         @php
@@ -70,11 +72,14 @@
         @endphp
         <div class="mt-3 text-white/80 wysiwyg-content">{!! $descHtml !!}</div>
       </div>
+      @endif
 
+      @if(filled($course->audience))
       <div class="glass p-6 rounded-2xl border border-white/10">
         <h2 class="font-semibold text-xl">Para quién es</h2>
         <p class="mt-3 text-white/80 whitespace-pre-line">{{ $course->audience }}</p>
       </div>
+      @endif
 
       @if(is_array($course->learning) && count($course->learning))
         <div class="glass p-6 rounded-2xl border border-white/10">
@@ -105,13 +110,14 @@
     </div>
   </section>
 
-  {{-- Temario --}}
+  @php
+    $syllabus = $course->syllabus ?? null;
+    $hasSyllabus = (is_string($syllabus) && trim($syllabus) !== '') || (is_array($syllabus) && count($syllabus));
+  @endphp
+
+  @if($hasSyllabus)
   <section id="temario" class="mt-10 glass p-6 rounded-2xl border border-white/10">
     <h2 class="text-2xl font-bold">Temario</h2>
-
-    @php
-      $syllabus = $course->syllabus ?? null;
-    @endphp
 
     @if(is_string($syllabus) && trim($syllabus) !== '')
       @php
@@ -133,24 +139,22 @@
           </div>
         @endforeach
       </div>
-    @else
-      <p class="mt-3 text-white/70">Temario disponible pronto.</p>
     @endif
   </section>
+  @endif
 
-  {{-- Muestras --}}
+  @if($course->images->isNotEmpty())
   <section class="mt-10">
     <h2 class="text-2xl font-bold">Muestras del curso</h2>
     <div class="mt-4 grid md:grid-cols-4 gap-4">
-      @forelse($course->images as $img)
+      @foreach($course->images as $img)
         <a href="{{ $img->url() }}" target="_blank" class="glass rounded-2xl overflow-hidden border border-white/10">
-          <img class="w-full h-40 object-cover" src="{{ $img->url() }}" alt="">
+          <img class="w-full h-40 object-cover" src="{{ $img->url() }}" alt="Muestra de {{ $course->title }}">
         </a>
-      @empty
-        <p class="text-white/70">No hay muestras todavía.</p>
-      @endforelse
+      @endforeach
     </div>
   </section>
+  @endif
 
   {{-- WhatsApp final obligatorio --}}
   @php

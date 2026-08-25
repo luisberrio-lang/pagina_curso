@@ -2,6 +2,17 @@
 
 return [
 
+    'izipay' => [
+        'environment' => env('IZIPAY_ENVIRONMENT', 'sandbox'),
+        'merchant_code' => env('IZIPAY_MERCHANT_CODE'),
+        'api_key' => env('IZIPAY_API_KEY'),
+        'hash_key' => env('IZIPAY_HASH_KEY'),
+        'public_key' => env('IZIPAY_PUBLIC_KEY'),
+        'sdk_url' => env('IZIPAY_ENVIRONMENT', 'sandbox') === 'production'
+            ? 'https://checkout.izipay.pe/payments/v1/js/index.js'
+            : 'https://sandbox-checkout.izipay.pe/payments/v1/js/index.js',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Third Party Services

@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Order extends Model
 {
     public const STATUS_PENDING = 'pending';
+    public const STATUS_CONFIRMED = 'confirmed';
     public const PAYMENT_PENDING = 'pending';
+    public const PAYMENT_PAID = 'paid';
 
     protected $guarded = ['*'];
 
@@ -31,6 +33,11 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
     }
 
     public function publicCustomerName(): string

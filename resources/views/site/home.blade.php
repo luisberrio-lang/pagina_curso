@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Inicio | Cursos de Ingeniería Online')
+@section('title', 'Inicio | '.config('shop.business.name'))
 
 @section('content')
 

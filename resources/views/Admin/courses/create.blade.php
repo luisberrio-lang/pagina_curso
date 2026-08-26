@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Crear Curso | Cursos de Ingeniería Online')
+@section('title', 'Crear Curso | '.config('shop.business.name'))
 
 @section('content')
   <h1 class="text-3xl font-extrabold">Crear curso</h1>
@@ -134,4 +134,3 @@
     </div>
   </form>
 @endsection
-

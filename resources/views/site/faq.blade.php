@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'FAQ | Cursos de Ingeniería Online')
+@section('title', 'FAQ | '.config('shop.business.name'))
 
 @section('content')
   <h1 class="text-3xl font-extrabold">FAQ</h1>

@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Pago '.$payment->payment_number.' | Administración')
+@section('title', 'Pago '.$payment->payment_number.' | '.config('shop.business.name'))
 
 @section('content')
   <section class="flex flex-wrap items-end justify-between gap-4"><div><p class="text-white/60">Pago</p><h1 class="text-3xl font-extrabold">{{ $payment->payment_number }}</h1></div><a class="btn btn-ghost" href="{{ route('admin.payments.index') }}">Volver a pagos</a></section>

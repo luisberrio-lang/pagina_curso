@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Áreas | Cursos de Ingeniería Online')
+@section('title', 'Áreas | '.config('shop.business.name'))
 
 @section('content')
   <section class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">

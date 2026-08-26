@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Dashboard | Cursos de Ingeniería Online')
+@section('title', 'Administración | '.config('shop.business.name'))
 
 @section('content')
   <div class="glass p-6 md:p-8 rounded-3xl">

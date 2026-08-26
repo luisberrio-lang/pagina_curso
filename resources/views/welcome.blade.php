@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ config('app.name', 'Cursos de Ingeniería Online') }}</title>
+        <title>{{ config('shop.business.name') }}</title>
         <link rel="icon" href="{{ asset('images/logo.webp') }}">
 
         <!-- Fonts -->

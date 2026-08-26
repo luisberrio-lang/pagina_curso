@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Orden '.$order->order_number.' | Administración')
+@section('title', 'Orden '.$order->order_number.' | '.config('shop.business.name'))
 
 @section('content')
   <section class="flex flex-wrap items-end justify-between gap-4">

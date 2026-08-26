@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
 class AdminEnvironmentSyncTest extends TestCase
@@ -102,16 +103,76 @@ class AdminEnvironmentSyncTest extends TestCase
         $admin = User::factory()->create(['is_admin' => true]);
         $this->configure(password: 'Secreto-No-Visible-123');
 
+        $passwordHash = $admin->password;
         $this->actingAs($admin)
             ->get(route('admin.configuration.show'))
             ->assertOk()
             ->assertSee('Contraseña configurada')
             ->assertSee('SÍ')
-            ->assertDontSee('Secreto-No-Visible-123');
+            ->assertSee('name="_token"', false)
+            ->assertDontSee('Secreto-No-Visible-123')
+            ->assertDontSee($passwordHash);
 
         $this->actingAs($admin)
             ->post(route('admin.configuration.sync'), [])
             ->assertSessionHasErrors('confirm_sync');
+    }
+
+    public function test_configuration_values_are_read_from_the_central_config_and_password_may_be_empty(): void
+    {
+        $this->configure(password: null);
+
+        $this->assertSame('Administración Principal', config('admin.name'));
+        $this->assertSame('principal@example.com', config('admin.email'));
+        $this->assertSame('+51 999 111 222', config('admin.phone'));
+        $this->assertNull(config('admin.password'));
+    }
+
+    public function test_sync_command_uses_the_service_and_never_prints_the_password_or_hash(): void
+    {
+        $this->configure(password: 'Clave-Comando-123');
+
+        $exitCode = Artisan::call('admin:sync-env');
+        $output = Artisan::output();
+        $admin = User::query()->where('is_admin', true)->firstOrFail();
+
+        $this->assertSame(0, $exitCode);
+        $this->assertStringContainsString('Administrador sincronizado correctamente', $output);
+        $this->assertStringContainsString('Contraseña sincronizada', $output);
+        $this->assertStringNotContainsString('Clave-Comando-123', $output);
+        $this->assertStringNotContainsString($admin->password, $output);
+        $this->assertTrue(Hash::check('Clave-Comando-123', $admin->password));
+    }
+
+    public function test_repeated_sync_does_not_duplicate_the_administrator(): void
+    {
+        $this->configure(password: 'Clave-Segura-123');
+
+        app(\App\Services\AdminEnvironmentSynchronizer::class)->sync();
+        app(\App\Services\AdminEnvironmentSynchronizer::class)->sync();
+
+        $this->assertDatabaseCount('users', 1);
+        $this->assertSame(1, User::query()->where('is_admin', true)->count());
+    }
+
+    public function test_synchronized_admin_can_login_and_access_dashboard(): void
+    {
+        $this->configure(password: 'Correoprueba123');
+        config()->set('admin.email', 'correoprueba@gmail.com');
+        app(\App\Services\AdminEnvironmentSynchronizer::class)->sync();
+
+        $this->post(route('login'), [
+            'email' => 'correoprueba@gmail.com',
+            'password' => 'Correoprueba123',
+        ])->assertRedirect(route('dashboard'));
+
+        $this->get(route('admin.dashboard'))->assertOk();
+
+        auth()->logout();
+        $this->post(route('login'), [
+            'email' => 'correoprueba@gmail.com',
+            'password' => 'incorrecta',
+        ])->assertSessionHasErrors('email');
     }
 
     private function configure(?string $password): void

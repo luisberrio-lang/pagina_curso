@@ -45,6 +45,8 @@ class IzipayReviewReadinessTest extends TestCase
             ->assertSee('name="terms_accepted"', false)
             ->assertSee(route('legal.terms'), false)
             ->assertSee(route('legal.privacy'), false)
+            ->assertDontSee('name="document_type"', false)
+            ->assertDontSee('name="document_number"', false)
             ->assertDontSee('name="card_number"', false)
             ->assertDontSee('name="cvv"', false);
     }

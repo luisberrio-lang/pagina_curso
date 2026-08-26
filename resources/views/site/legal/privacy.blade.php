@@ -9,7 +9,7 @@
     <div class="mt-6 space-y-6 text-white/80 leading-relaxed">
       <section>
         <h2 class="text-xl font-semibold text-white">Datos utilizados por el sitio</h2>
-        <p class="mt-2">Si creas una cuenta, el sitio trata el nombre y correo que proporcionas. La contraseña se almacena mediante un mecanismo de hash. Al crear una orden, se registran nombres, apellidos, correo, teléfono, los datos opcionales del documento informado y el detalle comercial de la orden. También pueden tratarse datos técnicos de sesión, como dirección IP, agente de usuario y actividad necesaria para mantener la sesión.</p>
+        <p class="mt-2">Si creas una cuenta, el sitio trata el nombre y correo que proporcionas. La contraseña se almacena mediante un mecanismo de hash. Al crear una orden, se registran el nombre completo, correo, celular y el detalle comercial de la orden. También pueden tratarse datos técnicos de sesión, como dirección IP, agente de usuario y actividad necesaria para mantener la sesión.</p>
       </section>
       <section>
         <h2 class="text-xl font-semibold text-white">Finalidad</h2>

@@ -42,9 +42,23 @@ class Order extends Model
 
     public function publicCustomerName(): string
     {
+        if (blank($this->last_name)) {
+            $parts = preg_split('/\s+/u', trim($this->first_name), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+            if (count($parts) < 2) {
+                return $parts[0] ?? '';
+            }
+
+            return $parts[0].' '.mb_substr($parts[array_key_last($parts)], 0, 1).'.';
+        }
+
         $initial = mb_substr($this->last_name, 0, 1);
 
         return trim($this->first_name.' '.($initial !== '' ? $initial.'.' : ''));
+    }
+
+    public function customerFullName(): string
+    {
+        return trim($this->first_name.' '.$this->last_name);
     }
 
     public function maskedEmail(): string

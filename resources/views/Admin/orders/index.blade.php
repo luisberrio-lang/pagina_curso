@@ -19,7 +19,7 @@
       <thead class="bg-white/5 text-left"><tr><th class="p-4">Orden</th><th class="p-4">Comprador</th><th class="p-4">Total</th><th class="p-4">Orden</th><th class="p-4">Pago</th><th class="p-4">Fecha</th><th class="p-4"></th></tr></thead>
       <tbody>
         @forelse($orders as $order)
-          <tr class="border-t border-white/10"><td class="p-4 font-semibold">{{ $order->order_number }}</td><td class="p-4"><div>{{ $order->first_name }} {{ $order->last_name }}</div><div class="text-white/60">{{ $order->email }}</div></td><td class="p-4">{{ \App\Support\Money::format($order->total, $order->currency) }}</td><td class="p-4">{{ $order->status }}</td><td class="p-4">{{ $order->payment_status }}</td><td class="p-4">{{ $order->created_at->format('d/m/Y H:i') }}</td><td class="p-4"><a class="chip" href="{{ route('admin.orders.show', $order) }}">Ver</a></td></tr>
+          <tr class="border-t border-white/10"><td class="p-4 font-semibold">{{ $order->order_number }}</td><td class="p-4"><div>{{ $order->customerFullName() }}</div><div class="text-white/60">{{ $order->email }}</div><div class="text-white/60">{{ $order->phone }}</div></td><td class="p-4">{{ \App\Support\Money::format($order->total, $order->currency) }}</td><td class="p-4">{{ $order->status }}</td><td class="p-4">{{ $order->payment_status }}</td><td class="p-4">{{ $order->created_at->format('d/m/Y H:i') }}</td><td class="p-4"><a class="chip" href="{{ route('admin.orders.show', $order) }}">Ver</a></td></tr>
         @empty
           <tr><td class="p-6 text-white/60" colspan="7">No hay órdenes registradas.</td></tr>
         @endforelse

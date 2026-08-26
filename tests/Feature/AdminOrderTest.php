@@ -28,10 +28,15 @@ class AdminOrderTest extends TestCase
 
         $this->actingAs($admin)->get(route('admin.orders.index'))
             ->assertOk()
-            ->assertSee($order->order_number);
+            ->assertSee($order->order_number)
+            ->assertSee('Admin Test')
+            ->assertSee($order->phone);
         $this->actingAs($admin)->get(route('admin.orders.show', $order))
             ->assertOk()
-            ->assertSee($order->email);
+            ->assertSee($order->email)
+            ->assertSee('Nombres completos')
+            ->assertSee('Admin Test')
+            ->assertSee('Celular');
     }
 
     private function order(): Order

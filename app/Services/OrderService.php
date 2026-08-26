@@ -18,17 +18,18 @@ class OrderService
             }
 
             $order = new Order;
+            $usesFullName = array_key_exists('full_name', $customer);
             $order->forceFill([
                 'order_number' => $this->newOrderNumber(),
                 'public_token' => Str::random(64),
                 'checkout_token_hash' => hash('sha256', $checkoutToken),
                 'user_id' => $userId,
-                'first_name' => $customer['first_name'],
-                'last_name' => $customer['last_name'],
+                'first_name' => $usesFullName ? $customer['full_name'] : $customer['first_name'],
+                'last_name' => $usesFullName ? '' : $customer['last_name'],
                 'email' => $customer['email'],
                 'phone' => $customer['phone'],
-                'document_type' => $customer['document_type'] ?? null,
-                'document_number' => $customer['document_number'] ?? null,
+                'document_type' => $usesFullName ? null : ($customer['document_type'] ?? null),
+                'document_number' => $usesFullName ? null : ($customer['document_number'] ?? null),
                 'subtotal' => $cart['subtotal'],
                 'total' => $cart['total'],
                 'currency' => $cart['currency'],

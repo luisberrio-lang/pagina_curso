@@ -40,6 +40,8 @@ class CheckoutOrderTest extends TestCase
         $this->assertSame('PEN', $order->currency);
         $this->assertSame('10.00', $order->items->first()->unit_price);
         $this->assertSame('PEN', $order->items->first()->currency);
+        $this->assertNull($order->document_type);
+        $this->assertNull($order->document_number);
         $this->assertMatchesRegularExpression('/^ORD-\d{4}-[A-Z0-9]{10}$/', $order->order_number);
         $this->assertSame(64, strlen($order->public_token));
         $this->assertSame([], session('cart.course_ids', []));
@@ -52,9 +54,9 @@ class CheckoutOrderTest extends TestCase
 
         $this->withSession($this->checkoutSession($course, $token))->post(route('checkout.store'), [
             'checkout_token' => $token,
-            'first_name' => '',
+            'full_name' => '',
             'email' => 'incorrecto',
-        ])->assertSessionHasErrors(['first_name', 'last_name', 'email', 'phone', 'terms_accepted']);
+        ])->assertSessionHasErrors(['full_name', 'email', 'phone', 'terms_accepted']);
 
         $this->assertDatabaseCount('orders', 0);
         $this->assertSame([$course->id], session('cart.course_ids'));
@@ -68,6 +70,13 @@ class CheckoutOrderTest extends TestCase
             ->get(route('checkout.create'));
 
         $response->assertOk();
+        $response->assertSee('name="full_name"', false);
+        $response->assertSee('Nombres completos');
+        $response->assertSee('Celular');
+        $response->assertDontSee('name="first_name"', false);
+        $response->assertDontSee('name="last_name"', false);
+        $response->assertDontSee('name="document_type"', false);
+        $response->assertDontSee('name="document_number"', false);
         $response->assertDontSee('name="price"', false);
         $response->assertDontSee('name="total"', false);
         $response->assertDontSee('name="currency"', false);
@@ -161,23 +170,24 @@ class CheckoutOrderTest extends TestCase
         $course = $this->course();
         $token = (string) Str::uuid();
         $payload = $this->customer($token);
-        $payload['first_name'] = '  Zoë María  ';
-        $payload['last_name'] = "O’Connor-Núñez";
+        $payload['full_name'] = "  Zoë María O’Connor-Núñez  ";
         $payload['email'] = '  ANA@EXAMPLE.COM ';
+        $payload['phone'] = '+44 20 7946 0958';
 
         $this->withSession($this->checkoutSession($course, $token))->post(route('checkout.store'), $payload);
         $order = Order::firstOrFail();
-        $this->assertSame('Zoë María', $order->first_name);
-        $this->assertSame("O’Connor-Núñez", $order->last_name);
+        $this->assertSame("Zoë María O’Connor-Núñez", $order->first_name);
+        $this->assertSame('', $order->last_name);
         $this->assertSame('ana@example.com', $order->email);
+        $this->assertSame('+44 20 7946 0958', $order->phone);
 
         $token = (string) Str::uuid();
         $payload = $this->customer($token);
-        $payload['first_name'] = str_repeat('a', 101);
+        $payload['full_name'] = str_repeat('a', 101);
         $payload['email'] = str_repeat('a', 250).'@x.com';
         $this->withSession($this->checkoutSession($course, $token))
             ->post(route('checkout.store'), $payload)
-            ->assertSessionHasErrors(['first_name', 'email']);
+            ->assertSessionHasErrors(['full_name', 'email']);
     }
 
     public function test_public_order_masks_customer_data_and_escapes_xss(): void
@@ -185,18 +195,18 @@ class CheckoutOrderTest extends TestCase
         $course = $this->course();
         $token = (string) Str::uuid();
         $payload = $this->customer($token);
-        $payload['first_name'] = '<script>alert(1)</script>';
-        $payload['last_name'] = 'Núñez';
+        $payload['full_name'] = '<script>alert(1)</script> Núñez';
 
         $this->withSession($this->checkoutSession($course, $token))->post(route('checkout.store'), $payload);
         $order = Order::firstOrFail();
+        $this->assertNull($order->document_type);
+        $this->assertNull($order->document_number);
 
         $this->get(route('orders.show', $order))
             ->assertOk()
             ->assertDontSee('<script>alert(1)</script>', false)
             ->assertDontSee($order->email)
-            ->assertDontSee($order->phone)
-            ->assertDontSee((string) $order->document_number);
+            ->assertDontSee($order->phone);
     }
 
     public function test_cart_is_not_cleared_when_order_creation_fails(): void
@@ -231,12 +241,9 @@ class CheckoutOrderTest extends TestCase
     {
         return [
             'checkout_token' => $token,
-            'first_name' => 'Ana',
-            'last_name' => 'Prueba',
+            'full_name' => 'Ana Prueba',
             'email' => 'ana@example.com',
             'phone' => '+51 999 888 777',
-            'document_type' => 'DNI',
-            'document_number' => '12345678',
             'terms_accepted' => '1',
         ];
     }

@@ -9,7 +9,7 @@
     <div class="glass p-6 rounded-2xl border border-white/10">
       <h2 class="font-semibold text-xl">Acceso y entrega</h2>
       <p class="mt-2 text-white/80">
-        Acceso por Drive/enlaces/plataforma según el curso. Entrega rápida.
+        El acceso se proporciona mediante Drive, enlaces o la modalidad indicada para cada curso, y se coordina a través de los canales comerciales disponibles.
       </p>
     </div>
 

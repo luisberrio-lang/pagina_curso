@@ -206,7 +206,7 @@
           <span class="li-ico">
             <i class="bi bi-clock-history"></i>
           </span>
-          <span class="li-text"><b>Tiempo de entrega:</b> Acceso <b>inmediato</b> (tiempo estimado: <b>5 minutos</b>)</span>
+          <span class="li-text"><b>Coordinación de entrega:</b> el acceso se proporciona mediante el mecanismo indicado para cada curso y se coordina por los canales comerciales disponibles.</span>
         </li>
 
         <li>
@@ -301,7 +301,7 @@
     </ul>
   </section>
 
-  {{-- Sección 7: Muestras generales (placeholder) --}}
+  {{-- Sección 7: Muestras generales --}}
   <section class="mt-10">
     <h2 class="text-2xl font-bold">Muestras generales</h2>
     <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">

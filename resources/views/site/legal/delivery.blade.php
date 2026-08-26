@@ -13,7 +13,7 @@
       </section>
       <section>
         <h2 class="text-xl font-semibold text-white">Coordinación del acceso</h2>
-        <p class="mt-2">Actualmente el acceso se coordina mediante los canales de contacto y puede proporcionarse mediante enlaces o recursos compartidos, incluido Google Drive, según el contenido del curso. No se promete un proceso automático de entrega.</p>
+        <p class="mt-2">El mecanismo de acceso se informa para cada curso. Actualmente la entrega puede coordinarse mediante los canales comerciales disponibles y proporcionarse mediante enlaces o recursos compartidos, incluido Google Drive, según el contenido adquirido. No se promete un proceso automático de entrega.</p>
       </section>
       <section>
         <h2 class="text-xl font-semibold text-white">Datos necesarios</h2>

@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\Course;
+use App\Support\SafeHtml;
+use App\Support\UniqueSlug;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Throwable;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
@@ -32,25 +36,34 @@ class CourseController extends Controller
   public function store(Request $r)
   {
     $data = $this->validated($r);
+    $newCover = null;
 
     $data['is_published'] = $r->boolean('is_published');
     $data['is_featured']  = $r->boolean('is_featured');
 
     // Portada: guarda directo en public_html/storage/courses/covers
     if ($r->hasFile('cover')) {
-      $data['cover_path'] = $this->saveCover($r->file('cover'));
+      $data['cover_path'] = $newCover = $this->saveCover($r->file('cover'));
     }
 
-    $data['slug'] = isset($data['slug']) && $data['slug'] ? $data['slug'] : Str::slug($data['title']);
+    $data['slug'] = filled($data['slug'] ?? null)
+      ? $data['slug']
+      : UniqueSlug::for(Course::query(), $data['title']);
 
     $data['learning']     = $this->normalizeList($r->input('learning'));
     $data['benefits']     = $this->normalizeList($r->input('benefits'));
     $data['includes']     = $this->normalizeList($r->input('includes'));
     $data['requirements'] = $this->normalizeList($r->input('requirements'));
 
-    $data['syllabus'] = $r->input('syllabus');
+    $data['description'] = SafeHtml::sanitize($r->input('description')) ?: null;
+    $data['syllabus'] = SafeHtml::sanitize($r->input('syllabus')) ?: null;
 
-    $course = Course::create($data);
+    try {
+      $course = DB::transaction(fn () => Course::create($data));
+    } catch (Throwable $exception) {
+      $this->deleteCover($newCover);
+      throw $exception;
+    }
 
     if ($r->boolean('make_default_area') && $course->area_id) {
       Area::query()->update(['is_default' => false]);
@@ -72,26 +85,37 @@ class CourseController extends Controller
   public function update(Request $r, Course $course)
   {
     $data = $this->validated($r, $course->id);
+    $oldCover = $course->cover_path;
+    $newCover = null;
 
     $data['is_published'] = $r->boolean('is_published');
     $data['is_featured']  = $r->boolean('is_featured');
 
     // Portada: reemplaza y guarda directo en public_html/storage/courses/covers
     if ($r->hasFile('cover')) {
-      $this->deleteCover($course->cover_path);
-      $data['cover_path'] = $this->saveCover($r->file('cover'));
+      $data['cover_path'] = $newCover = $this->saveCover($r->file('cover'));
     }
 
-    $data['slug'] = isset($data['slug']) && $data['slug'] ? $data['slug'] : Str::slug($data['title']);
+    $data['slug'] = filled($data['slug'] ?? null) ? $data['slug'] : $course->slug;
 
     $data['learning']     = $this->normalizeList($r->input('learning'));
     $data['benefits']     = $this->normalizeList($r->input('benefits'));
     $data['includes']     = $this->normalizeList($r->input('includes'));
     $data['requirements'] = $this->normalizeList($r->input('requirements'));
 
-    $data['syllabus'] = $r->input('syllabus');
+    $data['description'] = SafeHtml::sanitize($r->input('description')) ?: null;
+    $data['syllabus'] = SafeHtml::sanitize($r->input('syllabus')) ?: null;
 
-    $course->update($data);
+    try {
+      DB::transaction(fn () => $course->update($data));
+    } catch (Throwable $exception) {
+      $this->deleteCover($newCover);
+      throw $exception;
+    }
+
+    if ($newCover && $oldCover !== $newCover) {
+      $this->deleteCover($oldCover);
+    }
 
     if ($r->boolean('make_default_area') && $course->area_id) {
       Area::query()->update(['is_default' => false]);
@@ -105,9 +129,13 @@ class CourseController extends Controller
 
   public function destroy(Course $course)
   {
-    $this->deleteCover($course->cover_path);
+    $cover = $course->cover_path;
+    $samples = $course->images()->pluck('path')->all();
 
-    $course->delete();
+    DB::transaction(fn () => $course->delete());
+
+    $this->deleteCover($cover);
+    Storage::disk('public')->delete($samples);
 
     return back()->with('ok', 'Curso eliminado.');
   }
@@ -121,7 +149,11 @@ class CourseController extends Controller
       ->resize(900, 500)
       ->toWebp(quality: 75);
 
-    Storage::disk('public')->put('courses/covers/' . $filename, (string) $image);
+    $stored = Storage::disk('public')->put('courses/covers/' . $filename, (string) $image);
+
+    if (! $stored) {
+      throw new \RuntimeException('No se pudo guardar la portada del curso.');
+    }
 
     return 'courses/covers/' . $filename;
   }

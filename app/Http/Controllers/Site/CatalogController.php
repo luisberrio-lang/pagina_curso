@@ -23,9 +23,7 @@ class CatalogController extends Controller
     }
 
     $courses = Course::query()
-      ->where('is_published', true)
-      ->whereNotNull('price_anual')
-      ->where('price_anual', '>', 0)
+      ->commerciallyAvailable()
       ->where('area_id', $selected->id)
       ->with('area')
       ->orderBy('sort_order')

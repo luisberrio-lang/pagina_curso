@@ -17,10 +17,10 @@
         <dd class="mt-1 text-white/75">{{ config('shop.business.name') }}</dd>
       </div>
 
-      @if(config('shop.business.country'))
+      @if(config('shop.business.country_name'))
         <div>
           <dt class="font-semibold text-white">País</dt>
-          <dd class="mt-1 text-white/75">{{ config('shop.business.country') }}</dd>
+          <dd class="mt-1 text-white/75">{{ config('shop.business.country_name') }}</dd>
         </div>
       @endif
 

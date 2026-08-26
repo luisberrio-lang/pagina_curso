@@ -38,8 +38,11 @@
           <button type="button" class="chip" data-cmd="insertUnorderedList">Lista</button>
           <button type="button" class="chip" data-cmd="insertOrderedList">1.2.3</button>
         </div>
-        <div class="wysiwyg-editor" contenteditable="true" data-wysiwyg-editor data-placeholder="Escribe el contenido del curso...">{!! old('description') !!}</div>
-        <textarea name="description" class="hidden" data-wysiwyg-input>{!! old('description') !!}</textarea>
+        @php
+          $descriptionValue = \App\Support\SafeHtml::sanitize(old('description'));
+        @endphp
+        <div class="wysiwyg-editor" contenteditable="true" data-wysiwyg-editor data-placeholder="Escribe el contenido del curso...">{!! $descriptionValue !!}</div>
+        <textarea name="description" class="hidden" data-wysiwyg-input>{{ $descriptionValue }}</textarea>
       </div>
     </div>
 
@@ -81,8 +84,11 @@
           <button type="button" class="chip" data-cmd="insertUnorderedList">Lista</button>
           <button type="button" class="chip" data-cmd="insertOrderedList">1.2.3</button>
         </div>
-        <div class="wysiwyg-editor" contenteditable="true" data-wysiwyg-editor data-placeholder="Escribe el temario...">{!! old('syllabus') !!}</div>
-        <textarea name="syllabus" class="hidden" data-wysiwyg-input>{!! old('syllabus') !!}</textarea>
+        @php
+          $syllabusValue = \App\Support\SafeHtml::sanitize(old('syllabus'));
+        @endphp
+        <div class="wysiwyg-editor" contenteditable="true" data-wysiwyg-editor data-placeholder="Escribe el temario...">{!! $syllabusValue !!}</div>
+        <textarea name="syllabus" class="hidden" data-wysiwyg-input>{{ $syllabusValue }}</textarea>
       </div>
     </div>
     <div>

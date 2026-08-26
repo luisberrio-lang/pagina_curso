@@ -1,25 +1,5 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
-
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+@extends('layouts.site')
+@section('title', 'Recuperar contraseña | '.config('shop.business.name'))
+@section('content')
+<div class="max-w-md mx-auto glass p-6 rounded-2xl border border-white/10"><h1 class="text-2xl font-bold">Recuperar contraseña</h1><p class="mt-2 text-white/70">Ingresa tu correo y te enviaremos un enlace seguro para elegir una nueva contraseña.</p><x-auth-session-status class="mt-4 text-emerald-200" :status="session('status')" /><form class="mt-6 space-y-4" method="POST" action="{{ route('password.email') }}">@csrf<div><label for="email" class="text-sm text-white/75">Correo electrónico</label><input id="email" class="mt-1 w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 text-white" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="email">@error('email')<p class="mt-2 text-sm text-red-300">{{ $message }}</p>@enderror</div><button class="btn btn-accent" type="submit">Enviar enlace de recuperación</button></form></div>
+@endsection

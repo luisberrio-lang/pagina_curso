@@ -220,7 +220,7 @@
           <span class="li-ico">
             <i class="bi bi-whatsapp"></i>
           </span>
-          <span class="li-text"><b>Soporte por WhatsApp (24/7):</b> Disponible para consultas y asistencia</span>
+          <span class="li-text"><b>Atención por WhatsApp:</b> {{ config('shop.business.support_hours') ?: 'mediante nuestros canales de contacto.' }}</span>
         </li>
       </ol>
 
@@ -253,7 +253,7 @@
         <div class="glass rounded-2xl border border-white/10 overflow-hidden">
           <div class="bg-white/5 aspect-[3/2]">
             @if(method_exists($c, 'coverUrl') && $c->coverUrl())
-              <img class="w-full h-full object-fill" src="{{ $c->coverUrl() }}" alt="">
+              <img class="w-full h-full object-fill" src="{{ $c->coverUrl() }}" alt="Portada del curso {{ $c->title }}">
             @endif
           </div>
           <div class="p-5">

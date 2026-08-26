@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Support\Money;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 
 class Course extends Model
 {
@@ -35,13 +35,6 @@ class Course extends Model
     'price_previous' => 'decimal:2',
   ];
 
-  protected static function booted(): void
-  {
-    static::saving(function (self $course) {
-      if (!$course->slug) $course->slug = Str::slug($course->title);
-    });
-  }
-
   public function area(): BelongsTo
   {
     return $this->belongsTo(Area::class);
@@ -50,6 +43,14 @@ class Course extends Model
   public function images(): HasMany
   {
     return $this->hasMany(CourseImage::class)->orderBy('sort_order')->orderBy('id');
+  }
+
+  public function scopeCommerciallyAvailable(Builder $query): Builder
+  {
+    return $query
+      ->where('is_published', true)
+      ->whereNotNull('price_anual')
+      ->where('price_anual', '>', 0);
   }
 
   public function orderItems(): HasMany

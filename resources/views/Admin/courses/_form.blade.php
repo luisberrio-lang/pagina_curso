@@ -137,7 +137,7 @@
             <div class="mt-4 grid grid-cols-2 gap-3">
               @foreach($images as $img)
                 <div class="rounded-xl overflow-hidden border border-white/10 bg-black/30">
-                  <img class="w-full h-32 object-cover" src="{{ $img->url ?? $img->path ?? '' }}" alt="">
+                  <img class="w-full h-32 object-cover" src="{{ $img->url ?? $img->path ?? '' }}" alt="Muestra del curso {{ $course->title ?? '' }}">
                   <div class="p-2 flex items-center justify-between gap-2">
                     <div class="flex gap-2">
                       <form method="POST" action="{{ route('admin.courses.images.up', [$course, $img]) }}">

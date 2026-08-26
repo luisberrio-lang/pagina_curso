@@ -7,19 +7,33 @@ use App\Models\Course;
 use App\Models\CourseImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class CourseImageController extends Controller
 {
   public function store(Request $r, Course $course)
   {
-    $r->validate(['images.*' => 'required|image|max:4096']);
+    $r->validate(['images.*' => 'required|image|mimes:jpg,jpeg,png,webp|max:4096']);
 
     $maxSort = (int)$course->images()->max('sort_order');
+    $storedPaths = [];
 
-    foreach ($r->file('images', []) as $file) {
-      $path = $file->store('courses/samples', 'public');
-      $maxSort++;
-      $course->images()->create(['path' => $path, 'sort_order' => $maxSort]);
+    try {
+      DB::transaction(function () use ($r, $course, &$maxSort, &$storedPaths) {
+        foreach ($r->file('images', []) as $file) {
+          $path = $file->store('courses/samples', 'public');
+          if (! $path) {
+            throw new \RuntimeException('No se pudo guardar una muestra del curso.');
+          }
+          $storedPaths[] = $path;
+          $maxSort++;
+          $course->images()->create(['path' => $path, 'sort_order' => $maxSort]);
+        }
+      });
+    } catch (Throwable $exception) {
+      Storage::disk('public')->delete($storedPaths);
+      throw $exception;
     }
 
     return back()->with('ok','Muestras subidas');
@@ -28,8 +42,9 @@ class CourseImageController extends Controller
   public function destroy(Course $course, CourseImage $image)
   {
     abort_unless($image->course_id === $course->id, 404);
-    Storage::disk('public')->delete($image->path);
+    $path = $image->path;
     $image->delete();
+    Storage::disk('public')->delete($path);
     return back()->with('ok','Muestra eliminada');
   }
 

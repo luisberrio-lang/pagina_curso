@@ -28,7 +28,7 @@ class PriceController extends Controller
     }
 
     $courses = Course::query()
-      ->where('is_published', true)
+      ->commerciallyAvailable()
       ->where('area_id', $selected->id)
       ->with('area')
       ->orderBy('sort_order')

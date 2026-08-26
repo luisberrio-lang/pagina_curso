@@ -39,7 +39,7 @@
                  src="{{ $c->coverUrl() }}"
                  width="1536"
                  height="1024"
-                 alt="">
+                 alt="Portada del curso {{ $c->title }}">
           @endif
         </div>
 

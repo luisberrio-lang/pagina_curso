@@ -1,6 +1,6 @@
 <?php
 
-$publicDiskRoot = env('PUBLIC_FILESYSTEM_ROOT', dirname(public_path()) . '/storage');
+$publicDiskRoot = env('PUBLIC_FILESYSTEM_ROOT') ?: public_path('storage');
 
 return [
 
@@ -60,8 +60,6 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'links' => [
-        public_path('storage') => $publicDiskRoot,
-    ],
+    'links' => [],
 
 ];

@@ -13,7 +13,7 @@ class HomeController extends Controller
         $areas = Area::query()->orderBy('sort_order')->orderBy('name')->get();
         $defaultArea = Area::query()->where('is_default', true)->first() ?? $areas->first();
         $featured = Course::query()
-            ->where('is_published', true)
+            ->commerciallyAvailable()
             ->where('is_featured', true)
             ->with('area')
             ->take(6)

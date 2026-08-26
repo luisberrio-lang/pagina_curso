@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Area;
+use App\Support\UniqueSlug;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 class AreaController extends Controller
@@ -31,7 +31,9 @@ class AreaController extends Controller
             'is_default'  => 'nullable|boolean',
         ]);
 
-        $data['slug'] = $data['slug'] ?: Str::slug($data['name']);
+        $data['slug'] = filled($data['slug'] ?? null)
+            ? $data['slug']
+            : UniqueSlug::for(Area::query(), $data['name']);
         $data['sort_order'] = $data['sort_order'] ?? 0;
         $data['is_default'] = $r->boolean('is_default');
 
@@ -61,7 +63,7 @@ class AreaController extends Controller
             'is_default'  => 'nullable|boolean',
         ]);
 
-        $data['slug'] = $data['slug'] ?: Str::slug($data['name']);
+        $data['slug'] = filled($data['slug'] ?? null) ? $data['slug'] : $area->slug;
         $data['sort_order'] = $data['sort_order'] ?? 0;
         $data['is_default'] = $r->boolean('is_default');
 
@@ -77,6 +79,10 @@ class AreaController extends Controller
 
     public function destroy(Area $area)
     {
+        if ($area->courses()->exists()) {
+            return back()->with('error', 'No se puede eliminar esta área porque tiene cursos asociados. Reasigna o elimina los cursos antes de continuar.');
+        }
+
         $area->delete();
         return back()->with('ok', 'Área eliminada.');
     }

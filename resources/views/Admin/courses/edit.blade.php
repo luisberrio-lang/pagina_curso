@@ -71,8 +71,11 @@
           <button type="button" class="chip" data-cmd="insertUnorderedList">Lista</button>
           <button type="button" class="chip" data-cmd="insertOrderedList">1.2.3</button>
         </div>
-        <div class="wysiwyg-editor" contenteditable="true" data-wysiwyg-editor data-placeholder="Escribe el contenido del curso...">{!! old('description', $course->description) !!}</div>
-        <textarea name="description" class="hidden" data-wysiwyg-input>{!! old('description', $course->description) !!}</textarea>
+        @php
+          $descriptionValue = \App\Support\SafeHtml::sanitize(old('description', $course->description));
+        @endphp
+        <div class="wysiwyg-editor" contenteditable="true" data-wysiwyg-editor data-placeholder="Escribe el contenido del curso...">{!! $descriptionValue !!}</div>
+        <textarea name="description" class="hidden" data-wysiwyg-input>{{ $descriptionValue }}</textarea>
       </div>
     </div>
 
@@ -123,6 +126,7 @@
           $syllabusValue = $course->syllabus ?? '';
         }
       }
+      $syllabusValue = \App\Support\SafeHtml::sanitize($syllabusValue);
     @endphp
 
     <div>
@@ -136,7 +140,7 @@
           <button type="button" class="chip" data-cmd="insertOrderedList">1.2.3</button>
         </div>
         <div class="wysiwyg-editor" contenteditable="true" data-wysiwyg-editor data-placeholder="Escribe el temario...">{!! $syllabusValue !!}</div>
-        <textarea name="syllabus" class="hidden" data-wysiwyg-input>{!! $syllabusValue !!}</textarea>
+        <textarea name="syllabus" class="hidden" data-wysiwyg-input>{{ $syllabusValue }}</textarea>
       </div>
     </div>
     <div class="p-5 rounded-2xl border border-white/10 bg-white/5">
@@ -217,4 +221,3 @@
   </section>
   </div>
 @endsection
-

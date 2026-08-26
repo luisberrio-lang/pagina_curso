@@ -20,6 +20,12 @@
     </div>
   @endif
 
+  @if(session('error'))
+    <div class="mt-6 glass border border-red-500/30 bg-red-500/10 rounded-2xl p-4 text-red-100" role="alert">
+      {{ session('error') }}
+    </div>
+  @endif
+
   <section class="mt-6 glass border border-white/10 rounded-3xl overflow-hidden">
     <div class="overflow-x-auto">
       <table class="min-w-full text-sm">

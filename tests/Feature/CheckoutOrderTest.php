@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Area;
 use App\Models\Course;
 use App\Models\Order;
+use App\Models\User;
 use App\Services\OrderService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
@@ -80,6 +81,104 @@ class CheckoutOrderTest extends TestCase
         $response->assertDontSee('name="price"', false);
         $response->assertDontSee('name="total"', false);
         $response->assertDontSee('name="currency"', false);
+    }
+
+    public function test_admin_checkout_is_empty_and_never_exposes_admin_configuration(): void
+    {
+        $course = $this->course();
+        $admin = User::factory()->create([
+            'name' => 'Nombre Administrativo Secreto',
+            'email' => 'admin-privado@example.com',
+            'phone' => '+51 900 000 001',
+            'is_admin' => true,
+        ]);
+        config()->set('admin', [
+            'name' => 'Nombre ENV Privado',
+            'email' => 'env-admin@example.com',
+            'phone' => '+51 900 000 002',
+            'password' => 'Clave-Que-No-Debe-Aparecer',
+        ]);
+
+        $response = $this->actingAs($admin)
+            ->withSession(['cart.course_ids' => [$course->id]])
+            ->get(route('checkout.create'));
+
+        $response->assertOk();
+        $content = $response->getContent();
+        $this->assertMatchesRegularExpression('/name="full_name"[^>]*value=""/', $content);
+        $this->assertMatchesRegularExpression('/name="email"[^>]*value=""/', $content);
+        $this->assertMatchesRegularExpression('/name="phone"[^>]*value=""/', $content);
+        foreach (['Nombre Administrativo Secreto', 'admin-privado@example.com', '+51 900 000 001', 'Nombre ENV Privado', 'env-admin@example.com', '+51 900 000 002', 'Clave-Que-No-Debe-Aparecer'] as $sensitiveValue) {
+            $response->assertDontSee($sensitiveValue);
+        }
+    }
+
+    public function test_guest_checkout_is_empty_and_normal_user_only_receives_own_data(): void
+    {
+        $course = $this->course();
+        $guestResponse = $this->withSession(['cart.course_ids' => [$course->id]])->get(route('checkout.create'));
+        $this->assertMatchesRegularExpression('/name="full_name"[^>]*value=""/', $guestResponse->getContent());
+        $this->assertMatchesRegularExpression('/name="email"[^>]*value=""/', $guestResponse->getContent());
+        $this->assertMatchesRegularExpression('/name="phone"[^>]*value=""/', $guestResponse->getContent());
+
+        $buyer = User::factory()->create([
+            'name' => 'Comprador Propio',
+            'email' => 'comprador@example.com',
+            'phone' => '+34 600 123 456',
+            'is_admin' => false,
+        ]);
+        $other = User::factory()->create(['name' => 'Otro Usuario', 'email' => 'otro@example.com']);
+        $response = $this->actingAs($buyer)
+            ->withSession(['cart.course_ids' => [$course->id]])
+            ->get(route('checkout.create'));
+
+        $response->assertSee('value="Comprador Propio"', false)
+            ->assertSee('value="comprador@example.com"', false)
+            ->assertSee('value="+34 600 123 456"', false)
+            ->assertDontSee($other->name)
+            ->assertDontSee($other->email);
+    }
+
+    public function test_old_input_is_preserved_after_validation_error_even_for_admin(): void
+    {
+        $course = $this->course();
+        $admin = User::factory()->create(['is_admin' => true]);
+        $token = (string) Str::uuid();
+
+        $this->actingAs($admin)
+            ->withSession($this->checkoutSession($course, $token))
+            ->post(route('checkout.store'), [
+                'checkout_token' => $token,
+                'full_name' => 'Comprador Introducido Manualmente',
+                'email' => 'correo-invalido',
+                'phone' => '+51 955 444 333',
+                'terms_accepted' => '1',
+            ])
+            ->assertSessionHasErrors('email');
+
+        $this->get(route('checkout.create'))
+            ->assertOk()
+            ->assertSee('value="Comprador Introducido Manualmente"', false)
+            ->assertSee('value="correo-invalido"', false)
+            ->assertSee('value="+51 955 444 333"', false);
+    }
+
+    public function test_admin_order_is_not_associated_but_normal_buyer_order_is(): void
+    {
+        $course = $this->course();
+        $admin = User::factory()->create(['is_admin' => true]);
+        $token = (string) Str::uuid();
+        $this->actingAs($admin)
+            ->withSession($this->checkoutSession($course, $token))
+            ->post(route('checkout.store'), $this->customer($token));
+        $this->assertNull(Order::firstOrFail()->user_id);
+
+        $buyer = User::factory()->create(['is_admin' => false]);
+        $token = (string) Str::uuid();
+        $this->actingAs($buyer)
+            ->withSession($this->checkoutSession($course, $token))
+            ->post(route('checkout.store'), $this->customer($token));
+        $this->assertSame($buyer->id, Order::query()->latest('id')->firstOrFail()->user_id);
     }
 
     public function test_order_snapshot_survives_a_course_price_change(): void

@@ -8,6 +8,7 @@ use App\Services\CartService;
 use App\Services\OrderService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -17,7 +18,7 @@ class CheckoutController extends Controller
 {
     private const TOKEN_KEY = 'checkout.token';
 
-    public function create(CartService $cart): View|RedirectResponse
+    public function create(Request $request, CartService $cart): View|RedirectResponse
     {
         $snapshot = $cart->snapshot();
         if ($snapshot['items'] === []) {
@@ -27,7 +28,16 @@ class CheckoutController extends Controller
         $token = (string) Str::uuid();
         session()->put(self::TOKEN_KEY, $token);
 
-        return view('checkout.create', ['cart' => $snapshot, 'checkoutToken' => $token]);
+        $user = $request->user();
+        $buyerDefaults = $user && ! $user->is_admin
+            ? ['full_name' => $user->name, 'email' => $user->email, 'phone' => $user->phone]
+            : ['full_name' => '', 'email' => '', 'phone' => ''];
+
+        return view('checkout.create', [
+            'cart' => $snapshot,
+            'checkoutToken' => $token,
+            'buyerDefaults' => $buyerDefaults,
+        ]);
     }
 
     public function store(CheckoutRequest $request, CartService $cart, OrderService $orders): RedirectResponse
@@ -53,7 +63,9 @@ class CheckoutController extends Controller
         }
 
         try {
-            $order = $orders->create($request->validated(), $cart, $token, $request->user()?->getKey());
+            $user = $request->user();
+            $buyerUserId = $user && ! $user->is_admin ? $user->getKey() : null;
+            $order = $orders->create($request->validated(), $cart, $token, $buyerUserId);
         } catch (QueryException $exception) {
             $existing = Order::query()->where('checkout_token_hash', $tokenHash)->first();
             if ($existing) {

@@ -15,9 +15,9 @@
       <input type="hidden" name="checkout_token" value="{{ $checkoutToken }}">
 
       <div class="grid gap-5">
-        <div><label for="full_name" class="block mb-2">Nombres completos</label><input id="full_name" name="full_name" class="input w-full" autocomplete="name" value="{{ old('full_name', auth()->user()?->name) }}" required>@error('full_name')<p class="text-red-300 text-sm mt-1">{{ $message }}</p>@enderror</div>
-        <div><label for="email" class="block mb-2">Correo</label><input id="email" name="email" type="email" class="input w-full" value="{{ old('email', auth()->user()?->email) }}" required>@error('email')<p class="text-red-300 text-sm mt-1">{{ $message }}</p>@enderror</div>
-        <div><label for="phone" class="block mb-2">Celular</label><input id="phone" name="phone" type="tel" autocomplete="tel" class="input w-full" value="{{ old('phone') }}" required>@error('phone')<p class="text-red-300 text-sm mt-1">{{ $message }}</p>@enderror</div>
+        <div><label for="full_name" class="block mb-2">Nombres completos</label><input id="full_name" name="full_name" class="input w-full" autocomplete="name" value="{{ old('full_name', $buyerDefaults['full_name']) }}" required>@error('full_name')<p class="text-red-300 text-sm mt-1">{{ $message }}</p>@enderror</div>
+        <div><label for="email" class="block mb-2">Correo</label><input id="email" name="email" type="email" autocomplete="email" class="input w-full" value="{{ old('email', $buyerDefaults['email']) }}" required>@error('email')<p class="text-red-300 text-sm mt-1">{{ $message }}</p>@enderror</div>
+        <div><label for="phone" class="block mb-2">Celular</label><input id="phone" name="phone" type="tel" autocomplete="tel" class="input w-full" value="{{ old('phone', $buyerDefaults['phone']) }}" required>@error('phone')<p class="text-red-300 text-sm mt-1">{{ $message }}</p>@enderror</div>
       </div>
 
       <div>

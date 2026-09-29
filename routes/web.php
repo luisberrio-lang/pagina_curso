@@ -63,6 +63,10 @@ Route::middleware('auth')->group(function () {
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/admin', function () {
+  return redirect()->route('admin.dashboard');
+})->middleware(['auth', 'admin'])->name('admin.entry');
+
 /**
  * ✅ Admin dashboard real
  */

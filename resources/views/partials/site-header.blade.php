@@ -64,10 +64,6 @@
         Carrito <span class="chip chip-accent px-2 py-1">{{ $cartCount ?? 0 }}</span>
       </a>
 
-      {{-- Solo admin ve Dashboard --}}
-      @if(auth()->check() && auth()->user()->is_admin)
-        <a class="navlink" href="{{ route('admin.dashboard') }}">Dashboard</a>
-      @endif
     </nav>
 
     {{-- Derecha --}}
@@ -93,18 +89,6 @@
             <img src="{{ asset('images/facebook.webp') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy" decoding="async">
           </picture>
         </a>
-
-        @guest
-          <a class="chip" href="{{ route('register') }}">Crear cuenta</a>
-          <a class="chip chip-accent" href="{{ route('login') }}">Iniciar sesión</a>
-        @endguest
-
-        @auth
-          <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button class="chip chip-accent" type="submit">Cerrar sesión</button>
-          </form>
-        @endauth
 
       </div>
 
@@ -166,11 +150,6 @@
           <span>Carrito</span><span class="chip chip-accent px-2 py-1">{{ $cartCount ?? 0 }}</span>
         </a>
 
-        {{-- Solo admin ve Dashboard (mobile) --}}
-        @if(auth()->check() && auth()->user()->is_admin)
-          <a class="block rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
-             href="{{ route('admin.dashboard') }}">Dashboard</a>
-        @endif
       </nav>
 
       <div class="h-px bg-white/10"></div>
@@ -194,21 +173,6 @@
             <img src="{{ asset('images/facebook.webp') }}" alt="Facebook" class="h-full w-full object-contain scale-125" loading="lazy" decoding="async">
           </picture>
         </a>
-      </div>
-
-      {{-- Auth en móvil --}}
-      <div class="space-y-2">
-        @guest
-          <a class="chip w-full justify-center" href="{{ route('register') }}">Crear cuenta</a>
-          <a class="chip chip-accent w-full justify-center" href="{{ route('login') }}">Iniciar sesión</a>
-        @endguest
-
-        @auth
-          <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button class="chip chip-accent w-full justify-center" type="submit">Cerrar sesión</button>
-          </form>
-        @endauth
       </div>
 
     </div>

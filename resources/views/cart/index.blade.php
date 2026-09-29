@@ -49,7 +49,7 @@
         <div class="mt-4 flex justify-between"><span>Subtotal</span><strong>{{ $cart['formatted_total'] }}</strong></div>
         <div class="mt-3 flex justify-between text-lg"><span>Total</span><strong>{{ $cart['formatted_total'] }}</strong></div>
         <p class="mt-2 text-xs text-white/60">Moneda: {{ $cart['currency'] }}</p>
-        <a class="btn btn-accent mt-6 w-full" href="{{ route('checkout.create') }}">Proceder al checkout</a>
+        <a class="btn btn-accent mt-6 w-full" href="{{ route('checkout.create') }}">Procesar pago</a>
         <form class="mt-3" method="POST" action="{{ route('cart.clear') }}">
           @csrf @method('DELETE')
           <button class="btn btn-ghost w-full" type="submit">Vaciar carrito</button>

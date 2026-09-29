@@ -33,6 +33,20 @@
       Si existen varios administradores, solo se sincroniza el de menor ID. Una contraseña vacía conserva la contraseña actual.
     </div>
 
+    <section class="mt-8 rounded-2xl border border-white/10 bg-white/5 p-5">
+      <h2 class="text-xl font-semibold">Estado de Izipay</h2>
+      <p class="mt-2 text-sm text-white/60">Este resumen solo indica presencia de configuración; nunca muestra credenciales.</p>
+      <dl class="mt-5 grid sm:grid-cols-2 gap-4">
+        <div><dt class="text-sm text-white/60">Izipay habilitado</dt><dd class="font-semibold">{{ $izipayStatus['enabled'] ? 'SÍ' : 'NO' }}</dd></div>
+        <div><dt class="text-sm text-white/60">Environment</dt><dd class="font-semibold">{{ $izipayStatus['environment'] }}</dd></div>
+        <div><dt class="text-sm text-white/60">Merchant code</dt><dd class="font-semibold">{{ $izipayStatus['merchant_code_configured'] ? 'Configurado' : 'No configurado' }}</dd></div>
+        <div><dt class="text-sm text-white/60">API key</dt><dd class="font-semibold">{{ $izipayStatus['api_key_configured'] ? 'Configurada' : 'No configurada' }}</dd></div>
+        <div><dt class="text-sm text-white/60">Hash key</dt><dd class="font-semibold">{{ $izipayStatus['hash_key_configured'] ? 'Configurada' : 'No configurada' }}</dd></div>
+        <div><dt class="text-sm text-white/60">Public key</dt><dd class="font-semibold">{{ $izipayStatus['public_key_configured'] ? 'Configurada' : 'No configurada' }}</dd></div>
+        <div><dt class="text-sm text-white/60">Configuración lista</dt><dd class="font-semibold">{{ $izipayStatus['ready'] ? 'SÍ' : 'NO' }}</dd></div>
+      </dl>
+    </section>
+
     <form class="mt-6" method="POST" action="{{ route('admin.configuration.sync') }}">
       @csrf
       <label class="flex items-start gap-3 text-sm text-white/80" for="confirm_sync">

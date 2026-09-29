@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\PublicMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -13,7 +14,7 @@ class CourseImage extends Model
     return $this->belongsTo(Course::class);
   }
 
-  public function url(): string {
-    return asset('storage/'.$this->path);
+  public function url(): ?string {
+    return PublicMedia::url($this->path);
   }
 }

@@ -202,8 +202,13 @@
 
     <div class="mt-6 grid md:grid-cols-4 gap-4">
       @foreach($course->images as $img)
+        @php($imageUrl = $img->url())
         <div class="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
-          <img src="{{ asset('storage/'.$img->path) }}" class="h-40 w-full object-cover" />
+          @if($imageUrl)
+            <img src="{{ $imageUrl }}" class="h-40 w-full object-cover" alt="Muestra de {{ $course->title }}" />
+          @else
+            <div class="h-40 grid place-items-center bg-black/30 text-sm text-white/50">Archivo no disponible</div>
+          @endif
           <div class="p-3 flex gap-2 justify-between">
             <form method="POST" action="{{ route('admin.courses.images.up', [$course, $img]) }}">@csrf
               <button class="chip" type="submit">↑</button>

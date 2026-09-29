@@ -143,13 +143,18 @@
   </section>
   @endif
 
-  @if($course->images->isNotEmpty())
+  @php
+    $availableImages = $course->images
+      ->map(fn ($image) => ['model' => $image, 'url' => $image->url()])
+      ->filter(fn ($image) => $image['url'] !== null);
+  @endphp
+  @if($availableImages->isNotEmpty())
   <section class="mt-10">
     <h2 class="text-2xl font-bold">Muestras del curso</h2>
     <div class="mt-4 grid md:grid-cols-4 gap-4">
-      @foreach($course->images as $img)
-        <a href="{{ $img->url() }}" target="_blank" class="glass rounded-2xl overflow-hidden border border-white/10">
-          <img class="w-full h-40 object-cover" src="{{ $img->url() }}" alt="Muestra de {{ $course->title }}">
+      @foreach($availableImages as $image)
+        <a href="{{ $image['url'] }}" target="_blank" rel="noopener" class="glass rounded-2xl overflow-hidden border border-white/10">
+          <img class="w-full h-40 object-cover" src="{{ $image['url'] }}" alt="Muestra de {{ $course->title }}">
         </a>
       @endforeach
     </div>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\Money;
+use App\Support\PublicMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -60,7 +61,7 @@ class Course extends Model
 
   public function coverUrl(): ?string
   {
-    return $this->cover_path ? asset('storage/'.$this->cover_path) : null;
+    return PublicMedia::url($this->cover_path);
   }
 
   // ✅ Precio único

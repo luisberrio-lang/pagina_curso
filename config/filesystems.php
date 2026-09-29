@@ -1,6 +1,9 @@
 <?php
 
-$publicDiskRoot = env('PUBLIC_FILESYSTEM_ROOT') ?: public_path('storage');
+$publicDiskRoot = rtrim(
+    (string) (env('PUBLIC_FILESYSTEM_ROOT') ?: public_path('storage')),
+    '/\\',
+);
 
 return [
 

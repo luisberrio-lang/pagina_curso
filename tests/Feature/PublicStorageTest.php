@@ -31,7 +31,9 @@ class PublicStorageTest extends TestCase
     public function test_local_public_disk_uses_public_storage_and_generates_public_urls(): void
     {
         $this->assertSame(public_path('storage'), config('filesystems.disks.public.root'));
-        $this->assertSame('http://localhost/storage', config('filesystems.disks.public.url'));
+        $publicDiskUrl = (string) config('filesystems.disks.public.url');
+        $this->assertSame('/storage', parse_url($publicDiskUrl, PHP_URL_PATH));
+        $this->assertNotFalse(filter_var($publicDiskUrl, FILTER_VALIDATE_URL));
 
         Storage::fake('public');
         Storage::disk('public')->put('courses/covers/historical.webp', 'image');

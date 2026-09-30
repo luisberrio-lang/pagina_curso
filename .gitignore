@@ -15,6 +15,11 @@
 /node_modules
 /public/hot
 /public/storage
+/REPORTE_AUDITORIA.txt
+/curso
+/storage/courses/
+/*.sql
+/*.sql.gz
 /storage/*.key
 /storage/pail
 /vendor

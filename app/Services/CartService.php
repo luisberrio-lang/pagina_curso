@@ -9,6 +9,10 @@ class CartService
 {
     private const SESSION_KEY = 'cart.course_ids';
 
+    private ?array $snapshot = null;
+
+    private ?int $snapshotRequestId = null;
+
     public function ids(): array
     {
         $ids = session(self::SESSION_KEY, []);
@@ -49,6 +53,7 @@ class CartService
         if (! in_array($course->getKey(), $ids, true)) {
             $ids[] = $course->getKey();
             session()->put(self::SESSION_KEY, $ids);
+            $this->forgetSnapshot();
         }
 
         return true;
@@ -60,11 +65,13 @@ class CartService
             self::SESSION_KEY,
             array_values(array_filter($this->ids(), fn ($id) => $id !== $course->getKey())),
         );
+        $this->forgetSnapshot();
     }
 
     public function clear(): void
     {
         session()->forget(self::SESSION_KEY);
+        $this->forgetSnapshot();
     }
 
     public function count(): int
@@ -74,7 +81,23 @@ class CartService
 
     public function snapshot(bool $pruneInvalid = true, bool $lockForUpdate = false): array
     {
+        $requestId = app()->bound('request') ? spl_object_id(request()) : null;
+        if ($pruneInvalid && ! $lockForUpdate && $requestId !== null && $this->snapshotRequestId === $requestId && $this->snapshot !== null) {
+            return $this->snapshot;
+        }
+
         $ids = $this->ids();
+        if ($ids === []) {
+            $emptySnapshot = $this->emptySnapshot();
+
+            if ($pruneInvalid && ! $lockForUpdate) {
+                $this->snapshot = $emptySnapshot;
+                $this->snapshotRequestId = $requestId;
+            }
+
+            return $emptySnapshot;
+        }
+
         $query = Course::query()->whereIn('id', $ids);
         if ($lockForUpdate) {
             $query->lockForUpdate();
@@ -110,9 +133,36 @@ class CartService
 
         $total = Money::fromMinorUnits($totalMinor);
 
-        return [
+        $snapshot = [
             'items' => $items,
             'invalid_ids' => array_values(array_diff($ids, $validIds)),
+            'subtotal' => $total,
+            'total' => $total,
+            'currency' => Money::currencyCode(),
+            'formatted_total' => Money::format($total),
+        ];
+
+        if ($pruneInvalid && ! $lockForUpdate) {
+            $this->snapshot = $snapshot;
+            $this->snapshotRequestId = $requestId;
+        }
+
+        return $snapshot;
+    }
+
+    private function forgetSnapshot(): void
+    {
+        $this->snapshot = null;
+        $this->snapshotRequestId = null;
+    }
+
+    private function emptySnapshot(): array
+    {
+        $total = Money::fromMinorUnits(0);
+
+        return [
+            'items' => [],
+            'invalid_ids' => [],
             'subtotal' => $total,
             'total' => $total,
             'currency' => Money::currencyCode(),

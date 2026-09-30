@@ -8,7 +8,7 @@
     <div class="glass rounded-2xl border border-white/10 overflow-hidden md:sticky md:top-10">
       <div class="h-[360px] bg-white/5 flex items-center justify-center">
         @if($course->coverUrl())
-          <img class="w-full h-full object-fill" src="{{ $course->coverUrl() }}" alt="Portada de {{ $course->title }}">
+          <img class="w-full h-full object-fill" src="{{ $course->coverUrl() }}" width="900" height="500" decoding="async" alt="Portada de {{ $course->title }}">
         @endif
       </div>
 
@@ -176,7 +176,7 @@
     <div class="mt-4 grid md:grid-cols-4 gap-4">
       @foreach($availableImages as $image)
         <a href="{{ $image['url'] }}" target="_blank" rel="noopener" class="glass rounded-2xl overflow-hidden border border-white/10">
-          <img class="w-full h-40 object-cover" src="{{ $image['url'] }}" alt="Muestra de {{ $course->title }}">
+          <img class="w-full h-40 object-cover" src="{{ $image['url'] }}" width="900" height="500" loading="lazy" decoding="async" alt="Muestra de {{ $course->title }}">
         </a>
       @endforeach
     </div>

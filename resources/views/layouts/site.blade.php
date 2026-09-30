@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>@yield('title', config('shop.business.name'))</title>
   <meta name="description" content="@yield('meta_description', 'Cursos y contenido digital organizado por áreas de especialidad.')">
+  <link rel="canonical" href="{{ url()->current() }}">
   <link rel="icon" href="{{ asset('images/logo.webp') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   @vite(['resources/css/app.css','resources/js/app.js'])
 </head>

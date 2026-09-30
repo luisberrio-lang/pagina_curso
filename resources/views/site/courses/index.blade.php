@@ -42,6 +42,8 @@
                  src="{{ $c->coverUrl() }}"
                  width="1536"
                  height="1024"
+                 loading="{{ $loop->first ? 'eager' : 'lazy' }}"
+                 decoding="async"
                  alt="Portada de {{ $c->title }}">
           @endif
         </div>

@@ -11,7 +11,7 @@ class HomeController extends Controller
     public function index()
     {
         $areas = Area::query()->orderBy('sort_order')->orderBy('name')->get();
-        $defaultArea = Area::query()->where('is_default', true)->first() ?? $areas->first();
+        $defaultArea = $areas->firstWhere('is_default', true) ?? $areas->first();
         $featured = Course::query()
             ->commerciallyAvailable()
             ->where('is_featured', true)

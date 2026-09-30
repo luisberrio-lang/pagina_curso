@@ -11,7 +11,7 @@ class PriceController extends Controller
   public function index()
   {
     $areas = Area::query()->ordered()->get();
-    $selected = Area::defaultArea() ?? $areas->first();
+    $selected = $areas->firstWhere('is_default', true) ?? $areas->first();
 
     // selector por query ?area=slug
     if (request('area')) {

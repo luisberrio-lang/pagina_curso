@@ -111,6 +111,8 @@
         <div class="mt-4 rounded-2xl overflow-hidden border border-white/10 bg-black/30">
           <img data-cover-preview
                src="{{ $isEdit && method_exists($course,'coverUrl') ? $course->coverUrl() : '' }}"
+               width="900" height="500" decoding="async"
+               alt="Vista previa de portada"
                class="w-full h-52 object-fill {{ $isEdit && method_exists($course,'coverUrl') && $course->coverUrl() ? '' : 'hidden' }}">
           <div data-cover-empty class="p-10 text-center text-white/50 {{ $isEdit && method_exists($course,'coverUrl') && $course->coverUrl() ? 'hidden' : '' }}">
             Vista previa de portada
@@ -137,7 +139,7 @@
             <div class="mt-4 grid grid-cols-2 gap-3">
               @foreach($images as $img)
                 <div class="rounded-xl overflow-hidden border border-white/10 bg-black/30">
-                  <img class="w-full h-32 object-cover" src="{{ $img->url ?? $img->path ?? '' }}" alt="Muestra del curso {{ $course->title ?? '' }}">
+                  <img class="w-full h-32 object-cover" src="{{ $img->url ?? $img->path ?? '' }}" width="900" height="500" loading="lazy" decoding="async" alt="Muestra del curso {{ $course->title ?? '' }}">
                   <div class="p-2 flex items-center justify-between gap-2">
                     <div class="flex gap-2">
                       <form method="POST" action="{{ route('admin.courses.images.up', [$course, $img]) }}">

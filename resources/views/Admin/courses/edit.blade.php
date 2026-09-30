@@ -43,7 +43,7 @@
         <input type="file" name="cover" accept="image/*"
                class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2">
         @if($course->coverUrl())
-          <img src="{{ $course->coverUrl() }}" class="mt-3 rounded-2xl border border-white/10 max-h-48 object-fill" />
+          <img src="{{ $course->coverUrl() }}" width="900" height="500" decoding="async" alt="Portada de {{ $course->title }}" class="mt-3 rounded-2xl border border-white/10 max-h-48 object-fill" />
         @endif
       </div>
     </div>
@@ -205,7 +205,7 @@
         @php($imageUrl = $img->url())
         <div class="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
           @if($imageUrl)
-            <img src="{{ $imageUrl }}" class="h-40 w-full object-cover" alt="Muestra de {{ $course->title }}" />
+            <img src="{{ $imageUrl }}" width="900" height="500" loading="lazy" decoding="async" class="h-40 w-full object-cover" alt="Muestra de {{ $course->title }}" />
           @else
             <div class="h-40 grid place-items-center bg-black/30 text-sm text-white/50">Archivo no disponible</div>
           @endif

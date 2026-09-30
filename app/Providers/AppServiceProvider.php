@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(CartService::class);
         $this->app->bind(PaymentGateway::class, IzipayService::class);
     }
 

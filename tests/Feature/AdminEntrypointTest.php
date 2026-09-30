@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Area;
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -65,11 +67,32 @@ class AdminEntrypointTest extends TestCase
         ] as $url) {
             $this->actingAs($user)->get($url)->assertForbidden();
         }
+
+        $this->actingAs($user)
+            ->get(route('home'))
+            ->assertOk()
+            ->assertDontSee('href="'.route('admin.dashboard').'"', false)
+            ->assertDontSee('data-admin-logout', false);
     }
 
-    public function test_admin_can_see_and_use_logout_only_inside_admin_panel(): void
+    public function test_admin_controls_persist_sitewide_until_logout(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
+        $area = Area::create([
+            'name' => 'Área navegación',
+            'slug' => 'area-navegacion',
+            'sort_order' => 0,
+            'is_default' => true,
+        ]);
+        $course = Course::create([
+            'area_id' => $area->id,
+            'title' => 'Curso navegación',
+            'slug' => 'curso-navegacion',
+            'is_published' => true,
+            'is_featured' => false,
+            'sort_order' => 0,
+            'price_anual' => '49.90',
+        ]);
 
         $response = $this->actingAs($admin)
             ->get(route('admin.dashboard'))
@@ -85,6 +108,26 @@ class AdminEntrypointTest extends TestCase
         $this->assertSame(2, substr_count($response->getContent(), 'data-admin-logout'));
         $response->assertSee('class="btn btn-accent btn-accent-soft w-full', false);
 
+        foreach ([
+            route('home'),
+            route('courses.index'),
+            route('courses.show', $course),
+            route('price'),
+            route('faq'),
+            route('cart.index'),
+            route('legal.terms'),
+            route('contact'),
+        ] as $url) {
+            $this->get($url)
+                ->assertOk()
+                ->assertSee('href="'.route('admin.dashboard').'"', false)
+                ->assertSee('method="POST" action="'.route('logout').'" data-admin-logout', false);
+            $this->assertAuthenticatedAs($admin);
+        }
+
+        $this->get(route('admin.entry'))
+            ->assertRedirect(route('admin.dashboard'));
+
         $this->actingAs($admin)
             ->withSession(['admin_session_marker' => 'active'])
             ->post(route('logout'))
@@ -92,7 +135,11 @@ class AdminEntrypointTest extends TestCase
             ->assertSessionMissing('admin_session_marker');
 
         $this->assertGuest();
-        $this->get(route('admin.dashboard'))->assertRedirect(route('login'));
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertDontSee('href="'.route('admin.dashboard').'"', false)
+            ->assertDontSee('data-admin-logout', false);
+        $this->get(route('admin.entry'))->assertRedirect(route('login'));
     }
 
     public function test_public_header_contains_only_commercial_navigation(): void

@@ -31,7 +31,7 @@
 
     {{-- ✅ Desktop: Menú completo (SIN "Mi perfil") --}}
     <nav class="hidden md:flex items-center justify-center gap-6">
-      @if(request()->routeIs('admin.*') && auth()->user()?->is_admin)
+      @if(auth()->user()?->is_admin)
         <a class="navlink inline-flex items-center gap-2" href="{{ route('admin.dashboard') }}">
           Dashboard
         </a>
@@ -96,7 +96,7 @@
           </picture>
         </a>
 
-        @if(request()->routeIs('admin.*') && auth()->user()?->is_admin)
+        @if(auth()->user()?->is_admin)
           <form method="POST" action="{{ route('logout') }}" data-admin-logout>
             @csrf
             <button type="submit" class="btn btn-accent btn-accent-soft whitespace-nowrap px-4 py-2 text-sm">
@@ -148,7 +148,7 @@
 
       {{-- Links del menú (mobile) --}}
       <nav class="space-y-2">
-        @if(request()->routeIs('admin.*') && auth()->user()?->is_admin)
+        @if(auth()->user()?->is_admin)
           <a class="block rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
              href="{{ route('admin.dashboard') }}">Dashboard</a>
         @endif
@@ -195,7 +195,7 @@
         </a>
       </div>
 
-      @if(request()->routeIs('admin.*') && auth()->user()?->is_admin)
+      @if(auth()->user()?->is_admin)
         <form method="POST" action="{{ route('logout') }}" data-admin-logout>
           @csrf
           <button type="submit" class="btn btn-accent btn-accent-soft w-full px-4 py-2 text-sm">

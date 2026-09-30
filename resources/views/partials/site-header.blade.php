@@ -33,6 +33,12 @@
     <nav class="hidden md:flex items-center justify-center gap-6">
       @if(auth()->user()?->is_admin)
         <a class="navlink inline-flex items-center gap-2" href="{{ route('admin.dashboard') }}">
+          <svg data-dashboard-icon aria-hidden="true" class="h-4 w-4 text-cyan-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3.75" y="3.75" width="6.5" height="6.5" rx="1" />
+            <rect x="13.75" y="3.75" width="6.5" height="6.5" rx="1" />
+            <rect x="3.75" y="13.75" width="6.5" height="6.5" rx="1" />
+            <rect x="13.75" y="13.75" width="6.5" height="6.5" rx="1" />
+          </svg>
           Dashboard
         </a>
       @endif
@@ -149,8 +155,16 @@
       {{-- Links del menú (mobile) --}}
       <nav class="space-y-2">
         @if(auth()->user()?->is_admin)
-          <a class="block rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
-             href="{{ route('admin.dashboard') }}">Dashboard</a>
+          <a class="inline-flex w-full items-center gap-2 rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
+             href="{{ route('admin.dashboard') }}">
+            <svg data-dashboard-icon aria-hidden="true" class="h-4 w-4 text-cyan-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3.75" y="3.75" width="6.5" height="6.5" rx="1" />
+              <rect x="13.75" y="3.75" width="6.5" height="6.5" rx="1" />
+              <rect x="3.75" y="13.75" width="6.5" height="6.5" rx="1" />
+              <rect x="13.75" y="13.75" width="6.5" height="6.5" rx="1" />
+            </svg>
+            Dashboard
+          </a>
         @endif
 
         <a class="block rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"

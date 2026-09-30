@@ -32,6 +32,7 @@ class AdminEntrypointTest extends TestCase
             ->get(route('admin.dashboard'))
             ->assertOk()
             ->assertSee('Dashboard')
+            ->assertSee('data-dashboard-icon', false)
             ->assertSee('href="'.route('admin.dashboard').'"', false);
     }
 
@@ -106,6 +107,7 @@ class AdminEntrypointTest extends TestCase
             strpos($response->getContent(), 'data-admin-logout'),
         );
         $this->assertSame(2, substr_count($response->getContent(), 'data-admin-logout'));
+        $this->assertSame(2, substr_count($response->getContent(), 'data-dashboard-icon'));
         $response->assertSee('class="btn btn-accent btn-accent-soft w-full', false);
 
         foreach ([

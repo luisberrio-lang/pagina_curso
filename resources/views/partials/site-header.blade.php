@@ -35,12 +35,6 @@
         <a class="navlink inline-flex items-center gap-2" href="{{ route('admin.dashboard') }}">
           Dashboard
         </a>
-        <form method="POST" action="{{ route('logout') }}">
-          @csrf
-          <button type="submit" class="navlink inline-flex items-center gap-2">
-            Cerrar sesión
-          </button>
-        </form>
       @endif
 
       <a class="navlink inline-flex items-center gap-2" href="{{ route('home') }}">
@@ -102,6 +96,15 @@
           </picture>
         </a>
 
+        @if(request()->routeIs('admin.*') && auth()->user()?->is_admin)
+          <form method="POST" action="{{ route('logout') }}" data-admin-logout>
+            @csrf
+            <button type="submit" class="btn btn-accent btn-accent-soft whitespace-nowrap px-4 py-2 text-sm">
+              Cerrar sesión
+            </button>
+          </form>
+        @endif
+
       </div>
 
       {{-- ✅ Móvil: mostrar WA/FB en la barra (además de la hamburguesa) --}}
@@ -148,12 +151,6 @@
         @if(request()->routeIs('admin.*') && auth()->user()?->is_admin)
           <a class="block rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
              href="{{ route('admin.dashboard') }}">Dashboard</a>
-          <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="block w-full rounded-xl px-3 py-2 text-left text-white/85 hover:bg-white/10 transition">
-              Cerrar sesión
-            </button>
-          </form>
         @endif
 
         <a class="block rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
@@ -197,6 +194,15 @@
           </picture>
         </a>
       </div>
+
+      @if(request()->routeIs('admin.*') && auth()->user()?->is_admin)
+        <form method="POST" action="{{ route('logout') }}" data-admin-logout>
+          @csrf
+          <button type="submit" class="btn btn-accent btn-accent-soft w-full px-4 py-2 text-sm">
+            Cerrar sesión
+          </button>
+        </form>
+      @endif
 
     </div>
   </div>

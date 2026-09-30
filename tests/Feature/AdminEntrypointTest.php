@@ -71,11 +71,19 @@ class AdminEntrypointTest extends TestCase
     {
         $admin = User::factory()->create(['is_admin' => true]);
 
-        $this->actingAs($admin)
+        $response = $this->actingAs($admin)
             ->get(route('admin.dashboard'))
             ->assertOk()
+            ->assertSeeInOrder(['Dashboard', 'Inicio', 'Programas/Cursos', 'Precios', 'FAQ', 'Carrito'])
             ->assertSee('Cerrar sesión')
-            ->assertSee('method="POST" action="'.route('logout').'"', false);
+            ->assertSee('method="POST" action="'.route('logout').'" data-admin-logout', false);
+
+        $this->assertGreaterThan(
+            strpos($response->getContent(), '</nav>'),
+            strpos($response->getContent(), 'data-admin-logout'),
+        );
+        $this->assertSame(2, substr_count($response->getContent(), 'data-admin-logout'));
+        $response->assertSee('class="btn btn-accent btn-accent-soft w-full', false);
 
         $this->actingAs($admin)
             ->withSession(['admin_session_marker' => 'active'])

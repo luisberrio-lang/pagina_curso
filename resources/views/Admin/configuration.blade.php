@@ -47,6 +47,32 @@
       </dl>
     </section>
 
+    <section class="mt-8 rounded-2xl border border-white/10 bg-white/5 p-5">
+      <h2 class="text-xl font-semibold">Migrar imágenes históricas</h2>
+      <p class="mt-2 text-sm text-white/70">Copia portadas y muestras permitidas desde el almacenamiento histórico al disco público configurado. Nunca sobrescribe conflictos, elimina originales ni modifica la base de datos.</p>
+
+      @if(session('media_migration'))
+        @php($mediaResult = session('media_migration'))
+        <dl class="mt-5 grid grid-cols-2 sm:grid-cols-5 gap-4" aria-label="Resultado de migración de imágenes">
+          <div><dt class="text-sm text-white/60">Encontrados</dt><dd class="font-semibold">{{ $mediaResult['found'] }}</dd></div>
+          <div><dt class="text-sm text-white/60">Copiados</dt><dd class="font-semibold">{{ $mediaResult['copied'] }}</dd></div>
+          <div><dt class="text-sm text-white/60">Omitidos</dt><dd class="font-semibold">{{ $mediaResult['skipped'] }}</dd></div>
+          <div><dt class="text-sm text-white/60">Conflictos</dt><dd class="font-semibold">{{ $mediaResult['conflicts'] }}</dd></div>
+          <div><dt class="text-sm text-white/60">Errores</dt><dd class="font-semibold">{{ $mediaResult['errors'] }}</dd></div>
+        </dl>
+      @endif
+
+      <form class="mt-6" method="POST" action="{{ route('admin.configuration.migrate-media') }}">
+        @csrf
+        <label class="flex items-start gap-3 text-sm text-white/80" for="confirm_media_migration">
+          <input id="confirm_media_migration" name="confirm_media_migration" type="checkbox" value="1" class="mt-1" required>
+          <span>Confirmo que deseo copiar las imágenes históricas permitidas al Storage público.</span>
+        </label>
+        @error('confirm_media_migration')<p class="mt-2 text-sm text-red-300">Debes confirmar la migración de imágenes.</p>@enderror
+        <button class="btn btn-accent mt-6" type="submit">Ejecutar migración de imágenes</button>
+      </form>
+    </section>
+
     <form class="mt-6" method="POST" action="{{ route('admin.configuration.sync') }}">
       @csrf
       <label class="flex items-start gap-3 text-sm text-white/80" for="confirm_sync">

@@ -15,18 +15,23 @@ escribe directamente en una carpeta servida por el sitio:
 - Local: deje `PUBLIC_FILESYSTEM_ROOT=` vacío; se usa `public/storage`.
 - cPanel: configure la ruta absoluta de `public_html/storage`.
 
-Para migrar archivos históricos sin Terminal, use File Manager y copie, sin
-borrar ni sobrescribir archivos existentes:
+Para migrar archivos históricos sin Terminal ni copia manual, conserve en el
+proyecto desplegado las carpetas de origen:
 
 ```text
-storage/courses/covers/*  -> public_html/storage/courses/covers/*
-storage/courses/samples/* -> public_html/storage/courses/samples/*
+storage/courses/covers/*
+storage/courses/samples/*
 ```
 
-Conserve los nombres y subcarpetas exactamente. Compruebe después una portada
-y una muestra desde sus URLs HTTPS. En local existe el comando no destructivo
-`php artisan media:migrate-legacy`; `--dry-run` permite revisar primero. El
-comando nunca elimina el origen ni sobrescribe destinos existentes.
+Después de configurar `PUBLIC_FILESYSTEM_ROOT`, ingrese como administrador a
+`/admin/dashboard/configuration`, confirme el bloque **Migrar imágenes
+históricas** y pulse **Ejecutar migración de imágenes**. La acción copia solo
+JPG, JPEG, PNG y WebP válidos, omite archivos idénticos, reporta conflictos sin
+sobrescribir y nunca elimina el origen ni modifica la base de datos. Puede
+ejecutarse nuevamente de forma segura. Compruebe después una portada y una
+muestra desde sus URLs HTTPS. El comando local no destructivo
+`php artisan media:migrate-legacy` reutiliza la misma lógica; `--dry-run`
+permite revisar primero.
 
 Permisos recomendados: carpetas `755` y archivos `644`, propiedad del usuario
 de cPanel/PHP. Si el hosting usa escritura por grupo, pruebe `775` solo en las

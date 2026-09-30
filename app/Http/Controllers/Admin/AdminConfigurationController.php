@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SyncAdminEnvironmentRequest;
 use App\Payments\PaymentGateway;
 use App\Services\AdminEnvironmentSynchronizer;
+use App\Services\LegacyMediaMigrationService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class AdminConfigurationController extends Controller
@@ -43,5 +45,16 @@ class AdminConfigurationController extends Controller
         return redirect()
             ->route('admin.configuration.show')
             ->with('ok', "Administrador sincronizado correctamente (usuario #{$admin->id}).");
+    }
+
+    public function migrateMedia(Request $request, LegacyMediaMigrationService $migration): RedirectResponse
+    {
+        $request->validate([
+            'confirm_media_migration' => ['required', 'accepted'],
+        ]);
+
+        return redirect()
+            ->route('admin.configuration.show')
+            ->with('media_migration', $migration->migrate());
     }
 }

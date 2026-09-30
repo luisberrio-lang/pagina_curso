@@ -88,6 +88,7 @@ Route::middleware(['auth','admin'])
     Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
     Route::get('configuration', [AdminConfigurationController::class, 'show'])->name('configuration.show');
     Route::post('configuration/sync-admin', [AdminConfigurationController::class, 'sync'])->name('configuration.sync');
+    Route::post('configuration/migrate-media', [AdminConfigurationController::class, 'migrateMedia'])->name('configuration.migrate-media');
 
     Route::post('courses/{course}/images', [CourseImageController::class, 'store'])->name('courses.images.store');
     Route::delete('courses/{course}/images/{image}', [CourseImageController::class, 'destroy'])->name('courses.images.destroy');

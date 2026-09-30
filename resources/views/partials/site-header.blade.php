@@ -31,6 +31,12 @@
 
     {{-- ✅ Desktop: Menú completo (SIN "Mi perfil") --}}
     <nav class="hidden md:flex items-center justify-center gap-6">
+      @if(request()->routeIs('admin.*') && auth()->user()?->is_admin)
+        <a class="navlink inline-flex items-center gap-2" href="{{ route('admin.dashboard') }}">
+          Dashboard
+        </a>
+      @endif
+
       <a class="navlink inline-flex items-center gap-2" href="{{ route('home') }}">
         <svg aria-hidden="true" class="h-4 w-4 text-cyan-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5M5.5 9.5V21h13V9.5"/>
@@ -133,6 +139,11 @@
 
       {{-- Links del menú (mobile) --}}
       <nav class="space-y-2">
+        @if(request()->routeIs('admin.*') && auth()->user()?->is_admin)
+          <a class="block rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
+             href="{{ route('admin.dashboard') }}">Dashboard</a>
+        @endif
+
         <a class="block rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
            href="{{ route('home') }}">Inicio</a>
 

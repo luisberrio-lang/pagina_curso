@@ -28,7 +28,9 @@ class AdminEntrypointTest extends TestCase
 
         $this->actingAs($admin)
             ->get(route('admin.dashboard'))
-            ->assertOk();
+            ->assertOk()
+            ->assertSee('Dashboard')
+            ->assertSee('href="'.route('admin.dashboard').'"', false);
     }
 
     public function test_admin_login_preserves_intended_admin_flow(): void
@@ -37,13 +39,15 @@ class AdminEntrypointTest extends TestCase
 
         $this->get(route('admin.entry'))->assertRedirect(route('login'));
 
-        $this->post(route('login'), [
+        $response = $this->post(route('login'), [
             'email' => $admin->email,
             'password' => 'password',
         ])->assertRedirect(route('admin.entry'));
 
-        $this->get(route('admin.entry'))
-            ->assertRedirect(route('admin.dashboard'));
+        $this->followingRedirects()
+            ->get($response->headers->get('Location'))
+            ->assertOk()
+            ->assertSee('Dashboard Administrador');
     }
 
     public function test_normal_user_is_denied_from_entrypoint_and_every_admin_module(): void

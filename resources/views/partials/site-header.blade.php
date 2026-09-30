@@ -35,6 +35,12 @@
         <a class="navlink inline-flex items-center gap-2" href="{{ route('admin.dashboard') }}">
           Dashboard
         </a>
+        <form method="POST" action="{{ route('logout') }}">
+          @csrf
+          <button type="submit" class="navlink inline-flex items-center gap-2">
+            Cerrar sesión
+          </button>
+        </form>
       @endif
 
       <a class="navlink inline-flex items-center gap-2" href="{{ route('home') }}">
@@ -142,6 +148,12 @@
         @if(request()->routeIs('admin.*') && auth()->user()?->is_admin)
           <a class="block rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
              href="{{ route('admin.dashboard') }}">Dashboard</a>
+          <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="block w-full rounded-xl px-3 py-2 text-left text-white/85 hover:bg-white/10 transition">
+              Cerrar sesión
+            </button>
+          </form>
         @endif
 
         <a class="block rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"

@@ -67,6 +67,26 @@ class AdminEntrypointTest extends TestCase
         }
     }
 
+    public function test_admin_can_see_and_use_logout_only_inside_admin_panel(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+
+        $this->actingAs($admin)
+            ->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('Cerrar sesión')
+            ->assertSee('method="POST" action="'.route('logout').'"', false);
+
+        $this->actingAs($admin)
+            ->withSession(['admin_session_marker' => 'active'])
+            ->post(route('logout'))
+            ->assertRedirect(route('home'))
+            ->assertSessionMissing('admin_session_marker');
+
+        $this->assertGuest();
+        $this->get(route('admin.dashboard'))->assertRedirect(route('login'));
+    }
+
     public function test_public_header_contains_only_commercial_navigation(): void
     {
         $html = view('partials.site-header', ['cartCount' => 0])->render();
@@ -76,6 +96,8 @@ class AdminEntrypointTest extends TestCase
         $this->assertStringNotContainsString('href="'.route('admin.entry').'"', $html);
         $this->assertStringNotContainsString('href="'.route('admin.dashboard').'"', $html);
         $this->assertStringNotContainsString('href="'.route('profile.edit').'"', $html);
+        $this->assertStringNotContainsString(route('logout'), $html);
+        $this->assertStringNotContainsString('Cerrar sesión', $html);
         $this->assertStringNotContainsString('Iniciar sesión', $html);
         $this->assertStringNotContainsString('Crear cuenta', $html);
         $this->assertStringNotContainsString('Dashboard', $html);
@@ -97,6 +119,8 @@ class AdminEntrypointTest extends TestCase
         ] as $url) {
             $response->assertDontSee('href="'.$url.'"', false);
         }
+        $response->assertDontSee(route('logout'));
+        $response->assertDontSee('Cerrar sesión');
 
         $footer = view('partials.site-footer')->render();
         $this->assertStringNotContainsString(route('login'), $footer);

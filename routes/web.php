@@ -10,6 +10,7 @@ use App\Http\Controllers\Site\LegalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PaymentLinkController as PublicPaymentLinkController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AreaController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\CourseImageController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\PaymentLinkController as AdminPaymentLinkController;
 use App\Http\Controllers\Admin\AdminConfigurationController;
 
 // Sitio público
@@ -45,6 +47,10 @@ Route::delete('/carrito', [CartController::class, 'clear'])->name('cart.clear');
 Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout.create');
 Route::post('/checkout', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
 Route::get('/orden/{order}', [CheckoutController::class, 'show'])->name('orders.show');
+Route::get('/pago/{token}', [PublicPaymentLinkController::class, 'show'])
+  ->where('token', '[A-Za-z0-9]{64}')
+  ->middleware('throttle:60,1')
+  ->name('payment-links.show');
 
 /**
  * ✅ Ruta que Breeze espera: /dashboard
@@ -86,6 +92,10 @@ Route::middleware(['auth','admin'])
     Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('payments', [PaymentController::class, 'index'])->name('payments.index');
     Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
+    Route::get('payment-links', [AdminPaymentLinkController::class, 'index'])->name('payment-links.index');
+    Route::get('payment-links/create', [AdminPaymentLinkController::class, 'create'])->name('payment-links.create');
+    Route::post('payment-links', [AdminPaymentLinkController::class, 'store'])->name('payment-links.store');
+    Route::patch('payment-links/{paymentLink}/cancel', [AdminPaymentLinkController::class, 'cancel'])->name('payment-links.cancel');
     Route::get('configuration', [AdminConfigurationController::class, 'show'])->name('configuration.show');
     Route::post('configuration/sync-admin', [AdminConfigurationController::class, 'sync'])->name('configuration.sync');
     Route::post('configuration/migrate-media', [AdminConfigurationController::class, 'migrateMedia'])->name('configuration.migrate-media');

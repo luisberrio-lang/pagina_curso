@@ -43,7 +43,7 @@
         <input type="file" name="cover" accept="image/*"
                class="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 mt-2">
         @if($course->coverUrl())
-          <img src="{{ $course->coverUrl() }}" class="mt-3 rounded-2xl border border-white/10 max-h-48 object-cover" />
+          <img src="{{ $course->coverUrl() }}" class="mt-3 rounded-2xl border border-white/10 max-h-48 object-fill" />
         @endif
       </div>
     </div>

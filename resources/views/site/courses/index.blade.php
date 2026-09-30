@@ -38,7 +38,7 @@
       <div class="glass rounded-2xl border border-white/10 overflow-hidden">
         <div class="aspect-[3/2] bg-white/5 flex items-center justify-center">
           @if($c->coverUrl())
-            <img class="w-full h-full object-cover"
+            <img class="w-full h-full object-fill"
                  src="{{ $c->coverUrl() }}"
                  width="1536"
                  height="1024"

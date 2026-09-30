@@ -28,7 +28,7 @@
           <article class="glass p-5 rounded-2xl border border-white/10 flex flex-col sm:flex-row gap-5">
             <div class="h-28 sm:w-44 rounded-xl overflow-hidden bg-white/5 shrink-0">
               @if($course->coverUrl())
-                <img class="h-full w-full object-cover" src="{{ $course->coverUrl() }}" alt="Portada de {{ $course->title }}">
+                <img class="h-full w-full object-fill" src="{{ $course->coverUrl() }}" alt="Portada de {{ $course->title }}">
               @endif
             </div>
             <div class="flex-1">

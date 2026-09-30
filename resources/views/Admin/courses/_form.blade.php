@@ -111,7 +111,7 @@
         <div class="mt-4 rounded-2xl overflow-hidden border border-white/10 bg-black/30">
           <img data-cover-preview
                src="{{ $isEdit && method_exists($course,'coverUrl') ? $course->coverUrl() : '' }}"
-               class="w-full h-52 object-cover {{ $isEdit && method_exists($course,'coverUrl') && $course->coverUrl() ? '' : 'hidden' }}">
+               class="w-full h-52 object-fill {{ $isEdit && method_exists($course,'coverUrl') && $course->coverUrl() ? '' : 'hidden' }}">
           <div data-cover-empty class="p-10 text-center text-white/50 {{ $isEdit && method_exists($course,'coverUrl') && $course->coverUrl() ? 'hidden' : '' }}">
             Vista previa de portada
           </div>

@@ -8,7 +8,7 @@
     <div class="glass rounded-2xl border border-white/10 overflow-hidden md:sticky md:top-10">
       <div class="h-[360px] bg-white/5 flex items-center justify-center">
         @if($course->coverUrl())
-          <img class="w-full h-full object-cover" src="{{ $course->coverUrl() }}" alt="Portada de {{ $course->title }}">
+          <img class="w-full h-full object-fill" src="{{ $course->coverUrl() }}" alt="Portada de {{ $course->title }}">
         @endif
       </div>
 

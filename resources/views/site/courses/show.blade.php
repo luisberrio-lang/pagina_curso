@@ -49,10 +49,32 @@
               Producto digital. La entrega y el acceso se coordinan según la política publicada del sitio.
             </div>
 
-            <form class="mt-4" method="POST" action="{{ route('cart.store', $course) }}">
-              @csrf
-              <button class="btn btn-accent w-full" type="submit">Agregar al carrito</button>
-            </form>
+            @php
+              $orderMessage = "Hola, deseo realizar el pedido de este curso:\n{$course->title}\nPrecio: {$course->formattedCurrentPrice()}\nEnlace: ".route('courses.show', $course);
+              $orderWhatsappUrl = 'https://wa.me/'.config('shop.business.whatsapp').'?text='.rawurlencode($orderMessage);
+            @endphp
+
+            <div class="mt-4 grid gap-3">
+              <a class="btn-whatsapp w-full gap-2" target="_blank" rel="noopener" href="{{ $orderWhatsappUrl }}" data-detail-whatsapp>
+                <picture>
+                  <source type="image/webp" srcset="{{ asset('images/watsapp.webp') }}">
+                  <img src="{{ asset('images/watsapp.webp') }}" alt="" class="h-6 w-6 object-contain" loading="lazy" decoding="async">
+                </picture>
+                <span>Pedir por WhatsApp</span>
+              </a>
+
+              <form method="POST" action="{{ route('cart.store', $course) }}">
+                @csrf
+                <button class="btn btn-accent w-full gap-2" type="submit">
+                  <svg data-add-cart-icon aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.75 4.75h2l1.7 9.2a2 2 0 001.97 1.64h8.93a2 2 0 001.95-1.57l1.2-5.52H6.1" />
+                    <circle cx="9" cy="19" r="1.25" />
+                    <circle cx="17.5" cy="19" r="1.25" />
+                  </svg>
+                  <span>Agregar al carrito</span>
+                </button>
+              </form>
+            </div>
           @else
             <p class="mt-2 text-white/70">Precio disponible por WhatsApp.</p>
           @endif

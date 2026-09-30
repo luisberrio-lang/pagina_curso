@@ -48,6 +48,33 @@ class CatalogCommercialTest extends TestCase
         $this->assertSame('PEN', $course->commercialData()['currency']);
     }
 
+    public function test_course_detail_shows_whatsapp_order_and_cart_icon_actions(): void
+    {
+        config()->set('shop.business.whatsapp', '51999111222');
+        $course = $this->course($this->area(), [
+            'title' => 'Curso WhatsApp',
+            'slug' => 'curso-whatsapp',
+            'price_anual' => '49.90',
+        ]);
+        $detailUrl = route('courses.show', $course);
+        $message = "Hola, deseo realizar el pedido de este curso:\n{$course->title}\nPrecio: {$course->formattedCurrentPrice()}\nEnlace: {$detailUrl}";
+
+        $response = $this->get($detailUrl)
+            ->assertOk()
+            ->assertSee('Pedir por WhatsApp')
+            ->assertSee('data-detail-whatsapp', false)
+            ->assertSee('https://wa.me/51999111222', false)
+            ->assertSee(rawurlencode($message), false)
+            ->assertSee('data-add-cart-icon', false)
+            ->assertSee('Agregar al carrito')
+            ->assertSee('action="'.route('cart.store', $course).'"', false);
+
+        $this->assertLessThan(
+            strpos($response->getContent(), 'Agregar al carrito'),
+            strpos($response->getContent(), 'Pedir por WhatsApp'),
+        );
+    }
+
     public function test_admin_can_store_a_valid_price_and_previous_price_is_optional(): void
     {
         $area = $this->area();

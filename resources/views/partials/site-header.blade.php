@@ -73,7 +73,13 @@
       </a>
 
       <a class="navlink inline-flex items-center gap-2" href="{{ route('cart.index') }}">
-        Carrito <span class="chip chip-accent px-2 py-1">{{ $cartCount ?? 0 }}</span>
+        <svg data-cart-icon aria-hidden="true" class="h-4 w-4 text-cyan-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.75 4.75h2l1.7 9.2a2 2 0 001.97 1.64h8.93a2 2 0 001.95-1.57l1.2-5.52H6.1" />
+          <circle cx="9" cy="19" r="1.25" />
+          <circle cx="17.5" cy="19" r="1.25" />
+        </svg>
+        <span>Carrito</span>
+        <span class="chip chip-accent px-2 py-1">{{ $cartCount ?? 0 }}</span>
       </a>
 
     </nav>
@@ -181,7 +187,15 @@
 
         <a class="flex items-center justify-between rounded-xl px-3 py-2 text-white/85 hover:bg-white/10 transition"
            href="{{ route('cart.index') }}">
-          <span>Carrito</span><span class="chip chip-accent px-2 py-1">{{ $cartCount ?? 0 }}</span>
+          <span class="inline-flex items-center gap-2">
+            <svg data-cart-icon aria-hidden="true" class="h-4 w-4 text-cyan-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.75 4.75h2l1.7 9.2a2 2 0 001.97 1.64h8.93a2 2 0 001.95-1.57l1.2-5.52H6.1" />
+              <circle cx="9" cy="19" r="1.25" />
+              <circle cx="17.5" cy="19" r="1.25" />
+            </svg>
+            <span>Carrito</span>
+          </span>
+          <span class="chip chip-accent px-2 py-1">{{ $cartCount ?? 0 }}</span>
         </a>
 
       </nav>

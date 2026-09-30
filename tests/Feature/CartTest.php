@@ -62,7 +62,13 @@ class CartTest extends TestCase
         $this->patch(route('cart.update', $course), ['quantity' => 2])
             ->assertSessionHasErrors('quantity');
 
-        $this->get(route('home'))->assertOk()->assertSee('Carrito')->assertSee('1');
+        $response = $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('Carrito')
+            ->assertSee('href="'.route('cart.index').'"', false)
+            ->assertSee('1');
+
+        $this->assertSame(2, substr_count($response->getContent(), 'data-cart-icon'));
         $this->assertSame([$course->id], session('cart.course_ids'));
     }
 
